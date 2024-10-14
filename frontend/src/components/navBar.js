@@ -14,7 +14,7 @@ const NavigationBar = () => {
   };
 
   return (
-    <Navbar expand="lg" className="text-light bg-primary">
+    <Navbar expand="lg" className="text-light bg-primary">  {/*Expand when large */}
       <Container>
         {/* Brand name */}
         <Navbar.Brand className="text-light me-5" href="#home">
@@ -32,7 +32,7 @@ const NavigationBar = () => {
         </Navbar.Toggle>
 
         {/* Collapsible part of Navbar */}
-        <Navbar.Collapse in={!isNavCollapsed} id="navbar-nav">
+        <Navbar.Collapse id="navbar-nav">
           <Nav className="me-auto">
             <Nav.Link href="#why" className="text-light me-5">
               Why Shop Simplify?
