@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+
 import { Navbar, Nav, Container, Button } from 'react-bootstrap';
 import { FaBars, FaTimes } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
+
 
 const NavigationBar = () => {
   // State to track if the menu is expanded or collapsed
@@ -15,14 +17,14 @@ const NavigationBar = () => {
   };
 
   return (
-    <Navbar expand="lg" className="text-light bg-primary">
-      <Container>
+    <Navbar expand="lg" className="text-light bg-primary p-3">  {/*Expand when large */}
+   
         {/* Brand name */}
         <Navbar.Brand className="text-light me-5" as={Link} to="/">
           Shop Simplify
         </Navbar.Brand>
 
-        {/* Toggle button for mobile view */}
+        {/* Toggle button for mobile view only*/}
         <Navbar.Toggle
           aria-controls="navbar-nav"
           className="bg-light"
@@ -32,8 +34,8 @@ const NavigationBar = () => {
           {isNavCollapsed ? <FaBars /> : <FaTimes />}
         </Navbar.Toggle>
 
-        {/* Collapsible part of Navbar */}
-        <Navbar.Collapse in={!isNavCollapsed} id="navbar-nav">
+        {/* Collapsible part of Navbar for mobile view only */}
+        <Navbar.Collapse id="navbar-nav">
           <Nav className="me-auto">
             <Nav.Link as={Link} to="#why" className="text-light me-5">
               Why Shop Simplify?
@@ -59,7 +61,7 @@ const NavigationBar = () => {
             </Button>
           </Link>
         </Navbar.Collapse>
-      </Container>
+     
     </Navbar>
   );
 };
