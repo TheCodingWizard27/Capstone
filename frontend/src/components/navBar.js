@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Navbar, Nav, Container, Button } from 'react-bootstrap';
+import { Navbar, Nav, Button } from 'react-bootstrap';
 import { FaBars, FaTimes } from 'react-icons/fa'; // Import icons for bars and cross
 
 const NavigationBar = () => {
@@ -14,14 +14,14 @@ const NavigationBar = () => {
   };
 
   return (
-    <Navbar expand="lg" className="text-light bg-primary">  {/*Expand when large */}
-      <Container>
+    <Navbar expand="lg" className="text-light bg-primary p-3">  {/*Expand when large */}
+   
         {/* Brand name */}
         <Navbar.Brand className="text-light me-5" href="#home">
           Shop Simplify
         </Navbar.Brand>
 
-        {/* Toggle button for mobile view */}
+        {/* Toggle button for mobile view only*/}
         <Navbar.Toggle
           aria-controls="navbar-nav"
           className="bg-light"
@@ -31,7 +31,7 @@ const NavigationBar = () => {
           {isNavCollapsed ? <FaBars /> : <FaTimes />}
         </Navbar.Toggle>
 
-        {/* Collapsible part of Navbar */}
+        {/* Collapsible part of Navbar for mobile view only */}
         <Navbar.Collapse id="navbar-nav">
           <Nav className="me-auto">
             <Nav.Link href="#why" className="text-light me-5">
@@ -53,7 +53,7 @@ const NavigationBar = () => {
             Register
           </Button>
         </Navbar.Collapse>
-      </Container>
+     
     </Navbar>
   );
 };
