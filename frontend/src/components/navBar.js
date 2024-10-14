@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Navbar, Nav, Container, Button } from 'react-bootstrap';
-import { FaBars, FaTimes } from 'react-icons/fa'; // Import icons for bars and cross
+import { FaBars, FaTimes } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 const NavigationBar = () => {
   // State to track if the menu is expanded or collapsed
@@ -17,7 +18,7 @@ const NavigationBar = () => {
     <Navbar expand="lg" className="text-light bg-primary">
       <Container>
         {/* Brand name */}
-        <Navbar.Brand className="text-light me-5" href="#home">
+        <Navbar.Brand className="text-light me-5" as={Link} to="/">
           Shop Simplify
         </Navbar.Brand>
 
@@ -34,24 +35,29 @@ const NavigationBar = () => {
         {/* Collapsible part of Navbar */}
         <Navbar.Collapse in={!isNavCollapsed} id="navbar-nav">
           <Nav className="me-auto">
-            <Nav.Link href="#why" className="text-light me-5">
+            <Nav.Link as={Link} to="#why" className="text-light me-5">
               Why Shop Simplify?
             </Nav.Link>
-            <Nav.Link href="#features" className="text-light me-5">
+            <Nav.Link as={Link} to="#features" className="text-light me-5">
               Explore Features
             </Nav.Link>
-            <Nav.Link href="#updates" className="text-light me-5">
+            <Nav.Link as={Link} to="#updates" className="text-light me-5">
               Latest Updates
             </Nav.Link>
           </Nav>
 
           {/* Buttons */}
-          <Button variant="outline-light" className="me-2">
-            Login
-          </Button>
-          <Button variant="outline-light" className="ms-2">
-            Register
-          </Button>
+          <Link to="/pages/signIn">
+            <Button variant="outline-light" className="me-2">
+              Login
+            </Button>
+          </Link>
+
+          <Link to="/pages/register">
+            <Button variant="outline-light" className="ms-2">
+              Register
+            </Button>
+          </Link>
         </Navbar.Collapse>
       </Container>
     </Navbar>
