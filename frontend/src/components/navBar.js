@@ -14,46 +14,44 @@ const NavigationBar = () => {
   };
 
   return (
-    <Navbar expand="lg" className="text-light bg-primary p-3">  {/*Expand when large */}
-   
-        {/* Brand name */}
-        <Navbar.Brand className="text-light me-5" href="#home">
-          Shop Simplify
-        </Navbar.Brand>
+    <Navbar expand="lg" className="text-light bg-primary p-3">
+      {' '}
+      {/*Expand when large */}
+      {/* Brand name */}
+      <Navbar.Brand className="text-light me-5" href="#home">
+        Shop Simplify
+      </Navbar.Brand>
+      {/* Toggle button for mobile view only*/}
+      <Navbar.Toggle
+        aria-controls="navbar-nav"
+        className="bg-light"
+        onClick={handleToggleClick} // Apply onClick here to handle blur to unfocus the toggle button on click
+      >
+        {/* Change the icon based on whether the nav is collapsed */}
+        {isNavCollapsed ? <FaBars /> : <FaTimes />}
+      </Navbar.Toggle>
+      {/* Collapsible part of Navbar for mobile view only */}
+      <Navbar.Collapse id="navbar-nav">
+        <Nav className="me-auto">
+          <Nav.Link href="#why" className="text-light me-5">
+            Why Shop Simplify?
+          </Nav.Link>
+          <Nav.Link href="#features" className="text-light me-5">
+            Explore Features
+          </Nav.Link>
+          <Nav.Link href="#updates" className="text-light me-5">
+            Latest Updates
+          </Nav.Link>
+        </Nav>
 
-        {/* Toggle button for mobile view only*/}
-        <Navbar.Toggle
-          aria-controls="navbar-nav"
-          className="bg-light"
-          onClick={handleToggleClick} // Apply onClick here to handle blur to unfocus the toggle button on click
-        >
-          {/* Change the icon based on whether the nav is collapsed */}
-          {isNavCollapsed ? <FaBars /> : <FaTimes />}
-        </Navbar.Toggle>
-
-        {/* Collapsible part of Navbar for mobile view only */}
-        <Navbar.Collapse id="navbar-nav">
-          <Nav className="me-auto">
-            <Nav.Link href="#why" className="text-light me-5">
-              Why Shop Simplify?
-            </Nav.Link>
-            <Nav.Link href="#features" className="text-light me-5">
-              Explore Features
-            </Nav.Link>
-            <Nav.Link href="#updates" className="text-light me-5">
-              Latest Updates
-            </Nav.Link>
-          </Nav>
-
-          {/* Buttons */}
-          <Button variant="outline-light" className="me-2">
-            Login
-          </Button>
-          <Button variant="outline-light" className="ms-2">
-            Register
-          </Button>
-        </Navbar.Collapse>
-     
+        {/* Buttons */}
+        <Button variant="outline-light" className="me-2">
+          Login
+        </Button>
+        <Button variant="outline-light" className="ms-2">
+          Register
+        </Button>
+      </Navbar.Collapse>
     </Navbar>
   );
 };
