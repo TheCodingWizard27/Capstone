@@ -33,13 +33,11 @@ const SearchBar = () => {
           width: '100%',
           backgroundColor: '#669ebb',
           border: focused ? '1px solid white' : 'none', // Add a visible border
-          outline: 'none',
           color: 'white',
           padding: '10px',
           fontFamily: 'Arial, FontAwesome',
           fontSize: '16px',
           borderRadius: '4px', // Add some border radius for better appearance
-          transition: 'border-color 0.3s ease',
         }}
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
