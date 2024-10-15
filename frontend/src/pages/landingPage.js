@@ -21,7 +21,7 @@ const ImageSection = () => {
   return (
     <div className="container-fluid d-flex flex-column align-items-center mt-4">
       <Image
-        src={`${process.env.PUBLIC_URL}/images/aloo.jpg`}
+        src={`${process.env.PUBLIC_URL}/images/landingPage.jpg`}
         alt="Aloo"
         fluid
       />
