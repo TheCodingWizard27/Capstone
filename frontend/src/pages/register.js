@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 
 const Register = () => {
   return (
-    <Container fluid className="vh-100 d-flex align-items-center justify-content-center">
+    <Container fluid className="vh-100 d-flex align-items-center justify-content-center mt-3">
       <Row className="w-100 h-100">
         {/* Left side with large logo */}
         <Col md={6} className="d-none d-md-flex align-items-center justify-content-center bg-light h-100">
@@ -56,7 +56,7 @@ const Register = () => {
                 {/* Already a member text */}
                 <div className="text-center mt-1">
                   <p>Already a member?</p>
-                  <Link to="/pages/signIn" className="w-100">
+                  <Link to="/signIn" className="w-100">
                     <Button variant="dark" className="w-100 py-3 mb-3" size="lg">
                         Log In
                     </Button>

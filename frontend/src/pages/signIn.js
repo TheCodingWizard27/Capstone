@@ -6,10 +6,10 @@ import { Link } from 'react-router-dom';
 
 const SignIn = () => {
   return (
-    <Container fluid className="vh-100 d-flex align-items-center justify-content-center">
+    <Container fluid className="vh-100 d-flex align-items-center justify-content-center mt-3">
       <Row className="w-100 h-100">
         {/* Left side with large logo */}
-        <Col md={6} className="d-none d-md-flex align-items-center justify-content-center bg-light h-100">
+        <Col md={5} className="d-none d-md-flex align-items-center justify-content-center bg-light h-100">
         <Image
         src={`${process.env.PUBLIC_URL}/images/logo.svg`}
         alt="Logo"
@@ -18,7 +18,7 @@ const SignIn = () => {
         </Col>
 
         {/* Sign-in form on the right side */}
-        <Col md={6} className="d-flex align-items-center justify-content-center h-1000">
+        <Col md={7} className="d-flex align-items-center justify-content-center h-1000">
           <Card style={{ width: '100%', maxWidth: '1000px' }} className="p-5 shadow-lg h-100">
             <Card.Body className="d-flex flex-column justify-content-center">
               <h2 className="text-center mb-5">Sign In</h2>

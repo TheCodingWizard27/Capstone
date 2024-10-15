@@ -1,4 +1,4 @@
-import NavigationBar from '../components/navBar';
+import NavigationBar from '../components/landingNavBar';
 import Image from 'react-bootstrap/Image';
 import { Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
@@ -82,7 +82,7 @@ const AboutUS = () => {
 const Buttonlike = () => {
   return (
     <>
-      <Link to="/pages/signIn">
+      <Link to="/signIn">
         <Button
           style={{ color: 'white' }}
           className="mx-2 btn btn-primary custom-btn"
@@ -91,7 +91,7 @@ const Buttonlike = () => {
           Login
         </Button>
       </Link>
-      <Link to="/pages/register">
+      <Link to="/register">
         <Button
           style={{ color: 'white' }}
           className="mx-2  btn btn-primary custom-btn"
