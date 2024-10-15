@@ -64,7 +64,7 @@ const AboutUS = () => {
   return (
     <div className="container-fluid paragraph-section">
       <h1 className="container-fluid d-flex justify-content-center mt-4">
-        <a id="about">About Us</a>
+        <a id="updates">About Us</a>
       </h1>
       <p className="text-center" justify-content-center>
         Team of four.
