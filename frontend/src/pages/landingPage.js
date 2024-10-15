@@ -8,6 +8,7 @@ const LandingPage = () => {
       <NavigationBar /> {/* Navigation Bar */}
       <div className="landing-content">
         <ImageSection />
+        <Tagline />
         <WhyShop />
         <ExploreFeature />
         <AboutUS />
@@ -24,13 +25,27 @@ const ImageSection = () => {
         alt="Aloo"
         fluid
       />
-      {/* Buttons placed after the image */}
-      <div className="d-flex justify-content-center mt-4">
-        <Buttonlike />
-      </div>
     </div>
   );
 };
+
+const Tagline = () => {
+  return (
+    <div className=" container-fluid paragraph-section">
+    <h2 className="d-flex justify-content-center mt-4">
+      Simplify your Shopping, Amplify your Life.
+    </h2>
+    <h2 className="d-flex justify-content-center mt-4">
+      Start shopping Smart! Get Started Today!
+    </h2>
+    {/* Buttons placed after the image */}
+    <div className="d-flex justify-content-center mt-4">
+        <GetStarted />
+      </div>
+    <br></br>
+  </div>
+  );
+}
 
 const WhyShop = () => {
   return (
@@ -39,13 +54,13 @@ const WhyShop = () => {
         <a id="why">Why Shop Simplify?</a>
       </h1>
       <p className="text-center" justify-content-center>
-        We provide the best services. Learn more on our WhyShop. at
+        We provide the best services. Learn more on our WhyShop.
       </p>
     </div>
   );
 };
 
-const ExploreFeature = () => {
+const ExploreFeature = () => { //! Under Construction
   return (
     <div className=" container-fluid paragraph-section">
       <h1 className="container-fluid d-flex justify-content-center mt-4">
@@ -70,7 +85,7 @@ const AboutUS = () => {
         Team of four.
         <ul className="list-unstyled">
           <li> Aavash Neupane</li>
-          <li> Ronak Upreti</li>
+          <li> Raunak Upreti</li>
           <li> Siddhartha Pudasini</li>
           <li> Kushal Panthi</li>
         </ul>
@@ -79,7 +94,23 @@ const AboutUS = () => {
   );
 };
 
-const Buttonlike = () => {
+const GetStarted = () => { // Button for Get Started
+  return (
+    <>
+    <Link to="/register">
+      <Button
+          style={{ color: 'white' }}
+          className="mx-2  btn btn-primary custom-btn"
+          variant="outline-dark"
+        >
+          Get Started
+        </Button>
+    </Link>
+    </>
+  );
+}
+
+const Buttonlike = () => { // Button for Login and Register
   return (
     <>
       <Link to="/signIn">
