@@ -36,7 +36,7 @@ const WhyShop = () => {
   return (
     <div className=" container-fluid paragraph-section">
       <h1 className="d-flex justify-content-center mt-4">
-        <a id="why">Why Shop Simplify</a>
+        <a id="why">Why Shop Simplify?</a>
       </h1>
       <p className="text-center" justify-content-center>
         We provide the best services. Learn more on our WhyShop. at
