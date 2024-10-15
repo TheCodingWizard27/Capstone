@@ -62,7 +62,7 @@ const SignIn = () => {
                 </div>
 
                 {/* Register button wrapped in Link */}
-                <Link to="/pages/register" className="w-100">
+                <Link to="/register" className="w-100">
                   <Button variant="dark" className="w-100 py-3 mt-2" size="lg">
                     Register
                   </Button>
