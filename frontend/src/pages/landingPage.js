@@ -1,7 +1,7 @@
 import NavigationBar from '../components/navBar';
 import Image from 'react-bootstrap/Image';
 import { Button } from 'react-bootstrap';
-
+import { Link } from 'react-router-dom';
 const LandingPage = () => {
   return (
     <>
@@ -38,7 +38,9 @@ const WhyShop = () => {
       <h1 className="d-flex justify-content-center mt-4">
         <a id="why">Why Shop Simplify</a>
       </h1>
-      <p>We provide the best services. Learn more on our WhyShop. at</p>
+      <p className="text-center" justify-content-center>
+        We provide the best services. Learn more on our WhyShop. at
+      </p>
     </div>
   );
 };
@@ -49,7 +51,7 @@ const ExploreFeature = () => {
       <h1 className="container-fluid d-flex justify-content-center mt-4">
         <a id="features">Explore Features</a>
       </h1>
-      <p>
+      <p className="text-center" justify-content-center>
         Currently the worksite is underconstruction we will be back shortly with
         features incorporating all the actions and functions to make your
         shopping smarter.
@@ -64,7 +66,7 @@ const AboutUS = () => {
       <h1 className="container-fluid d-flex justify-content-center mt-4">
         <a id="about">About Us</a>
       </h1>
-      <p className="text-center">
+      <p className="text-center" justify-content-center>
         Team of four.
         <ul className="list-unstyled">
           <li> Aavash Neupane</li>
@@ -80,20 +82,24 @@ const AboutUS = () => {
 const Buttonlike = () => {
   return (
     <>
-      <Button
-        style={{ color: 'white' }}
-        className="mx-2 btn btn-primary custom-btn"
-        variant="outline-dark"
-      >
-        Login
-      </Button>
-      <Button
-        style={{ color: 'white' }}
-        className="mx-2  btn btn-primary custom-btn"
-        variant="outline-dark"
-      >
-        Register
-      </Button>
+      <Link to="/pages/signIn">
+        <Button
+          style={{ color: 'white' }}
+          className="mx-2 btn btn-primary custom-btn"
+          variant="outline-dark"
+        >
+          Login
+        </Button>
+      </Link>
+      <Link to="/pages/register">
+        <Button
+          style={{ color: 'white' }}
+          className="mx-2  btn btn-primary custom-btn"
+          variant="outline-dark"
+        >
+          Register
+        </Button>
+      </Link>
     </>
   );
 };

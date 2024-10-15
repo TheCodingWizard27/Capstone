@@ -5,7 +5,7 @@ import LandingPage from './pages/landingPage'; // Import LandingPage
 
 import SignIn from './pages/signIn';
 import Register from './pages/register';
-
+import { Link } from 'react-router-dom';
 function App() {
   return (
     <div className="App">
