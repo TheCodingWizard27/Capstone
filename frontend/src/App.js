@@ -11,7 +11,7 @@ import Home from './pages/home';
 import { useState } from 'react';
 
 function App() {
-  const [isAuthenticated, setAuthenticated] = useState(true);
+  const [isAuthenticated, setAuthenticated] = useState(false);
   return (
     <div className="App">
       <Router>

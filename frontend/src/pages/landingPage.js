@@ -51,15 +51,40 @@ const Tagline = () => {
 
 const WhyShop = () => {
   return (
-    <div className=" container-fluid paragraph-section">
-      <h1 className="d-flex justify-content-center mt-4">
-        <a id="why">Why Shop Simplify?</a>
-      </h1>
-      <p className="text-center" justify-content-center>
-        We provide the best services. Learn more on our WhyShop.
-      </p>
+    <>
+    <h1 className="container-fluid d-flex justify-content-center mt-4" style={{marginBottom: '20px'}}>
+      <a id="why"> Why should you use ShopSimplify?</a>
+    </h1>
+    <div className="container my-5">
+      <div className="row">
+        {/* Left Column */}
+        <div className="col-md-6 p-4" style={{ backgroundColor: '#f9ecec', borderRadius: '10px' }}>
+          <h4 className="text-danger" style={{color: 'black', marginBottom: '20px' }}>Without ShopSimplify</h4>
+          <ul className="list-unstyled">
+            <li className="text-danger" style={{color: 'black', marginBottom: '10px' }}>✖ Limited options to sell or buy locally</li>
+            <li className="text-danger" style={{color: 'black', marginBottom: '10px' }}>✖ No easy way to manage transactions</li>
+            <li className="text-danger" style={{color: 'black', marginBottom: '10px' }}>✖ Communication with buyers/sellers is cumbersome</li>
+            <li className="text-danger" style={{color: 'black', marginBottom: '10px' }}>✖ Lack of a unified platform for secure payments</li>
+            <li className="text-danger" style={{color: 'black', marginBottom: '10px' }}>✖ No real-time tracking for transactions or orders</li>
+          </ul>
+        </div>
+
+        {/* Right Column */}
+        <div className="col-md-6 p-4" style={{ backgroundColor: '#e6f9ec', borderRadius: '10px' }}>
+          <h4 className="text-success" style={{ marginBottom: '20px' }}>With ShopSimplify</h4>
+          <ul className="list-unstyled">
+            <li className="text-success" style={{ marginBottom: '10px' }}>✔ Sell and buy items locally in one easy platform</li>
+            <li className="text-success" style={{ marginBottom: '10px' }}>✔ Seamless transaction management</li>
+            <li className="text-success" style={{ marginBottom: '10px' }}>✔ Direct and secure communication between buyers and sellers</li>
+            <li className="text-success" style={{ marginBottom: '10px' }}>✔ Integrated secure payments within the app</li>
+            <li className="text-success" style={{ marginBottom: '10px' }}>✔ Real-time tracking of sales, orders, and transactions</li>
+          </ul>
+        </div>
+      </div>
     </div>
+    </>
   );
+
 };
 
 const ExploreFeature = () => { //! Under Construction
