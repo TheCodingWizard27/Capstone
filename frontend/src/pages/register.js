@@ -51,7 +51,11 @@ const Register = () => {
                 {/* Already a member text */}
                 <div className="text-center mt-3">
                   <p>Already a member?</p>
-                  <Link to="/pages/signin">Log In</Link>
+                  <Link to="/pages/signIn" className="w-100">
+                    <Button variant="dark" className="w-100 mt-2">
+                        Log In
+                    </Button>
+                  </Link>
                 </div>
 
                 {/* OR separator */}
