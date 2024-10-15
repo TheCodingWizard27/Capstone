@@ -3,6 +3,9 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'; // Im
 
 import LandingPage from './pages/landingPage'; // Import LandingPage
 
+import SignIn from './pages/signIn';
+import Register from './pages/register';
+
 function App() {
   return (
     <div className="App">
@@ -10,6 +13,8 @@ function App() {
         <Routes>
           {/* Define the default route for LandingPage */}
           <Route path="/" element={<LandingPage />} />
+          <Route path="/pages/signIn" element={<SignIn />} />
+          <Route path="/pages/register" element={<Register />} />
           {/* You can add more routes here as needed */}
         </Routes>
       </Router>
