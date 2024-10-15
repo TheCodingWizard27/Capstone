@@ -2,11 +2,15 @@ import React from 'react';
 import { Container, Row, Col, Form, Button, Card } from 'react-bootstrap';
 import Image from 'react-bootstrap/Image';
 import { Link } from 'react-router-dom';
+import NavbarBar from '../components/navBar';
+
 
 
 const AddListing = () => {
   return (
-
+  
+    <>
+    <NavbarBar />  
     <Form className="flex-grow-1 mt-3">
                 {/* Start your listing field*/}
                 <Form.Group controlId="formListing" className="mb-5">
@@ -43,6 +47,7 @@ const AddListing = () => {
                   Submit
                 </Button>
               </Form>
+              </>
 
   );
 }
