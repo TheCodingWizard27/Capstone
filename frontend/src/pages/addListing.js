@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 const AddListing = () => {
   return (
 
-    <Form className="flex-grow-1">
+    <Form className="flex-grow-1 mt-3">
                 {/* Start your listing field*/}
                 <Form.Group controlId="formListing" className="mb-5">
                   <Form.Label><h4>Start your Listing</h4></Form.Label>
