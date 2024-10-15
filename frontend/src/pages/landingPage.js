@@ -23,6 +23,8 @@ const ImageSection = () => {
       <Image
         src={`${process.env.PUBLIC_URL}/images/landingPage.jpg`}
         alt="Aloo"
+        height={800}
+        width={800}
         fluid
       />
     </div>

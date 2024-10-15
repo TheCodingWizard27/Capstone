@@ -7,7 +7,6 @@ import SignIn from './pages/signIn';
 import Register from './pages/register';
 import AddListing from './pages/addListing';
 import NotFound from './pages/404';
-import AddListing from './pages/addListing';
 
 function App() {
   return (
