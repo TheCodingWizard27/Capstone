@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Container, Form, Button, Card } from 'react-bootstrap';
 import { FaTimes } from 'react-icons/fa';
+import NavBar from '../components/navBar';
 
 const AddListing = () => {
   const [files, setFiles] = useState([]);
@@ -34,6 +35,8 @@ const AddListing = () => {
   };
 
   return (
+    <>
+    <NavBar />
     <Container fluid className="h-auto w-100vw mt-5">
       <Card style={{ width: '100%' }} className="p-4 shadow-lg h-1000">
         <Form className="flex-grow-1">
@@ -86,7 +89,7 @@ const AddListing = () => {
               value={description}
               onChange={handleDescriptionChange}
             />
-            <div>Word Count: {wordCount}/250</div>
+            <div>Word Count: {wordCount}/500</div>
           </Form.Group>
 
           {/* Media field */}
@@ -163,6 +166,7 @@ const AddListing = () => {
         </Form>
       </Card>
     </Container>
+    </>
   );
 };
 
