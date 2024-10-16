@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Navbar, Nav, Button } from 'react-bootstrap';
 import { FaBars, FaTimes } from 'react-icons/fa'; // Import icons for bars and cross
 
-import SearchBar from './searchBar';
 
 const LandingNavbar = () => {
   // State to track if the menu is expanded or collapsed

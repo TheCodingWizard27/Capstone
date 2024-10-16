@@ -1,6 +1,5 @@
-import { Container, Form } from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
 import { useState, useRef } from 'react';
-import { FaSearch } from 'react-icons/fa';
 
 const SearchBar = () => {
   const [searchContent, setSearchContent] = useState('');
