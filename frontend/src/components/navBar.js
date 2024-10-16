@@ -2,7 +2,7 @@ import React from 'react';
 import { Navbar } from 'react-bootstrap';
 import SearchBar from './searchBar';
 import { Link } from 'react-router-dom';
-import { FaEnvelope } from 'react-icons/fa'; // Import FontAwesome message icon
+import { FaEnvelope, FaUser } from 'react-icons/fa'; // Import FontAwesome message icon
 import DropDown from './dropDown';
 
 const NavBar = () => {
@@ -14,7 +14,7 @@ const NavBar = () => {
       </div>
 
       {/* SearchBar with responsive width */}
-      <div className="col-md-6">
+      <div className="col-md-9">
         <SearchBar />
       </div>
 
@@ -34,17 +34,13 @@ const NavBar = () => {
           className="text-white"
           style={{ textDecoration: 'none', fontSize: '1.25rem' }}
         >
-          <FaEnvelope
-            style={{
-              font: '2em',
-            }}
-          />
+          <FaEnvelope size={25} />
         </Link>
       </div>
 
       {/* Additional DropDown (if needed) */}
       <div className="d-none d-lg-flex">
-        <DropDown />
+        <FaUser size={25} />
       </div>
     </Navbar>
   );
