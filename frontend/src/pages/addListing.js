@@ -76,15 +76,22 @@ const AddListing = () => {
 
           {/* Media field */}
           <Form.Group controlId="formMedia" className="mb-3">
-            <Form.Label>
-              <h3>Media</h3>
-            </Form.Label>
+            <h3>Media</h3>
+
             <Form.Control
               size="sm"
               type="file"
               multiple
               onChange={handleFileChange}
+              style={{ opacity: 0, position: 'absolute', zIndex: -1 }}
             />
+            <Button
+              variant="primary"
+              size="sm"
+              onClick={() => document.getElementById('formMedia').click()} // Trigger the file input
+            >
+              Choose Files
+            </Button>
 
             {/* Thumbnails display inside cards */}
             <div className="d-flex flex-wrap mt-3">
@@ -92,7 +99,7 @@ const AddListing = () => {
                 <Card
                   key={index}
                   className="position-relative m-2"
-                  style={{ width: '120px', height: '120px' }}
+                  style={{ width: '140px', height: '140px' }}
                 >
                   {/* Delete button positioned on the top-right */}
                   <Button
