@@ -101,7 +101,7 @@ const Register = () => {
         <Col className="d-md-flex align-items-center justify-content-center h-auto">
           <Card
             style={{ width: '100%', maxWidth: '1000px' }}
-            className="p-4 shadow-lg h-100"
+            className="p-3 shadow-lg h-100"
           >
             <Card.Body className="d-flex flex-column justify-content-center">
               <h2 className="text-center mb-4">Create your Account</h2>
