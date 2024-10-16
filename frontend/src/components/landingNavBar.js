@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Navbar, Nav, Button } from 'react-bootstrap';
 import { FaBars, FaTimes } from 'react-icons/fa'; // Import icons for bars and cross
-
+import { Link } from 'react-router-dom';
 
 const LandingNavbar = () => {
   // State to track if the menu is expanded or collapsed
@@ -46,12 +46,16 @@ const LandingNavbar = () => {
         </Nav>
 
         {/* Buttons */}
-        <Button variant="outline-light" className="me-2">
-          Login
-        </Button>
-        <Button variant="outline-light" className="ms-2">
-          Register
-        </Button>
+        <Link to="/signIn">
+          <Button variant="outline-light" className="me-2">
+            Login
+          </Button>
+        </Link>
+        <Link to="/register">
+          <Button variant="outline-light" className="ms-2">
+            Register
+          </Button>
+        </Link>
       </Navbar.Collapse>
     </Navbar>
   );

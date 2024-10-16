@@ -91,15 +91,13 @@ const Register = () => {
   return (
     <Container
       fluid
-      className="vh-auto d-flex align-items-center justify-content-center mt-3 bg-red"
+      className="h-auto d-flex align-items-center justify-content-center mt-3 bg-red"
     >
       <Row className="w-90 h-100">
-
-
         {/* Sign-in form on the right side */}
-        <Col className="d-md-flex align-items-center justify-content-center h-1000">
+        <Col className="d-md-flex align-items-center justify-content-center h-100">
           <Card
-            style={{ width: '100%', maxWidth: '1000px' }}
+            style={{ width: '100%', maxWidth: '90vw' }}
             className="p-5 shadow-lg h-100"
           >
             <Card.Body className="d-flex flex-column justify-content-center">
