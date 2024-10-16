@@ -1,69 +1,69 @@
 import React from 'react';
-import { Container, Row, Col, Form, Button, Card } from 'react-bootstrap';
+import { Container, Form, Button, Card } from 'react-bootstrap';
 
 const AddListing = () => {
   return (
-    <Container fluid className="vh-100">
+    <Container fluid className="h-auto w-100vw mt-5">
       <Card
-        style={{ width: '100%', maxWidth: '10000px' }}
-        className="p-5 shadow-lg h-1000"
+        style={{ width: '100%'}}
+        className="p-4 shadow-lg h-1000"
       >
         <Form className="flex-grow-1 mt-3">
           {/* Start your listing field*/}
-          <Form.Group controlId="formListing" className="mb-5">
+          <Form.Group controlId="formListing" className="mb-3">
             <Form.Label>
-              <h4>Start your Listing</h4>
+              <h3>Start your Listing</h3>
             </Form.Label>
             <Form.Control
-              size="lg"
+              size="sm"
               type="text"
               placeholder="Tell us what you're selling"
             />
           </Form.Group>
 
           {/* Brand field */}
-          <Form.Group controlId="formBrand" className="mb-5">
+          <Form.Group controlId="formBrand" className="mb-3">
             <Form.Label>
-              <h4>Brand</h4>
+              <h3>Brand</h3>
             </Form.Label>
             <Form.Control
-              size="lg"
+              size="sm"
               type="text"
               placeholder="Tell us the brand"
             />
           </Form.Group>
 
           {/* Category field */}
-          <Form.Group controlId="formCategory" className="mb-5">
+          <Form.Group controlId="formCategory" className="mb-3">
             <Form.Label>
-              <h4>Category</h4>
+              <h3>Category</h3>
             </Form.Label>
             <Form.Control
-              size="lg"
+              size="sm"
               type="text"
               placeholder="Tell us the category"
             />
           </Form.Group>
 
           {/* Description field */}
-          <Form.Group controlId="formDescription" className="mb-5">
+          <Form.Group controlId="formDescription" className="mb-3">
             <Form.Label>
-              <h4>Description (Maximum Word Limit: 500)</h4>
+              <h3>Description (Maximum Word Limit: 500)</h3>
             </Form.Label>
             <Form.Control
-              size="lg"
-              type="textarea"
-              rows={3}
+              size="sm"
+              as="textarea"
+              rows={10}
               placeholder="Write a description for your item"
             />
           </Form.Group>
 
           {/* Brand field */}
-          <Form.Group controlId="formMedia" className="mb-5">
+          <Form.Group controlId="formMedia" className="mb-3">
             <Form.Label>
-              <h4>Media</h4>
+              <h3>Media</h3>
             </Form.Label>
-            <Form.Control size="lg" type="file" placeholder="Upload media" />
+            <Form.Control size="sm" type="file" placeholder="Upload media" />
           </Form.Group>
 
           {/* Sign In button */}
@@ -71,7 +71,7 @@ const AddListing = () => {
             variant="primary"
             className="w-100 py-3 mb-3"
             type="submit"
-            size="lg"
+            size="sm"
           >
             Submit
           </Button>
