@@ -79,7 +79,7 @@ const AddListing = () => {
             <h3>Media</h3>
 
             <Form.Control
-              size="sm"
+              size="md"
               type="file"
               multiple
               onChange={handleFileChange}
@@ -141,7 +141,7 @@ const AddListing = () => {
             variant="primary"
             className="w-100 py-3 mb-3"
             type="submit"
-            size="sm"
+            size="md"
           >
             Submit
           </Button>
