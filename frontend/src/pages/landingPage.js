@@ -52,7 +52,7 @@ const Tagline = () => {
 const WhyShop = () => {
   return (
     <>
-    <h1 className="container-fluid d-flex justify-content-center mt-4">
+    <h1 className="container-fluid d-flex justify-content-center mt-4" style={{marginTop:'30px'}}>
       <a id="why"> Why should you use ShopSimplify?</a>
     </h1>
     <br></br>
@@ -138,30 +138,5 @@ const GetStarted = () => { // Button for Get Started
     </>
   );
 }
-
-const Buttonlike = () => { // Button for Login and Register
-  return (
-    <>
-      <Link to="/signIn">
-        <Button
-          style={{ color: 'white' }}
-          className="mx-2 btn btn-primary custom-btn"
-          variant="outline-dark"
-        >
-          Login
-        </Button>
-      </Link>
-      <Link to="/register">
-        <Button
-          style={{ color: 'white' }}
-          className="mx-2  btn btn-primary custom-btn"
-          variant="outline-dark"
-        >
-          Register
-        </Button>
-      </Link>
-    </>
-  );
-};
 
 export default LandingPage;

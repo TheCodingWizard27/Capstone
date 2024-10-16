@@ -25,7 +25,7 @@ function App() {
           />
           <Route path="/signIn" element={<SignIn />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/addlisting" element={<AddListing />} />
+          <Route path="/addListing" element={<AddListing />} />
           <Route path="/category" element={<Category />} />
           <Route path="*" element={<NotFound />} />
           {/* You can add more routes here as needed */}

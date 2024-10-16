@@ -17,7 +17,7 @@ const DropDown = () => {
   return (
     <Dropdown>
       <Dropdown.Toggle id="dropdown-basic" className="primaryAccent">
-        {selectedValue ? `Selected: ${selectedValue}` : 'Shop By Category'}
+        {selectedValue ? `Selected: ${selectedValue}` : 'Category'}
       </Dropdown.Toggle>
 
       <Dropdown.Menu>
@@ -36,3 +36,5 @@ const DropDown = () => {
 };
 
 export default DropDown;
+
+
