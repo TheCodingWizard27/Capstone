@@ -1,12 +1,31 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Container, Form, Button, Card } from 'react-bootstrap';
+import { FaTimes } from 'react-icons/fa';
 
 const AddListing = () => {
+  const [files, setFiles] = useState([]);
+
+  // Handle file selection
+  const handleFileChange = (e) => {
+    const selectedFiles = Array.from(e.target.files);
+    const filePreviews = selectedFiles.map((file) => ({
+      file,
+      preview: URL.createObjectURL(file),
+    }));
+    setFiles((prevFiles) => [...prevFiles, ...filePreviews]);
+  };
+
+  // Handle file removal
+  const removeFile = (index) => {
+    const newFiles = files.filter((_, i) => i !== index);
+    setFiles(newFiles);
+  };
+
   return (
     <Container fluid className="h-auto w-100vw mt-5">
       <Card style={{ width: '100%' }} className="p-4 shadow-lg h-1000">
         <Form className="flex-grow-1">
-          {/* Start your listing field*/}
+          {/* Start your listing field */}
           <Form.Group controlId="formListing" className="mb-3">
             <Form.Label>
               <h3>Start your Listing</h3>
@@ -55,15 +74,62 @@ const AddListing = () => {
             />
           </Form.Group>
 
-          {/* Brand field */}
+          {/* Media field */}
           <Form.Group controlId="formMedia" className="mb-3">
             <Form.Label>
               <h3>Media</h3>
             </Form.Label>
-            <Form.Control size="sm" type="file" placeholder="Upload media" />
+            <Form.Control
+              size="sm"
+              type="file"
+              multiple
+              onChange={handleFileChange}
+            />
+
+            {/* Thumbnails display inside cards */}
+            <div className="d-flex flex-wrap mt-3">
+              {files.map((file, index) => (
+                <Card
+                  key={index}
+                  className="position-relative m-2"
+                  style={{ width: '120px', height: '120px' }}
+                >
+                  {/* Delete button positioned on the top-right */}
+                  <Button
+                    variant="danger"
+                    size="sm"
+                    className="position-absolute top-0 start-100 translate-middle"
+                    onClick={() => removeFile(index)}
+                    style={{
+                      borderRadius: '50%',
+                      width: '20px',
+                      height: '20px',
+                      padding: 0,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <FaTimes size={12} />
+                  </Button>
+
+                  {/* Thumbnail image inside the card */}
+                  <Card.Img
+                    variant="top"
+                    src={file.preview}
+                    alt="thumbnail"
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                    }}
+                  />
+                </Card>
+              ))}
+            </div>
           </Form.Group>
 
-          {/* Sign In button */}
+          {/* Submit button */}
           <Button
             variant="primary"
             className="w-100 py-3 mb-3"
