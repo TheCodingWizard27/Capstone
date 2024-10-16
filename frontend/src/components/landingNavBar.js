@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Navbar, Nav, Button } from 'react-bootstrap';
 import { FaBars, FaTimes } from 'react-icons/fa'; // Import icons for bars and cross
+import { Link } from 'react-router-dom';
 
 import SearchBar from './searchBar';
 
@@ -47,12 +48,16 @@ const LandingNavbar = () => {
         </Nav>
 
         {/* Buttons */}
+        <Link to="/signIn">
         <Button variant="outline-light" className="me-2">
           Login
         </Button>
+        </Link>
+        <Link to="/register">
         <Button variant="outline-light" className="ms-2">
           Register
         </Button>
+        </Link>
       </Navbar.Collapse>
     </Navbar>
   );
