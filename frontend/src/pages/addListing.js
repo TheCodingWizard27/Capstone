@@ -4,6 +4,8 @@ import { FaTimes } from 'react-icons/fa';
 
 const AddListing = () => {
   const [files, setFiles] = useState([]);
+  const [description, setDescription] = useState('');
+  const [wordCount, setWordCount] = useState(0);
 
   // Handle file selection
   const handleFileChange = (e) => {
@@ -19,6 +21,16 @@ const AddListing = () => {
   const removeFile = (index) => {
     const newFiles = files.filter((_, i) => i !== index);
     setFiles(newFiles);
+  };
+
+  // Handle description change with word limit
+  const handleDescriptionChange = (e) => {
+    const text = e.target.value;
+    const words = text.trim().split(/\s+/).filter(Boolean); // Split text into words
+    if (words.length <= 250) {
+      setDescription(text); // Update description if under word limit
+      setWordCount(words.length); // Update word count
+    }
   };
 
   return (
@@ -61,17 +73,20 @@ const AddListing = () => {
             />
           </Form.Group>
 
-          {/* Description field */}
+          {/* Description field with word count */}
           <Form.Group controlId="formDescription" className="mb-3">
             <Form.Label>
-              <h3>Description (Maximum Word Limit: 500)</h3>
+              <h3>Description</h3>
             </Form.Label>
             <Form.Control
               size="sm"
               as="textarea"
               rows={10}
               placeholder="Write a description for your item"
+              value={description}
+              onChange={handleDescriptionChange}
             />
+            <div>Word Count: {wordCount}/250</div>
           </Form.Group>
 
           {/* Media field */}
@@ -86,7 +101,7 @@ const AddListing = () => {
               style={{ opacity: 0, position: 'absolute', zIndex: -1 }}
             />
             <Button
-              variant="primary"
+              style={{ backgroundColor: '#0f9e48' }}
               size="sm"
               onClick={() => document.getElementById('formMedia').click()} // Trigger the file input
             >
