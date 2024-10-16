@@ -14,7 +14,7 @@ const NavBar = () => {
       </div>
 
       {/* SearchBar with responsive width */}
-      <div className="col-md-9">
+      <div className="col-md-6">
         <SearchBar />
       </div>
 

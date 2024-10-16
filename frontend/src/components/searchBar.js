@@ -21,7 +21,7 @@ const SearchBar = () => {
   };
 
   return (
-    <Form onSubmit={handleSubmit} style={{ width: '100%' }}>
+    <Form onSubmit={handleSubmit} style={{ width: "100%" }}>
       <Form.Control
         type="text"
         value={searchContent}
