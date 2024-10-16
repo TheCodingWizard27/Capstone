@@ -74,7 +74,7 @@ const SignIn = () => {
         width: '100%',
       }}
     >
-      <Row style={{ width: '50%' }}>
+      <Row className='w-100'>
         {/* Left side with large logo */}
 
         {/* Sign-in form on the right side */}
