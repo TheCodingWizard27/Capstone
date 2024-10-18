@@ -1,24 +1,30 @@
 import React from 'react';
-import { Navbar } from 'react-bootstrap';
+import { Navbar, Button } from 'react-bootstrap';
 import SearchBar from './searchBar';
 import { Link } from 'react-router-dom';
-import { FaEnvelope, FaUser } from 'react-icons/fa'; // Import FontAwesome message icon
+import { FaEnvelope, FaUser, FaBars } from 'react-icons/fa'; // Import icons
 import DropDown from './dropDown';
 
 const NavBar = () => {
   return (
-    <Navbar className="d-flex justify-content-evenly align-items-center text-light bg-primary p-3 sticky-top">
-      {/* DropDown with responsive width */}
-      <div lassName="col-md-3">
+    <Navbar className="d-flex justify-content-between align-items-center text-light bg-primary p-3 sticky-top">
+      {/* SearchBar - Visible on all screen sizes */}
+
+      <div className="d-none d-lg-flex">
         <DropDown />
       </div>
-
-      {/* SearchBar with responsive width */}
-      <div className="col-md-9">
+      <div className="col-md-9 col-sm-12">
         <SearchBar />
       </div>
 
-      {/* Links that show on large devices only */}
+      {/* Toggle Button for smaller screens */}
+      <div className="d-md-none">
+        <Button variant="outline-light">
+          <FaBars size={25} />
+        </Button>
+      </div>
+
+      {/* Links and icons - Visible only on large screens */}
       <div className="d-none d-lg-flex">
         <Link
           to="/addListing"
@@ -31,14 +37,12 @@ const NavBar = () => {
       <div className="d-none d-lg-flex">
         <Link
           to="/messages"
-          className="text-white"
+          className="text-white me-3"
           style={{ textDecoration: 'none', fontSize: '1.25rem' }}
         >
           <FaEnvelope size={25} />
         </Link>
       </div>
-
-      {/* Additional DropDown (if needed) */}
       <div className="d-none d-lg-flex">
         <FaUser size={25} />
       </div>

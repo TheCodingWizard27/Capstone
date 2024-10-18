@@ -37,7 +37,7 @@ const AddListing = () => {
   return (
     <>
     <NavBar />
-    <Container fluid className="h-auto w-100vw mt-5">
+    <Container fluid className="h-auto w-80vw mt-5">
       <Card style={{ width: '100%' }} className="p-4 shadow-lg h-1000">
         <Form className="flex-grow-1">
           {/* Start your listing field */}
