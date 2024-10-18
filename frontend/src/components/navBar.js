@@ -14,7 +14,10 @@ const NavBar = () => {
   return (
     <>
       {/* Navbar */}
-      <Navbar className="text-light bg-primary p-3 fixed-top">
+      <Navbar
+        className="text-light bg-primary p-3 position-sticky top-0"
+        style={{ zIndex: 1 }}
+      >
         <Container fluid>
           <Row className="w-100 align-items-center justify-evenly">
             {/* DropDown for large screens */}
@@ -79,7 +82,7 @@ const NavBar = () => {
 
       {/* Custom Drawer */}
       <div className={`custom-drawer ${showDrawer ? 'open' : ''} `}>
-        <div className="drawer-header d-flex justify-content-between bg-primary align-items-center p-3">
+        <div className="drawer-header">
           <h5 className="text-light mb-0">Menu</h5>
           <Button
             variant="outline-light"
@@ -91,7 +94,7 @@ const NavBar = () => {
           </Button>
         </div>
 
-        <div className="drawer-content p-3">
+        <div className="p-3">
           <Link
             to="/addListing"
             className="d-flex align-items-center mb-3 text-light"

@@ -13,61 +13,76 @@ const LandingNavbar = () => {
   };
 
   return (
-    <Navbar
-      expand="lg"
-      className="bg-primary text-light p-3 fixed-top"
-      expanded={!isNavCollapsed} // Control expansion state
-    >
-      <Container fluid>
-        {/* Brand name */}
-        <Navbar.Brand className="text-light me-5" href="#home">
-          Shop Simplify
-        </Navbar.Brand>
+    <>
+      <Navbar
+        expand="lg"
+        className="bg-primary text-light p-3 position-sticky top-0"
+        style={{ zIndex: 1 }}
+        expanded={!isNavCollapsed} // Control expansion state
+      >
+        <Container fluid>
+          {/* Brand name */}
+          <Navbar.Brand className="text-light me-5" href="#home">
+            Shop Simplify
+          </Navbar.Brand>
 
-        {/* Toggle button for mobile view */}
-        <Button
-          variant="outline-light"
-          className="border-0 d-lg-none"
-          onClick={handleToggleClick}
-          style={{
-            color: 'white',
-            borderColor: 'transparent',
-            backgroundColor: 'transparent',
-          }}
-        >
-          {isNavCollapsed ? <FaBars size={25} /> : <FaTimes size={25} />}
-        </Button>
+          {/* Toggle button for mobile view */}
+          <Button
+            variant="outline-light"
+            className="border-0 d-lg-none"
+            onClick={handleToggleClick}
+            style={{
+              color: 'white',
+              borderColor: 'transparent',
+              backgroundColor: 'transparent',
+            }}
+          >
+            {isNavCollapsed ? <FaBars size={25} /> : <FaTimes size={25} />}
+          </Button>
 
-        {/* Collapsible part */}
-        <Navbar.Collapse id="navbar-nav">
-          <Nav className="me-auto">
-            <Nav.Link href="#why" className="text-light me-5">
-              Why Shop Simplify?
-            </Nav.Link>
-            <Nav.Link href="#features" className="text-light me-5">
-              Explore Features
-            </Nav.Link>
-            <Nav.Link href="#updates" className="text-light me-5">
-              Latest Updates
-            </Nav.Link>
-          </Nav>
+          {/* Collapsible part */}
+          <Navbar.Collapse id="navbar-nav">
+            <Nav className="me-auto">
+              <Nav.Link
+                href="#why"
+                className="text-light me-5"
+                onClick={handleToggleClick}
+              >
+                Why Shop Simplify?
+              </Nav.Link>
+              <Nav.Link
+                href="#features"
+                className="text-light me-5"
+                onClick={handleToggleClick}
+              >
+                Explore Features
+              </Nav.Link>
+              <Nav.Link
+                href="#updates"
+                className="text-light me-5"
+                onClick={handleToggleClick}
+              >
+                Latest Updates
+              </Nav.Link>
+            </Nav>
 
-          {/* Buttons */}
-          <div className="d-flex">
-            <Link to="/signIn">
-              <Button variant="outline-light" className="me-2">
-                Login
-              </Button>
-            </Link>
-            <Link to="/register">
-              <Button variant="outline-light" className="ms-2">
-                Register
-              </Button>
-            </Link>
-          </div>
-        </Navbar.Collapse>
-      </Container>
-    </Navbar>
+            {/* Buttons */}
+            <div className="d-flex">
+              <Link to="/signIn">
+                <Button variant="outline-light" className="me-2">
+                  Login
+                </Button>
+              </Link>
+              <Link to="/register">
+                <Button variant="outline-light" className="ms-2">
+                  Register
+                </Button>
+              </Link>
+            </div>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
+    </>
   );
 };
 

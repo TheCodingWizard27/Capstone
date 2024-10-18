@@ -21,7 +21,6 @@ $font-family-base: 'Poppins', sans-serif;
   --tertiary-accent: #0f9e48;
 
   /* Ensure no horizontal scroll */
-  overflow-x: hidden;
   margin: 0;
   padding: 0;
 }
@@ -33,10 +32,9 @@ $font-family-base: 'Poppins', sans-serif;
 
 // Apply general layout fixes
 body {
-  width: 100%;
-  overflow-x: hidden; /* Prevent horizontal scrolling */
+  width: 100vw;
+  height: 100vh;
   margin: 0;
-  padding-top: 5rem;
   font-family: 'Poppins', sans-serif; /* Set the font globally */
 }
 
