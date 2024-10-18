@@ -25,8 +25,8 @@ const NavBar = () => {
             {/* SearchBar */}
             <Col
               lg={7}
-              xs={10}
-              md={8}
+              xs={11}
+              md={9}
               className="d-flex justify-content-center"
             >
               <SearchBar />
@@ -34,9 +34,9 @@ const NavBar = () => {
 
             {/* Toggle Button for Drawer */}
             <Col
-              xs={2}
-              md={2}
-              className="d-md-none d-flex justify-content-start"
+              xs={1}
+              md={1}
+              className="d-lg-none d-flex justify-content-start"
             >
               <Button
                 variant="outline-light"
