@@ -32,13 +32,14 @@ $font-family-base: 'Poppins', sans-serif;
 }
 
 // Apply general layout fixes
-html, body {
+body {
   width: 100%;
   overflow-x: hidden; /* Prevent horizontal scrolling */
   margin: 0;
-  padding: 0;
+  padding-top: 5rem;
   font-family: 'Poppins', sans-serif; /* Set the font globally */
 }
+
 
 // Import Bootstrap styles
 @import '~bootstrap/scss/bootstrap';

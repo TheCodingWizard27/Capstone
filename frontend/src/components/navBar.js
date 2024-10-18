@@ -1,51 +1,51 @@
 import React from 'react';
-import { Navbar, Button } from 'react-bootstrap';
+import { Navbar, Button, Col, Row } from 'react-bootstrap';
 import SearchBar from './searchBar';
 import { Link } from 'react-router-dom';
-import { FaEnvelope, FaUser, FaBars } from 'react-icons/fa'; // Import icons
+import { FaEnvelope, FaUser, FaBars } from 'react-icons/fa';
 import DropDown from './dropDown';
 
 const NavBar = () => {
   return (
-    <Navbar className="d-flex justify-content-between align-items-center text-light bg-primary p-3 sticky-top">
-      {/* SearchBar - Visible on all screen sizes */}
+    <Navbar className="text-light bg-primary p-3 fixed-top">
+      <Row className="w-100 align-items-center justify-evenly">
+        {/* Toggle Button for smaller screens */}
 
-      <div className="d-none d-lg-flex">
-        <DropDown />
-      </div>
-      <div className="col-md-9 col-sm-12">
-        <SearchBar />
-      </div>
+        {/* DropDown for large screens */}
+        <Col lg={2} md={2} xs={12}>
+          <DropDown />
+        </Col>
 
-      {/* Toggle Button for smaller screens */}
-      <div className="d-md-none">
-        <Button variant="outline-light">
-          <FaBars size={25} />
-        </Button>
-      </div>
+        {/* SearchBar: Takes 70% on smaller screens */}
+        <Col lg={7} xs={10} md={8} className="d-flex justify-content-center">
+          <SearchBar />
+        </Col>
 
-      {/* Links and icons - Visible only on large screens */}
-      <div className="d-none d-lg-flex">
-        <Link
-          to="/addListing"
-          className="text-white me-3"
-          style={{ textDecoration: 'none', fontSize: '1.25rem' }}
-        >
-          Sell
-        </Link>
-      </div>
-      <div className="d-none d-lg-flex">
-        <Link
-          to="/messages"
-          className="text-white me-3"
-          style={{ textDecoration: 'none', fontSize: '1.25rem' }}
-        >
-          <FaEnvelope size={25} />
-        </Link>
-      </div>
-      <div className="d-none d-lg-flex">
-        <FaUser size={25} />
-      </div>
+        <Col xs={2} md={2} className="d-md-none d-flex justify-content-start">
+          <Button variant="outline-light">
+            <FaBars size={25} />
+          </Button>
+        </Col>
+
+        {/* Links and Icons for large screens */}
+        <Col lg={3} className="d-none d-lg-flex justify-content-evenly">
+          <Link
+            to="/addListing"
+            className="text-white me-3"
+            style={{ textDecoration: 'none', fontSize: '1.25rem' }}
+          >
+            Sell
+          </Link>
+          <Link
+            to="/messages"
+            className="text-white me-3"
+            style={{ textDecoration: 'none', fontSize: '1.25rem' }}
+          >
+            <FaEnvelope size={25} />
+          </Link>
+          <FaUser size={25} className="text-white" />
+        </Col>
+      </Row>
     </Navbar>
   );
 };

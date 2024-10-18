@@ -15,8 +15,8 @@ const LandingNavbar = () => {
   };
 
   return (
-    <Navbar expand="lg" className="text-light bg-primary p-3 sticky-top">
-      {' '}
+    <Navbar expand="lg" className="text-light bg-primary p-3 fixed-top">
+   
       {/*Expand when large */}
       {/* Brand name */}
       <Navbar.Brand className="text-light me-5" href="#home">
