@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Navbar, Nav, Button } from 'react-bootstrap';
+import { Navbar, Nav, Button, Container } from 'react-bootstrap';
 import { FaBars, FaTimes } from 'react-icons/fa'; // Import icons for bars and cross
 import { Link } from 'react-router-dom';
 
@@ -7,59 +7,66 @@ const LandingNavbar = () => {
   // State to track if the menu is expanded or collapsed
   const [isNavCollapsed, setIsNavCollapsed] = useState(true);
 
-  // Function to toggle the menu collapse state and unfocus the button
-  const handleToggleClick = (e) => {
+  // Function to toggle the menu collapse state
+  const handleToggleClick = () => {
     setIsNavCollapsed(!isNavCollapsed);
-    // Unfocus (blur) the button after it's clicked
-    e.currentTarget.blur();
   };
 
   return (
-    <Navbar expand="lg" className="text-light bg-primary p-3 fixed-top">
-   
-      {/*Expand when large */}
-      {/* Brand name */}
-      <Navbar.Brand className="text-light me-5" href="#home">
-        Shop Simplify
-      </Navbar.Brand>
-      {/* Toggle button for mobile view only*/}
-      <Navbar.Toggle
-        aria-controls="navbar-nav"
-        className="bg-light"
-        onClick={handleToggleClick} // Apply onClick here to handle blur to unfocus the toggle button on click
-      >
-        {/* Change the icon based on whether the nav is collapsed */}
-        {isNavCollapsed ? <FaBars /> : <FaTimes />}
-      </Navbar.Toggle>
-      {/* Collapsible part of Navbar for mobile view only */}
-      <Navbar.Collapse id="navbar-nav">
-        <Nav className="me-auto">
-          <Nav.Link href="#why" className="text-light me-5">
-            Why Shop Simplify?
-          </Nav.Link>
-          <Nav.Link href="#features" className="text-light me-5">
-            Explore Features
-          </Nav.Link>
-          <Nav.Link href="#updates" className="text-light me-5">
-            Latest Updates
-          </Nav.Link>
-        </Nav>
+    <Navbar
+      expand="lg"
+      className="bg-primary text-light p-3 fixed-top"
+      expanded={!isNavCollapsed} // Control expansion state
+    >
+      <Container fluid>
+        {/* Brand name */}
+        <Navbar.Brand className="text-light me-5" href="#home">
+          Shop Simplify
+        </Navbar.Brand>
 
-        {/* Buttons */}
-        <Link to="/signIn">
+        {/* Toggle button for mobile view */}
+        <Button
+          variant="outline-light"
+          className="border-0 d-lg-none"
+          onClick={handleToggleClick}
+          style={{
+            color: 'white',
+            borderColor: 'transparent',
+            backgroundColor: 'transparent',
+          }}
+        >
+          {isNavCollapsed ? <FaBars size={25} /> : <FaTimes size={25} />}
+        </Button>
 
-          <Button variant="outline-light" className="me-2">
-            Login
-          </Button>
-        </Link>
-        <Link to="/register">
-          <Button variant="outline-light" className="ms-2">
-            Register
-          </Button>
+        {/* Collapsible part */}
+        <Navbar.Collapse id="navbar-nav">
+          <Nav className="me-auto">
+            <Nav.Link href="#why" className="text-light me-5">
+              Why Shop Simplify?
+            </Nav.Link>
+            <Nav.Link href="#features" className="text-light me-5">
+              Explore Features
+            </Nav.Link>
+            <Nav.Link href="#updates" className="text-light me-5">
+              Latest Updates
+            </Nav.Link>
+          </Nav>
 
-    
-        </Link>
-      </Navbar.Collapse>
+          {/* Buttons */}
+          <div className="d-flex">
+            <Link to="/signIn">
+              <Button variant="outline-light" className="me-2">
+                Login
+              </Button>
+            </Link>
+            <Link to="/register">
+              <Button variant="outline-light" className="ms-2">
+                Register
+              </Button>
+            </Link>
+          </div>
+        </Navbar.Collapse>
+      </Container>
     </Navbar>
   );
 };

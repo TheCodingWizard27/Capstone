@@ -1,0 +1,37 @@
+/* Custom drawer styles */
+.custom-drawer {
+  position: fixed;
+  top: 0;
+  right: -80%; /* Initially hidden off-screen */
+  height: 100%;
+  width: 80%; /* Covers half of the screen */
+  background-color: #005d8d; /* Primary background color */
+  transition: right 0.3s ease-in-out;
+  z-index: 1050; /* Ensure it appears above other elements */
+  overflow-y: auto;
+}
+
+/* Drawer open state */
+.custom-drawer.open {
+  right: 0; /* Slide into view */
+}
+
+/* Drawer header styling */
+.drawer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #0d6efd;
+  padding: 15px;
+}
+
+/* Overlay to close the drawer */
+.drawer-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1049; /* Below the drawer */
+}
