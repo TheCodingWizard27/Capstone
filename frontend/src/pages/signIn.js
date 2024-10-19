@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { Container, Row, Col, Form, Button, Card } from 'react-bootstrap';
 import { FaGoogle } from 'react-icons/fa';
-import { Navigate, Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { doSignInWithEmailAndPassword, doSignInWithGoogle } from '../Firebase/auth';
 import { useAuth } from '../contexts/authContext';
 
 const SignIn = () => {
   const { userLoggedIn } = useAuth();
+  const navigate = useNavigate();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -16,7 +17,7 @@ const SignIn = () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    setErrorMessage('');  // Clear previous errors
+    setErrorMessage('');
     if (!isSigningIn) {
       setIsSigningIn(true);
       try {
@@ -30,7 +31,7 @@ const SignIn = () => {
 
   const onGoogleSignIn = async (e) => {
     e.preventDefault();
-    setErrorMessage('');  // Clear previous errors
+    setErrorMessage('');
     if (!isSigningIn) {
       setIsSigningIn(true);
       try {
@@ -42,8 +43,12 @@ const SignIn = () => {
     }
   };
 
+  const handleReset = () => {
+    navigate('/forgotPassword');
+  };
+
   if (userLoggedIn) {
-    return <Navigate to={'/home'} replace={true} />;
+    navigate('/home');
   }
 
   return (
@@ -94,10 +99,15 @@ const SignIn = () => {
                   />
                 </Form.Group>
 
+                {/* Forgot Password */}
+                <div className="mt-3">
+                  <p>Forgot Password? Click <span style={{cursor: 'pointer', color: 'blue'}} onClick={handleReset}><b>here</b></span> to Reset</p>
+                </div>
+
                 {/* Sign In button */}
                 <Button
                   variant="primary"
-                  className="w-100 py-3 mb-3"
+                  className="w-100 py-3 mb-3 mt-3"
                   type="submit"
                   size="lg"
                   disabled={isSigningIn}

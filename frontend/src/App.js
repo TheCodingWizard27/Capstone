@@ -9,6 +9,7 @@ import AddListing from './pages/addListing';
 import NotFound from './pages/404';
 import Home from './pages/home';
 import Category from './pages/category';
+import ForgotPassword from './pages/forgotPassword';
 
 function App() {
   const { userLoggedIn } = useAuth(); // Access userLoggedIn from context
@@ -20,6 +21,7 @@ function App() {
           {/* Authentication routes */}
           <Route path="/signIn" element={!userLoggedIn ? <SignIn /> : <Navigate to="/home" />} />
           <Route path="/register" element={!userLoggedIn ? <Register /> : <Navigate to="/home" />} />
+          <Route path="/forgotPassword" element={!userLoggedIn ? <ForgotPassword /> : <Navigate to="/home" />} />
           <Route path="/" element={!userLoggedIn ? <LandingPage /> : <Navigate to="/home" />} />
 
           {/* Protected routes */}
