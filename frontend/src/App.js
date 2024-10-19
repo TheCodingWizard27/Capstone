@@ -17,12 +17,13 @@ function App() {
     <div className="App">
       <Router>
         <Routes>
-          {/* Define the default route for LandingPage */}
-          <Route
+          Define the default route for LandingPage
+          {/* <Route
             path="/"
             excat
             element={!isAuthenticated ? <LandingPage /> : <Home />}
-          />
+          /> */}
+          <Route path="/home" element={<Home />} />
           <Route path="/signIn" element={<SignIn />} />
           <Route path="/register" element={<Register />} />
           <Route path="/addListing" element={<AddListing />} />
