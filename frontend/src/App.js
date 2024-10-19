@@ -1,35 +1,34 @@
 import './theme.scss';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'; // Import react-router-dom
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { useAuth } from './contexts/authContext/index'; // Import the useAuth hook
 
-import LandingPage from './pages/landingPage'; // Import LandingPage
-
+import LandingPage from './pages/landingPage';
 import SignIn from './pages/signIn';
 import Register from './pages/register';
 import AddListing from './pages/addListing';
 import NotFound from './pages/404';
 import Home from './pages/home';
 import Category from './pages/category';
-import { useState } from 'react';
 
 function App() {
-  const [isAuthenticated, setAuthenticated] = useState(false);
+  const { userLoggedIn } = useAuth(); // Access userLoggedIn from context
+
   return (
     <div className="App">
       <Router>
         <Routes>
-          Define the default route for LandingPage
-          {/* <Route
-            path="/"
-            excat
-            element={!isAuthenticated ? <LandingPage /> : <Home />}
-          /> */}
-          <Route path="/home" element={<Home />} />
-          <Route path="/signIn" element={<SignIn />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/addListing" element={<AddListing />} />
-          <Route path="/category" element={<Category />} />
+          {/* Authentication routes */}
+          <Route path="/signIn" element={!userLoggedIn ? <SignIn /> : <Navigate to="/home" />} />
+          <Route path="/register" element={!userLoggedIn ? <Register /> : <Navigate to="/home" />} />
+          <Route path="/" element={!userLoggedIn ? <LandingPage /> : <Navigate to="/home" />} />
+
+          {/* Protected routes */}
+          <Route path="/home" element={userLoggedIn ? <Home /> : <Navigate to="/signIn" />} />
+          <Route path="/addListing" element={userLoggedIn ? <AddListing /> : <Navigate to="/signIn" />} />
+          <Route path="/category" element={userLoggedIn ? <Category /> : <Navigate to="/signIn" />} />
+
+          {/* 404 Not Found route */}
           <Route path="*" element={<NotFound />} />
-          {/* You can add more routes here as needed */}
         </Routes>
       </Router>
     </div>

@@ -1,83 +1,58 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Container, Row, Col, Form, Button, Card } from 'react-bootstrap';
 import { FaGoogle } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import { Navigate, Link, useNavigate } from 'react-router-dom';
+
+import { doSignInWithEmailAndPassword, doSignInWithGoogle } from '../Firebase/auth';
+import { useAuth } from '../contexts/authContext';
 
 const SignIn = () => {
-  const SignInForm = () => {
-    return (
-      <Form className="w-100">
-        {/* Email field */}
-        <Form.Group controlId="formEmail" className="mb-4">
-          <Form.Label>
-            <h3>Email</h3>
-          </Form.Label>
-          <Form.Control size="md" type="email" placeholder="Enter your Email" />
-        </Form.Group>
+  const { userLoggedIn } = useAuth();
 
-        {/* Password field */}
-        <Form.Group controlId="formPassword" className="mb-4">
-          <Form.Label>
-            <h3>Password</h3>
-          </Form.Label>
-          <Form.Control
-            size="md"
-            type="password"
-            placeholder="Enter your Password"
-          />
-        </Form.Group>
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [isSigningIn, setIsSigningIn] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
-        {/* Sign In button */}
-        <Button
-          variant="primary"
-          className="w-100 py-3 mb-3"
-          type="submit"
-          size="lg"
-        >
-          Sign in
-        </Button>
-
-        {/* Sign In with Google button */}
-        <Button
-          variant="outline-secondary"
-          className="w-100 mt-3 py-3 d-flex align-items-center justify-content-center"
-          size="lg"
-        >
-          <FaGoogle className="me-3" /> {/* Google Icon */}
-          Google
-        </Button>
-
-        {/* OR separator */}
-        <div className="text-center mt-4 mb-2">
-          <span className="text-muted">- OR -</span>
-        </div>
-
-        {/* Don't have an account text */}
-        <div className="text-center mt-3">
-          <p>Don't have an account yet?</p>
-        </div>
-
-        {/* Register button wrapped in Link */}
-        <Link to="/register" className="w-100">
-          <Button variant="dark" className="w-100 py-3 mt-2" size="lg">
-            Register
-          </Button>
-        </Link>
-      </Form>
-    );
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    setErrorMessage('');  // Clear previous errors
+    if (!isSigningIn) {
+      setIsSigningIn(true);
+      try {
+        await doSignInWithEmailAndPassword(email, password);
+      } catch (error) {
+        setErrorMessage(error.message);
+      }
+      setIsSigningIn(false);
+    }
   };
+
+  const onGoogleSignIn = async (e) => {
+    e.preventDefault();
+    setErrorMessage('');  // Clear previous errors
+    if (!isSigningIn) {
+      setIsSigningIn(true);
+      try {
+        await doSignInWithGoogle();
+      } catch (error) {
+        setErrorMessage(error.message);
+        setIsSigningIn(false);
+      }
+    }
+  };
+
+  if (userLoggedIn) {
+    return <Navigate to={'/home'} replace={true} />;
+  }
+
   return (
     <Container
       fluid
       className="vh-auto d-flex align-items-center justify-content-center mb-5 mt-5"
-      style={{
-        width: '100%',
-      }}
+      style={{ width: '100%' }}
     >
       <Row className="w-100">
-        {/* Left side with large logo */}
-
-        {/* Sign-in form on the right side */}
         <Col className="d-flex align-items-center justify-content-center h-auto">
           <Card
             style={{ width: '100%', maxWidth: '1000px' }}
@@ -85,7 +60,80 @@ const SignIn = () => {
           >
             <Card.Body className="d-flex flex-column justify-content-center">
               <h2 className="text-center mb-4">Sign In</h2>
-              <SignInForm />
+              {errorMessage && (
+                <div className="alert alert-danger text-center">{errorMessage}</div>
+              )}
+              <Form className="w-100" onSubmit={onSubmit}>
+                {/* Email field */}
+                <Form.Group controlId="formEmail" className="mb-4">
+                  <Form.Label>
+                    <h3>Email</h3>
+                  </Form.Label>
+                  <Form.Control
+                    size="md"
+                    type="email"
+                    placeholder="Enter your Email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    disabled={isSigningIn}
+                  />
+                </Form.Group>
+
+                {/* Password field */}
+                <Form.Group controlId="formPassword" className="mb-4">
+                  <Form.Label>
+                    <h3>Password</h3>
+                  </Form.Label>
+                  <Form.Control
+                    size="md"
+                    type="password"
+                    placeholder="Enter your Password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    disabled={isSigningIn}
+                  />
+                </Form.Group>
+
+                {/* Sign In button */}
+                <Button
+                  variant="primary"
+                  className="w-100 py-3 mb-3"
+                  type="submit"
+                  size="lg"
+                  disabled={isSigningIn}
+                >
+                  Sign in
+                </Button>
+
+                {/* Sign In with Google button */}
+                <Button
+                  variant="outline-secondary"
+                  className="w-100 mt-3 py-3 d-flex align-items-center justify-content-center"
+                  size="lg"
+                  onClick={onGoogleSignIn}
+                  disabled={isSigningIn}
+                >
+                  <FaGoogle className="me-3" /> {/* Google Icon */}
+                  Google
+                </Button>
+
+                {/* OR separator */}
+                <div className="text-center mt-4 mb-2">
+                  <span className="text-muted">- OR -</span>
+                </div>
+
+                {/* Don't have an account text */}
+                <div className="text-center mt-3">
+                  <p>Don't have an account yet?</p>
+                </div>
+
+                {/* Register button wrapped in Link */}
+                <Link to="/register" className="w-100">
+                  <Button variant="dark" className="w-100 py-3 mt-2" size="lg">
+                    Register
+                  </Button>
+                </Link>
+              </Form>
             </Card.Body>
           </Card>
         </Col>
