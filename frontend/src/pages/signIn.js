@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Container, Row, Col, Form, Button, Card } from 'react-bootstrap';
-import { FaGoogle } from 'react-icons/fa';
+import { FaGoogle } from 'react-icons/fa'; // Import only Google icon now
 import { Link, useNavigate } from 'react-router-dom';
 
 import { doSignInWithEmailAndPassword, doSignInWithGoogle } from '../Firebase/auth';
@@ -14,6 +14,9 @@ const SignIn = () => {
   const [password, setPassword] = useState('');
   const [isSigningIn, setIsSigningIn] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  
+  // State to toggle password visibility
+  const [showPassword, setShowPassword] = useState(false);
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -91,11 +94,21 @@ const SignIn = () => {
                   </Form.Label>
                   <Form.Control
                     size="md"
-                    type="password"
+                    type={showPassword ? 'text' : 'password'}  // Toggle between 'text' and 'password' type
                     placeholder="Enter your Password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     disabled={isSigningIn}
+                  />
+                </Form.Group>
+
+                {/* Checkbox for Show/Hide Password */}
+                <Form.Group controlId="formBasicCheckbox" className="mb-4">
+                  <Form.Check 
+                    type="checkbox" 
+                    label={showPassword ? 'Hide Password' : 'Show Password'} 
+                    checked={showPassword}
+                    onChange={(e) => setShowPassword(e.target.checked)}  // Toggle showPassword state
                   />
                 </Form.Group>
 

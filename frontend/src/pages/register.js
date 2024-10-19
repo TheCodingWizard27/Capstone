@@ -15,6 +15,9 @@ const Register = () => {
   const [isRegistering, setIsRegistering] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
+  // State to toggle password visibility for both password fields
+  const [showPassword, setShowPassword] = useState(false);
+
   // Redirect if user is already logged in
   if (userLoggedIn) {
     return <Navigate to={'/home'} replace={true} />;
@@ -103,7 +106,7 @@ const Register = () => {
                   </Form.Label>
                   <Form.Control
                     size="md"
-                    type="password"
+                    type={showPassword ? 'text' : 'password'}  // Toggle between 'text' and 'password' type
                     placeholder="Enter your Password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
@@ -118,11 +121,21 @@ const Register = () => {
                   </Form.Label>
                   <Form.Control
                     size="md"
-                    type="password"
+                    type={showPassword ? 'text' : 'password'}  // Toggle between 'text' and 'password' type
                     placeholder="Re-enter your Password"
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     disabled={isRegistering}
+                  />
+                </Form.Group>
+
+                {/* Checkbox for Show/Hide Password */}
+                <Form.Group controlId="formBasicCheckbox" className="mb-4">
+                  <Form.Check 
+                    type="checkbox" 
+                    label={showPassword ? 'Hide Password' : 'Show Password'} 
+                    checked={showPassword}
+                    onChange={(e) => setShowPassword(e.target.checked)}  // Toggle showPassword state
                   />
                 </Form.Group>
 
