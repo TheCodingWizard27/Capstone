@@ -17,6 +17,8 @@ function ForgotPassword() {
     setErrorMessage('');
     setIsSigningIn(true);
 
+    
+
     try {
       await sendPasswordResetEmail(auth, email);
       setEmailSent(true);

@@ -3,7 +3,11 @@ import { Container, Row, Col, Form, Button, Card } from 'react-bootstrap';
 import { FaGoogle } from 'react-icons/fa'; // Import only Google icon now
 import { Link, useNavigate } from 'react-router-dom';
 
-import { doSignInWithEmailAndPassword, doSignInWithGoogle } from '../Firebase/auth';
+import {
+  doSignInWithEmailAndPassword,
+  doSignInWithGoogle,
+  checkGoogleLogin,
+} from '../Firebase/auth';
 import { useAuth } from '../contexts/authContext';
 
 const SignIn = () => {
@@ -14,7 +18,7 @@ const SignIn = () => {
   const [password, setPassword] = useState('');
   const [isSigningIn, setIsSigningIn] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  
+
   // State to toggle password visibility
   const [showPassword, setShowPassword] = useState(false);
 
@@ -23,6 +27,7 @@ const SignIn = () => {
     setErrorMessage('');
     if (!isSigningIn) {
       setIsSigningIn(true);
+
       try {
         await doSignInWithEmailAndPassword(email, password);
       } catch (error) {
@@ -31,7 +36,7 @@ const SignIn = () => {
       setIsSigningIn(false);
     }
   };
-
+  
   const onGoogleSignIn = async (e) => {
     e.preventDefault();
     setErrorMessage('');
@@ -69,7 +74,9 @@ const SignIn = () => {
             <Card.Body className="d-flex flex-column justify-content-center">
               <h2 className="text-center mb-4">Sign In</h2>
               {errorMessage && (
-                <div className="alert alert-danger text-center">{errorMessage}</div>
+                <div className="alert alert-danger text-center">
+                  {errorMessage}
+                </div>
               )}
               <Form className="w-100" onSubmit={onSubmit}>
                 {/* Email field */}
@@ -94,7 +101,7 @@ const SignIn = () => {
                   </Form.Label>
                   <Form.Control
                     size="md"
-                    type={showPassword ? 'text' : 'password'}  // Toggle between 'text' and 'password' type
+                    type={showPassword ? 'text' : 'password'} // Toggle between 'text' and 'password' type
                     placeholder="Enter your Password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
@@ -104,17 +111,26 @@ const SignIn = () => {
 
                 {/* Checkbox for Show/Hide Password */}
                 <Form.Group controlId="formBasicCheckbox" className="mb-4">
-                  <Form.Check 
-                    type="checkbox" 
-                    label={showPassword ? 'Hide Password' : 'Show Password'} 
+                  <Form.Check
+                    type="checkbox"
+                    label={showPassword ? 'Hide Password' : 'Show Password'}
                     checked={showPassword}
-                    onChange={(e) => setShowPassword(e.target.checked)}  // Toggle showPassword state
+                    onChange={(e) => setShowPassword(e.target.checked)} // Toggle showPassword state
                   />
                 </Form.Group>
 
                 {/* Forgot Password */}
                 <div className="mt-3">
-                  <p>Forgot Password? Click <span style={{cursor: 'pointer', color: 'blue'}} onClick={handleReset}><b>here</b></span> to Reset</p>
+                  <p>
+                    Forgot Password? Click{' '}
+                    <span
+                      style={{ cursor: 'pointer', color: 'blue' }}
+                      onClick={handleReset}
+                    >
+                      <b>here</b>
+                    </span>{' '}
+                    to Reset
+                  </p>
                 </div>
 
                 {/* Sign In button */}
