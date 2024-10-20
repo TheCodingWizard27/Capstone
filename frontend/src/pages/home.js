@@ -107,8 +107,8 @@ const Home = () => {
   return (
     <>
       <NavBar />
-      <Container className="g-5 mt-5">
-        <Row className="g-5 mt-4">
+      <Container className="mt-5 mb-5">
+        <Row className="g-5">
           {categories.map((category) => (
             <Col xs={12} md={6} lg={4} key={category.name}>
               <CategoryCard

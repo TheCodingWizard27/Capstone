@@ -16,7 +16,7 @@ const NavBar = () => {
       {/* Navbar */}
       <Navbar
         className="text-light bg-primary p-3 position-sticky top-0"
-        style={{ zIndex: 1 }}
+        style={{ zIndex: 1000 }}
       >
         <Container fluid>
           <Row className="w-100 align-items-center justify-evenly">

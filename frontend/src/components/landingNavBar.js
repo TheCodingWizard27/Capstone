@@ -17,7 +17,7 @@ const LandingNavbar = () => {
       <Navbar
         expand="lg"
         className="bg-primary text-light p-3 position-sticky top-0"
-        style={{ zIndex: 1 }}
+        style={{ zIndex: 1000 }}
         expanded={!isNavCollapsed} // Control expansion state
       >
         <Container fluid>
