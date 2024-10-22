@@ -155,13 +155,13 @@ const GetStarted = () => {
   // Button for Get Started
   return (
     <>
-      <Link to="/register">
+      <Link to="/home">
         <Button
           style={{ color: 'white' }}
           className="mx-2  btn btn-primary custom-btn"
           variant="outline-dark"
         >
-          Get Started
+          See Listings
         </Button>
       </Link>
     </>
