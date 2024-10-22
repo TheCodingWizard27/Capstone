@@ -158,7 +158,7 @@ const GetStarted = () => {
       <Link to="/home">
         <Button
           style={{ color: 'white' }}
-          className="mx-2  btn btn-primary custom-btn"
+          className="mx-2  btn btn-primary custom-btn mt-4"
           variant="outline-dark"
         >
           See Listings
