@@ -1,25 +1,7 @@
-Folder structure: 
-
-backend/
-|-- cmd/                   # Main applications for the project
-|   |-- main.go            # Main entry point of the application
-|
-|-- internal/              # Private application and library code
-|   |-- handlers/          # HTTP handlers
-|       |-- user_handler.go
-|       |-- product_handler.go
-|   |-- services/          # Business logic for the app
-|       |-- user_service.go
-|   |-- db/                # Database connection and logic
-|       |-- db.go
-|   |-- models/            # Data structures and models
-|       |-- user.go
-|   |-- middlewares/       # Middlewares
-|       |--auth_middleware.go
-|       |--file_processing_middleware.go
-|
-|-- pkg/                   # Public library code
-|   |-- utils/             # Utility functions
-|
-|-- go.mod                 # Module definition
-|-- go.sum 
+Controllers- contains database logic
+Db- contains database connection logic
+Middlewares-contains plugins for services like authentication, file processsing
+Routes- contains routes mapping to controller functions
+main.go - main entry point
+go.mod- info about modules imported
+go.sum- info about modules imported
