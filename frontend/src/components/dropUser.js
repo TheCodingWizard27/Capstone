@@ -22,7 +22,7 @@ const DropUser = () => {
     signOut(auth).then(() => {
       console.log('Sign-out successful.');
       // Redirect to login page or any other page after logout
-      window.location.href = '/login'; 
+      window.location.href = '/signIn'; 
     }).catch((error) => {
       console.error('An error happened during sign out:', error);
     });
