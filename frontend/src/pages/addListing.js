@@ -1,5 +1,12 @@
 import React, { useState } from 'react';
-import { Container, Form, Button, Card, ProgressBar, Alert } from 'react-bootstrap';
+import {
+  Container,
+  Form,
+  Button,
+  Card,
+  ProgressBar,
+  Alert,
+} from 'react-bootstrap';
 import { FaTimes } from 'react-icons/fa';
 import NavBar from '../components/navBar';
 
