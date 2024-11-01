@@ -36,7 +36,14 @@ const Register = () => {
         if (password !== confirmPassword) {
           throw new Error('Passwords do not match');
         }
-        await doCreateUserWithEmailAndPassword(email, password);
+
+        const response = await doCreateUserWithEmailAndPassword(
+          email,
+          password
+        );
+
+        console.log(response.user.email);
+        console.log(response.user.uid)
         navigate('/home');
       } catch (error) {
         setErrorMessage(error.message);
