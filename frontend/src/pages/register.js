@@ -72,7 +72,7 @@ const Register = () => {
     <Container
       fluid
       className="vh-auto d-flex align-items-center justify-content-center mb-5 mt-5"
-      style={{ width: '100%' }}
+      style={{ width: '100%', backgroundColor: "#005d8d"}}
     >
       <Row style={{ minWidth: '40%' }}>
         <Col className="d-flex align-items-center justify-content-center h-auto">
