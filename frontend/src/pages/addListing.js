@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Container, Form, Button, Card, ProgressBar } from 'react-bootstrap';
+import { Container, Form, Button, Card, ProgressBar, Alert } from 'react-bootstrap';
 import { FaTimes } from 'react-icons/fa';
 import NavBar from '../components/navBar';
 
@@ -13,6 +13,7 @@ const AddListing = () => {
     brand: '',
     category: '',
   });
+  const [errors, setErrors] = useState({}); // Track errors for required fields
 
   // Handle file selection
   const handleFileChange = (e) => {
@@ -34,6 +35,7 @@ const AddListing = () => {
   const handleInputChange = (e) => {
     const { id, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [id]: value }));
+    setErrors((prevErrors) => ({ ...prevErrors, [id]: '' })); // Clear error if any
   };
 
   // Handle description change with word limit
@@ -46,8 +48,21 @@ const AddListing = () => {
     }
   };
 
-  // Navigate to next step
-  const nextStep = () => setStep((prevStep) => prevStep + 1);
+  // Validate required fields
+  const validateFields = () => {
+    const newErrors = {};
+    if (!formData.listing) newErrors.listing = 'Listing is required';
+    if (!formData.brand) newErrors.brand = 'Brand is required';
+    if (!formData.category) newErrors.category = 'Category is required';
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0; // Return true if no errors
+  };
+
+  // Navigate to next step with validation
+  const nextStep = () => {
+    if (step === 1 && !validateFields()) return; // Check validation only on step 1
+    setStep((prevStep) => prevStep + 1);
+  };
 
   // Navigate to previous step
   const prevStep = () => setStep((prevStep) => prevStep - 1);
@@ -82,7 +97,11 @@ const AddListing = () => {
                     placeholder="Tell us what you're selling"
                     value={formData.listing}
                     onChange={handleInputChange}
+                    isInvalid={!!errors.listing}
                   />
+                  <Form.Control.Feedback type="invalid">
+                    {errors.listing}
+                  </Form.Control.Feedback>
                 </Form.Group>
 
                 <Form.Group controlId="brand" className="mb-3">
@@ -95,7 +114,11 @@ const AddListing = () => {
                     placeholder="Tell us the brand"
                     value={formData.brand}
                     onChange={handleInputChange}
+                    isInvalid={!!errors.brand}
                   />
+                  <Form.Control.Feedback type="invalid">
+                    {errors.brand}
+                  </Form.Control.Feedback>
                 </Form.Group>
 
                 <Form.Group controlId="category" className="mb-3">
@@ -108,7 +131,11 @@ const AddListing = () => {
                     placeholder="Tell us the category"
                     value={formData.category}
                     onChange={handleInputChange}
+                    isInvalid={!!errors.category}
                   />
+                  <Form.Control.Feedback type="invalid">
+                    {errors.category}
+                  </Form.Control.Feedback>
                 </Form.Group>
 
                 <Button variant="primary" className="mt-3" onClick={nextStep}>

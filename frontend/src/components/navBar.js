@@ -4,6 +4,7 @@ import SearchBar from './searchBar';
 import { Link } from 'react-router-dom';
 import { FaEnvelope, FaUser, FaBars, FaTimes } from 'react-icons/fa';
 import DropDown from './dropDown';
+import DropUser from './dropUser';
 import './NavBar.css'; // Importing custom CSS
 
 const NavBar = () => {
@@ -74,7 +75,7 @@ const NavBar = () => {
               >
                 <FaEnvelope size={25} />
               </Link>
-              <FaUser size={25} className="text-white" />
+              <DropUser /> {/* Replace the FaUser icon with DropUser */}
             </Col>
           </Row>
         </Container>
@@ -111,12 +112,7 @@ const NavBar = () => {
           >
             Messages
           </Link>
-          <div
-            className="d-flex align-items-center text-light"
-            style={{ fontSize: '1.25rem' }}
-          >
-            Profile
-          </div>
+          <DropUser /> {/* Replace "Profile" with DropUser component */}
         </div>
       </div>
 
