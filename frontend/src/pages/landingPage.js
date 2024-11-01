@@ -58,9 +58,9 @@ const WhyShop = () => {
       >
         <a id="why"> Why should you use ShopSimplify?</a>
       </h1>
-      <br></br>
+      <br />
       <div className="container my-5">
-        <div className="row g-4">
+        <div className="row g-5"> {/* Adjusted gap from g-4 to g-5 for more spacing */}
           {/* Left Column */}
           <div
             className="col-md-6 p-4"
@@ -115,6 +115,7 @@ const WhyShop = () => {
     </>
   );
 };
+
 
 const ExploreFeature = () => {
   //! Under Construction
