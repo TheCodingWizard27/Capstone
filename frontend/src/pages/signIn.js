@@ -57,12 +57,13 @@ const SignIn = () => {
   if (userLoggedIn) {
     navigate('/home');
   }
+  
 
   return (
     <Container
       fluid
       className="vh-auto d-flex align-items-center justify-content-center mb-5 mt-5"
-      style={{ width: '100%' }}
+      style={{ width: '100%', backgroundColor: "#005d8d"}}
     >
       <Row style={{ minWidth: '40%' }}>
         <Col className="d-flex align-items-center justify-content-center h-auto">
@@ -123,7 +124,7 @@ const SignIn = () => {
                   <p>
                     Forgot Password? Click{' '}
                     <span
-                      style={{ cursor: 'pointer', color: 'blue' }}
+                      style={{ cursor: 'pointer', color: '#005d8d' }}
                       onClick={handleReset}
                     >
                       <b>here</b>
