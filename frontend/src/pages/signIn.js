@@ -67,7 +67,7 @@ const SignIn = () => {
       <Row style={{ minWidth: '40%' }}>
         <Col className="d-flex align-items-center justify-content-center h-auto">
           <Card
-            style={{ width: '100%', maxWidth: '1000px' }}
+            style={{ width: '100%', minWidth: '300px', maxWidth: '1000px' }}
             className="p-3 shadow-lg h-100"
           >
             <Card.Body className="d-flex flex-column justify-content-center">

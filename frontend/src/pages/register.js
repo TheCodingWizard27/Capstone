@@ -14,21 +14,21 @@ const Register = () => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState(''); // Corrected naming
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [isRegistering, setIsRegistering] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
-  // State to toggle password visibility for both password fields
+  // State to toggle password visibility
   const [showPassword, setShowPassword] = useState(false);
 
   // Redirect if user is already logged in
   if (userLoggedIn) {
-    return <Navigate to={'/home'} replace={true} />;
+    return <Navigate to="/home" replace={true} />;
   }
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    setErrorMessage(''); // Clear any previous error messages
+    setErrorMessage('');
 
     if (!isRegistering) {
       setIsRegistering(true);
@@ -40,7 +40,7 @@ const Register = () => {
         navigate('/home');
       } catch (error) {
         setErrorMessage(error.message);
-        setIsRegistering(false); // Reset the registering state on error
+        setIsRegistering(false);
       }
     }
   };
@@ -64,13 +64,13 @@ const Register = () => {
   return (
     <Container
       fluid
-      className="d-flex align-items-center justify-content-center mb-5 mt-5"
+      className="vh-auto d-flex align-items-center justify-content-center mb-5 mt-5"
       style={{ width: '100%' }}
     >
       <Row style={{ minWidth: '40%' }}>
-        <Col className="d-md-flex align-items-center justify-content-center h-auto">
+        <Col className="d-flex align-items-center justify-content-center h-auto">
           <Card
-            style={{ width: '100%', maxWidth: '1000px' }}
+            style={{ width: '100%', minWidth: '300px', maxWidth: '1000px' }}
             className="p-3 shadow-lg h-100"
           >
             <Card.Body className="d-flex flex-column justify-content-center">
@@ -80,7 +80,7 @@ const Register = () => {
                   {errorMessage}
                 </div>
               )}
-              <Form onSubmit={onSubmit}>
+              <Form className="w-100" onSubmit={onSubmit}>
                 {/* Email field */}
                 <Form.Group controlId="formEmail" className="mb-4">
                   <Form.Label>
@@ -92,7 +92,7 @@ const Register = () => {
                     placeholder="Enter your Email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    disabled={isRegistering} // Disable during registration
+                    disabled={isRegistering}
                   />
                 </Form.Group>
 
@@ -103,7 +103,7 @@ const Register = () => {
                   </Form.Label>
                   <Form.Control
                     size="md"
-                    type={showPassword ? 'text' : 'password'} // Toggle between 'text' and 'password' type
+                    type={showPassword ? 'text' : 'password'}
                     placeholder="Enter your Password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
@@ -118,7 +118,7 @@ const Register = () => {
                   </Form.Label>
                   <Form.Control
                     size="md"
-                    type={showPassword ? 'text' : 'password'} // Toggle between 'text' and 'password' type
+                    type={showPassword ? 'text' : 'password'}
                     placeholder="Re-enter your Password"
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
@@ -132,7 +132,7 @@ const Register = () => {
                     type="checkbox"
                     label={showPassword ? 'Hide Password' : 'Show Password'}
                     checked={showPassword}
-                    onChange={(e) => setShowPassword(e.target.checked)} // Toggle showPassword state
+                    onChange={(e) => setShowPassword(e.target.checked)}
                   />
                 </Form.Group>
 
