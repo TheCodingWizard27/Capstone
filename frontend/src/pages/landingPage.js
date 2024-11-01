@@ -139,7 +139,7 @@ const AboutUS = () => {
         <a id="updates">About Us</a>
       </h1>
       <p className="text-center" justify-content-center>
-        Team of four.
+        <h5>Team of four:</h5>
         <ul className="list-unstyled">
           <li> Aavash Neupane</li>
           <li> Raunak Upreti</li>
@@ -161,7 +161,7 @@ const GetStarted = () => {
           className="mx-2  btn btn-primary custom-btn mt-4"
           variant="outline-dark"
         >
-          See Listings
+          Our Listings
         </Button>
       </Link>
     </>

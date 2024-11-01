@@ -1,0 +1,7 @@
+Controllers- contains database logic
+Db- contains database connection logic
+Middlewares-contains plugins for services like authentication, file processsing
+Routes- contains routes mapping to controller functions
+main.go - main entry point
+go.mod- info about modules imported
+go.sum- info about modules imported
