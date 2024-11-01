@@ -6,7 +6,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import {
   doSignInWithEmailAndPassword,
   doSignInWithGoogle,
-  checkGoogleLogin,
 } from '../Firebase/auth';
 import { useAuth } from '../contexts/authContext';
 
@@ -36,7 +35,7 @@ const SignIn = () => {
       setIsSigningIn(false);
     }
   };
-  
+
   const onGoogleSignIn = async (e) => {
     e.preventDefault();
     setErrorMessage('');
@@ -65,14 +64,14 @@ const SignIn = () => {
       className="vh-auto d-flex align-items-center justify-content-center mb-5 mt-5"
       style={{ width: '100%' }}
     >
-      <Row className="w-100">
+      <Row style={{ minWidth: '40%' }}>
         <Col className="d-flex align-items-center justify-content-center h-auto">
           <Card
             style={{ width: '100%', maxWidth: '1000px' }}
             className="p-3 shadow-lg h-100"
           >
             <Card.Body className="d-flex flex-column justify-content-center">
-              <h2 className="text-center mb-4">Sign In</h2>
+              <h5 className="text-center mb-4">Sign In</h5>
               {errorMessage && (
                 <div className="alert alert-danger text-center">
                   {errorMessage}
@@ -82,7 +81,7 @@ const SignIn = () => {
                 {/* Email field */}
                 <Form.Group controlId="formEmail" className="mb-4">
                   <Form.Label>
-                    <h3>Email</h3>
+                    <h6>Email</h6>
                   </Form.Label>
                   <Form.Control
                     size="md"
@@ -97,7 +96,7 @@ const SignIn = () => {
                 {/* Password field */}
                 <Form.Group controlId="formPassword" className="mb-4">
                   <Form.Label>
-                    <h3>Password</h3>
+                    <h6>Password</h6>
                   </Form.Label>
                   <Form.Control
                     size="md"
@@ -138,7 +137,7 @@ const SignIn = () => {
                   variant="primary"
                   className="w-100 py-3 mb-3 mt-3"
                   type="submit"
-                  size="lg"
+                  size="sm"
                   disabled={isSigningIn}
                 >
                   Sign in
@@ -148,7 +147,7 @@ const SignIn = () => {
                 <Button
                   variant="outline-secondary"
                   className="w-100 mt-3 py-3 d-flex align-items-center justify-content-center"
-                  size="lg"
+                  size="sm"
                   onClick={onGoogleSignIn}
                   disabled={isSigningIn}
                 >
@@ -168,7 +167,7 @@ const SignIn = () => {
 
                 {/* Register button wrapped in Link */}
                 <Link to="/register" className="w-100">
-                  <Button variant="dark" className="w-100 py-3 mt-2" size="lg">
+                  <Button variant="dark" className="w-100 py-3 mt-2" size="sm">
                     Register
                   </Button>
                 </Link>
