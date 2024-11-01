@@ -1,12 +1,18 @@
 import React, { useState } from 'react';
-import { Container, Form, Button, Card } from 'react-bootstrap';
+import { Container, Form, Button, Card, ProgressBar } from 'react-bootstrap';
 import { FaTimes } from 'react-icons/fa';
 import NavBar from '../components/navBar';
 
 const AddListing = () => {
+  const [step, setStep] = useState(1); // Track current step
   const [files, setFiles] = useState([]);
   const [description, setDescription] = useState('');
   const [wordCount, setWordCount] = useState(0);
+  const [formData, setFormData] = useState({
+    listing: '',
+    brand: '',
+    category: '',
+  });
 
   // Handle file selection
   const handleFileChange = (e) => {
@@ -24,145 +30,196 @@ const AddListing = () => {
     setFiles(newFiles);
   };
 
+  // Handle input change
+  const handleInputChange = (e) => {
+    const { id, value } = e.target;
+    setFormData((prevData) => ({ ...prevData, [id]: value }));
+  };
+
   // Handle description change with word limit
   const handleDescriptionChange = (e) => {
     const text = e.target.value;
-    const words = text.trim().split(/\s+/).filter(Boolean); // Split text into words
+    const words = text.trim().split(/\s+/).filter(Boolean);
     if (words.length <= 250) {
-      setDescription(text); // Update description if under word limit
-      setWordCount(words.length); // Update word count
+      setDescription(text);
+      setWordCount(words.length);
     }
   };
+
+  // Navigate to next step
+  const nextStep = () => setStep((prevStep) => prevStep + 1);
+
+  // Navigate to previous step
+  const prevStep = () => setStep((prevStep) => prevStep - 1);
 
   return (
     <>
       <NavBar />
-      <Container fluid className="h-auto mt-5 mb-5">
-        <Card style={{ width: '100%' }} className="p-4 shadow-lg h-1000">
-          <Form className="flex-grow-1">
-            {/* Start your listing field */}
-            <Form.Group controlId="formListing" className="mb-3">
-              <Form.Label>
-                <h3>Start your Listing</h3>
-              </Form.Label>
-              <Form.Control
-                size="sm"
-                type="text"
-                placeholder="Tell us what you're selling"
-              />
-            </Form.Group>
+      <Container
+        fluid
+        className="d-flex justify-content-center h-auto mt-5 mb-5"
+      >
+        <Card
+          className="p-4 shadow-lg"
+          style={{ width: '100%', minWidth: '300px', maxWidth: '1000px' }}
+        >
+          <ProgressBar
+            now={(step / 3) * 100}
+            label={`Step ${step} of 3`}
+            className="mb-4"
+          />
+          <Form>
+            {/* Step 1: Basic Information */}
+            {step === 1 && (
+              <>
+                <Form.Group controlId="listing" className="mb-3">
+                  <Form.Label>
+                    <h5>Start your Listing</h5>
+                  </Form.Label>
+                  <Form.Control
+                    size="md"
+                    type="text"
+                    placeholder="Tell us what you're selling"
+                    value={formData.listing}
+                    onChange={handleInputChange}
+                  />
+                </Form.Group>
 
-            {/* Brand field */}
-            <Form.Group controlId="formBrand" className="mb-3">
-              <Form.Label>
-                <h3>Brand</h3>
-              </Form.Label>
-              <Form.Control
-                size="sm"
-                type="text"
-                placeholder="Tell us the brand"
-              />
-            </Form.Group>
+                <Form.Group controlId="brand" className="mb-3">
+                  <Form.Label>
+                    <h5>Brand</h5>
+                  </Form.Label>
+                  <Form.Control
+                    size="md"
+                    type="text"
+                    placeholder="Tell us the brand"
+                    value={formData.brand}
+                    onChange={handleInputChange}
+                  />
+                </Form.Group>
 
-            {/* Category field */}
-            <Form.Group controlId="formCategory" className="mb-3">
-              <Form.Label>
-                <h3>Category</h3>
-              </Form.Label>
-              <Form.Control
-                size="sm"
-                type="text"
-                placeholder="Tell us the category"
-              />
-            </Form.Group>
+                <Form.Group controlId="category" className="mb-3">
+                  <Form.Label>
+                    <h5>Category</h5>
+                  </Form.Label>
+                  <Form.Control
+                    size="md"
+                    type="text"
+                    placeholder="Tell us the category"
+                    value={formData.category}
+                    onChange={handleInputChange}
+                  />
+                </Form.Group>
 
-            {/* Description field with word count */}
-            <Form.Group controlId="formDescription" className="mb-3">
-              <Form.Label>
-                <h3>Description</h3>
-              </Form.Label>
-              <Form.Control
-                size="sm"
-                as="textarea"
-                rows={10}
-                placeholder="Write a description for your item"
-                value={description}
-                onChange={handleDescriptionChange}
-              />
-              <div>Word Count: {wordCount}/250</div>
-            </Form.Group>
+                <Button variant="primary" className="mt-3" onClick={nextStep}>
+                  Next
+                </Button>
+              </>
+            )}
 
-            {/* Media field */}
-            <Form.Group controlId="formMedia" className="mb-3">
-              <h3>Media</h3>
+            {/* Step 2: Description */}
+            {step === 2 && (
+              <>
+                <Form.Group controlId="formDescription" className="mb-3">
+                  <Form.Label>
+                    <h5>Description</h5>
+                  </Form.Label>
+                  <Form.Control
+                    size="sm"
+                    as="textarea"
+                    rows={10}
+                    placeholder="Write a description for your item"
+                    value={description}
+                    onChange={handleDescriptionChange}
+                  />
+                  <div>Word Count: {wordCount}/250</div>
+                </Form.Group>
 
-              <Form.Control
-                size="md"
-                type="file"
-                multiple
-                onChange={handleFileChange}
-                style={{ opacity: 0, position: 'absolute', zIndex: -1 }}
-              />
-              <Button
-                style={{ backgroundColor: '#0f9e48' }}
-                size="sm"
-                onClick={() => document.getElementById('formMedia').click()} // Trigger the file input
-              >
-                Choose Files
-              </Button>
+                <Button
+                  variant="secondary"
+                  className="mt-3 me-2"
+                  onClick={prevStep}
+                >
+                  Previous
+                </Button>
+                <Button variant="primary" className="mt-3" onClick={nextStep}>
+                  Next
+                </Button>
+              </>
+            )}
 
-              {/* Thumbnails display inside cards */}
-              <div className="d-flex flex-wrap mt-3">
-                {files.map((file, index) => (
-                  <Card
-                    key={index}
-                    className="position-relative m-2"
-                    style={{ width: '140px', height: '140px' }}
+            {/* Step 3: Media Upload */}
+            {step === 3 && (
+              <>
+                <Form.Group controlId="formMedia" className="mb-3">
+                  <h5>Media</h5>
+
+                  <Form.Control
+                    size="md"
+                    type="file"
+                    multiple
+                    onChange={handleFileChange}
+                    style={{ opacity: 0, position: 'absolute', zIndex: -1 }}
+                  />
+                  <Button
+                    style={{ backgroundColor: '#0f9e48' }}
+                    size="sm"
+                    onClick={() => document.getElementById('formMedia').click()}
                   >
-                    {/* Delete button positioned on the top-right */}
-                    <Button
-                      variant="danger"
-                      size="sm"
-                      className="position-absolute top-0 start-100 translate-middle"
-                      onClick={() => removeFile(index)}
-                      style={{
-                        borderRadius: '50%',
-                        width: '20px',
-                        height: '20px',
-                        padding: 0,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}
-                    >
-                      <FaTimes size={12} />
-                    </Button>
+                    Choose Files
+                  </Button>
 
-                    {/* Thumbnail image inside the card */}
-                    <Card.Img
-                      variant="top"
-                      src={file.preview}
-                      alt="thumbnail"
-                      style={{
-                        width: '100%',
-                        height: '100%',
-                        objectFit: 'cover',
-                      }}
-                    />
-                  </Card>
-                ))}
-              </div>
-            </Form.Group>
+                  <div className="d-flex flex-wrap mt-3">
+                    {files.map((file, index) => (
+                      <Card
+                        key={index}
+                        className="position-relative m-2"
+                        style={{ width: '140px', height: '140px' }}
+                      >
+                        <Button
+                          variant="danger"
+                          size="sm"
+                          className="position-absolute top-0 start-100 translate-middle"
+                          onClick={() => removeFile(index)}
+                          style={{
+                            borderRadius: '50%',
+                            width: '20px',
+                            height: '20px',
+                            padding: 0,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                          }}
+                        >
+                          <FaTimes size={12} />
+                        </Button>
+                        <Card.Img
+                          variant="top"
+                          src={file.preview}
+                          alt="thumbnail"
+                          style={{
+                            width: '100%',
+                            height: '100%',
+                            objectFit: 'cover',
+                          }}
+                        />
+                      </Card>
+                    ))}
+                  </div>
+                </Form.Group>
 
-            {/* Submit button */}
-            <Button
-              variant="primary"
-              className="w-100 py-3 mb-3"
-              type="submit"
-              size="md"
-            >
-              Submit
-            </Button>
+                <Button
+                  variant="secondary"
+                  className="mt-3 me-2"
+                  onClick={prevStep}
+                >
+                  Previous
+                </Button>
+                <Button variant="primary" className="mt-3" type="submit">
+                  Submit
+                </Button>
+              </>
+            )}
           </Form>
         </Card>
       </Container>
