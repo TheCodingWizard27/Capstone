@@ -24,7 +24,6 @@
   border-color: black;
 }
 
-
 .main-image img {
   max-height: 100%;
   object-fit: cover;
@@ -112,7 +111,6 @@
   }
 }
 
-
 .floating-card {
   background-color: #ffffff;
   border: none;
@@ -120,5 +118,4 @@
   border-radius: 10px; /* Rounded corners */
   margin: 2px; /* Reduce the margin to bring the card closer to the edges */
   width: 95%; /* Make the card wider */
-  
 }
