@@ -57,11 +57,7 @@ function App() {
           <Route
             path="/listing/:id"
             element={
-              userLoggedIn ? (
-                <SingleListing />
-              ) : (
-                <Navigate to="/singleListing" />
-              )
+              userLoggedIn ? <SingleListing /> : <Navigate to="/signIn" />
             }
           />
           <Route

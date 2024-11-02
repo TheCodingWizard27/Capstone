@@ -94,7 +94,7 @@ const SimilarItemsSection = ({ open, toggleOpen }) => (
             <Card className="item-card">
               <Card.Img
                 variant="top"
-                src={`${process.env.PUBLIC_URL}/images/preview${idx}.jpg`}
+                src={`${process.env.PUBLIC_URL}/images/landingPage.jpg`}
               />
               <Card.Body>
                 <Card.Title>Similar Item {idx}</Card.Title>
@@ -126,7 +126,7 @@ const OtherItemsSection = ({ open, toggleOpen }) => (
             <Card className="item-card">
               <Card.Img
                 variant="top"
-                src={`${process.env.PUBLIC_URL}/images/preview${idx + 1}.jpg`}
+                src={`${process.env.PUBLIC_URL}/images/landingPage.jpg`}
               />
               <Card.Body>
                 <Card.Title>Other Item {idx}</Card.Title>
@@ -155,7 +155,7 @@ const SingleListing = () => {
   return (
     <>
       <NavBar />
-      <Container fluid className="mt-4">
+      <Container  className="mt-4 d-flex flex-column aligni-items-center">
         <Row className="justify-content-center">
           <MainProductSection />
           <ProductDetailsSection />
