@@ -40,7 +40,7 @@ const MainProductSection = () => {
   return (
     <Col md={8} lg={6} className="d-flex flex-column align-items-center mt-4">
       <Card className="picture-card p-3 mb-2">
-        <div className="main-image position-relative">
+        <div className="main-image">
           <Image src={images[currentImageIndex]} alt="Main Image" fluid />
           <button className="arrow-left" onClick={handlePrevImage}>
             <FaArrowLeft />
@@ -49,7 +49,7 @@ const MainProductSection = () => {
             <FaArrowRight />
           </button>
         </div>
-        <div className="preview-images d-flex flex-row flex-wrap mt-3">
+        <div className="preview-images d-flex flex-row flex-wrap">
           {images.map((image, index) => (
             <img
               key={index}
@@ -80,7 +80,7 @@ const ProductDetailsSection = () => (
       <div className="rating mb-2">
         <span>4.4 ★★★★☆</span> | <span>10 Ratings</span>
       </div>
-      <div className="price mb-3">$1000.00</div>
+      <div className="price mb-2">$1000.00</div>
       <div>
         <strong>Brand:</strong> Panasonic
       </div>
@@ -103,6 +103,15 @@ const ProductDetailsSection = () => (
         An Always-Clear View, Even in Bright Sunlight: 2,360k-dot. Large LVF
         ensures you'll see your screen without glare.
       </p>
+      <p>
+        An Always-Clear View, Even in Bright Sunlight: 2,360k-dot. Large LVF
+        ensures you'll see your screen without glare.
+      </p>
+      <p>
+        An Always-Clear View, Even in Bright Sunlight: 2,360k-dot. Large LVF
+        ensures you'll see your screen without glare.
+      </p>
+
       <div className="button-group mt-3">
         <Button variant="primary" className="me-2">
           Contact Seller
