@@ -73,7 +73,7 @@ const SearchPage = () => {
                 </div>
 
                 {/* Search Results */}
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '20px' }}>
+                <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: '20px' }}>
                     {filteredResults.length > 0 ? (
                         filteredResults.map((item) => (
                             <Card
