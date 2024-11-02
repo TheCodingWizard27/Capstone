@@ -25,9 +25,8 @@ const FilterBar = ({ onCategoryChange, onSortChange }) => {
             justifyContent: 'flex-start', // Align items to the start
             alignItems: 'center',
             padding: '10px 0', // Remove extra padding and set vertical padding only
-            borderBottom: '1px solid #ddd', // Optional border to separate from content below
             marginBottom: '20px',
-            backgroundColor: 'transparent' // Remove the gray background
+            backgroundColor: 'transparent'
         }}>
             <div style={{ display: 'flex', alignItems: 'center', marginRight: '20px' }}> {/* Add marginRight for spacing */}
                 <label htmlFor="category" style={{ marginRight: '8px', fontWeight: 'bold' }}>Currently Viewing:</label>
