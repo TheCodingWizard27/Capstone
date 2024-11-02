@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Navbar, Button, Col, Row, Container } from 'react-bootstrap';
 import SearchBar from './searchBar';
 import { Link } from 'react-router-dom';
-import { FaEnvelope, FaUser, FaBars, FaTimes } from 'react-icons/fa';
+import { FaEnvelope, FaUser, FaBars, FaTimes, FaHome } from 'react-icons/fa';
 import DropDown from './dropDown';
 import DropUser from './dropUser';
 import './NavBar.css'; // Importing custom CSS
@@ -21,15 +21,17 @@ const NavBar = () => {
       >
         <Container fluid>
           <Row className="w-100 align-items-center justify-evenly">
-            {/* DropDown for large screens */}
-            <Col lg={2} md={2} xs={12}>
-              <DropDown />
+            {/* Home Icon */}
+            <Col xs={1} className="d-flex justify-content-start">
+              <Link to="/home" className="text-white">
+                <FaHome size={25} />
+              </Link>
             </Col>
 
             {/* SearchBar */}
             <Col
               lg={7}
-              xs={11}
+              xs={10}
               md={9}
               className="d-flex justify-content-center"
             >
@@ -112,7 +114,7 @@ const NavBar = () => {
           >
             Messages
           </Link>
-          <DropUser /> {/* Replace "Profile" with DropUser component */}
+          <DropUser />
         </div>
       </div>
 
