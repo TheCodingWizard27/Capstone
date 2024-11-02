@@ -107,7 +107,7 @@ const Home = () => {
   return (
     <>
       <NavBar />
-      <Container className="mb-5" style={{ marginTop: '60px' }}>
+      <Container className="mt-5 mb-5">
         <Row className="g-5">
           {categories.map((category) => (
             <Col xs={12} md={6} lg={4} key={category.name}>

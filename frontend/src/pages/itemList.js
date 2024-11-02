@@ -72,7 +72,7 @@ const SearchPage = () => {
   return (
     <>
       <NavBar />
-      <div style={{ padding: '20px', marginTop: '60px' }}>
+      <div style={{ padding: '20px' }}>
         {/* Filter Bar */}
         <div style={{ marginBottom: '20px' }}>
           <FilterBar

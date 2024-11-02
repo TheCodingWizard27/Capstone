@@ -6,7 +6,7 @@ const LandingPage = () => {
   return (
     <>
       <NavigationBar /> {/* Navigation Bar */}
-      <div className="landing-content" style={{ marginTop: '60px' }}>
+      <div className="landing-content">
         <ImageSection />
         <Tagline />
         <WhyShop />
@@ -60,7 +60,9 @@ const WhyShop = () => {
       </h1>
       <br />
       <div className="container my-5">
-        <div className="row g-5"> {/* Adjusted gap from g-4 to g-5 for more spacing */}
+        <div className="row g-5">
+          {' '}
+          {/* Adjusted gap from g-4 to g-5 for more spacing */}
           {/* Left Column */}
           <div
             className="col-md-6 p-4"
@@ -85,7 +87,6 @@ const WhyShop = () => {
               </li>
             </ul>
           </div>
-
           {/* Right Column */}
           <div
             className="col-md-6 p-4"
@@ -115,7 +116,6 @@ const WhyShop = () => {
     </>
   );
 };
-
 
 const ExploreFeature = () => {
   //! Under Construction

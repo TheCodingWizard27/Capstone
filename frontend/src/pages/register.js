@@ -43,7 +43,7 @@ const Register = () => {
         );
 
         console.log(response.user.email);
-        console.log(response.user.uid)
+        console.log(response.user.uid);
         navigate('/home');
       } catch (error) {
         setErrorMessage(error.message);
@@ -72,7 +72,7 @@ const Register = () => {
     <Container
       fluid
       className="vh-auto d-flex align-items-center justify-content-center mb-5 mt-5"
-      style={{ width: '100%', backgroundColor: "#005d8d"}}
+      style={{ width: '100%' }}
     >
       <Row style={{ minWidth: '40%' }}>
         <Col className="d-flex align-items-center justify-content-center h-auto">
