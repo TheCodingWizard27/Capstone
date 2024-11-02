@@ -10,6 +10,7 @@ import NotFound from './pages/404';
 import Home from './pages/home';
 import Category from './pages/category';
 import ForgotPassword from './pages/forgotPassword';
+import SingleListing from './pages/singleLIsting';
 
 function App() {
   const { userLoggedIn } = useAuth(); // Access userLoggedIn from context
@@ -28,7 +29,7 @@ function App() {
           <Route path="/home" element={userLoggedIn ? <Home /> : <Navigate to="/signIn" />} />
           <Route path="/addListing" element={userLoggedIn ? <AddListing /> : <Navigate to="/signIn" />} />
           <Route path="/category" element={userLoggedIn ? <Category /> : <Navigate to="/signIn" />} />
-
+          <Route path="/singleListing" element={userLoggedIn ? <SingleListing /> : <Navigate to="/singleListing" />} />
           {/* 404 Not Found route */}
           <Route path="*" element={<NotFound />} />
         </Routes>
