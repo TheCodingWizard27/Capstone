@@ -6,7 +6,7 @@ const LandingPage = () => {
   return (
     <>
       <NavigationBar /> {/* Navigation Bar */}
-      <div className="landing-content">
+      <div className="landing-content" style={{ marginTop: '60px' }}>
         <ImageSection />
         <Tagline />
         <WhyShop />

@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { Navbar, Button, Col, Row, Container } from 'react-bootstrap';
 import SearchBar from './searchBar';
 import { Link } from 'react-router-dom';
-import { FaEnvelope, FaUser, FaBars, FaTimes, FaHome } from 'react-icons/fa';
-import DropDown from './dropDown';
+import { FaEnvelope, FaBars, FaTimes, FaHome } from 'react-icons/fa';
 import DropUser from './dropUser';
 import './NavBar.css'; // Importing custom CSS
 
@@ -29,12 +28,7 @@ const NavBar = () => {
             </Col>
 
             {/* SearchBar */}
-            <Col
-              lg={7}
-              xs={9}
-              md={9}
-              className="d-flex justify-content-center"
-            >
+            <Col lg={7} xs={9} md={9} className="d-flex justify-content-center">
               <SearchBar />
             </Col>
 
