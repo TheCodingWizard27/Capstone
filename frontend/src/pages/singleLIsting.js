@@ -9,40 +9,72 @@ import {
   Col,
   Collapse,
 } from 'react-bootstrap';
+import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import '../style/stylingsingle.css';
 
-const MainProductSection = () => (
-  <Col md={8} lg={5} className="d-flex flex-column align-items-center mt-4">
-    <Card className="picture-card p-3 mb-2">
-      <div className="main-image">
-        <Image
-          src={`${process.env.PUBLIC_URL}/images/landingPage.jpg`}
-          alt="Main Image"
-          fluid
-        />
-      </div>
-      <div className="preview-images d-flex flex-row flex-wrap mt-3">
-        {[1, 2, 3, 4, 5, 6].map((index) => (
-          <img
-            key={index}
-            src={`${process.env.PUBLIC_URL}/images/landingPage.jpg`}
-            alt={`Preview ${index}`}
-            className="preview-image mb-2"
-            style={{
-              height: '100px',
-              width: '15%',
-              minWidth: '100px', // Ensures images don't shrink too small
-              objectFit: 'cover',
-            }}
-          />
-        ))}
-      </div>
-    </Card>
-  </Col>
-);
+const MainProductSection = () => {
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  const images = [
+    `${process.env.PUBLIC_URL}/images/landingPage.jpg`,
+    `${process.env.PUBLIC_URL}/images/aloo.jpg`,
+    `${process.env.PUBLIC_URL}/images/landingPage.jpg`,
+    `${process.env.PUBLIC_URL}/images/aloo.jpg`,
+    `${process.env.PUBLIC_URL}/images/landingPage.jpg`,
+  ];
+
+  const handleNextImage = () => {
+    setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
+  };
+
+  const handlePrevImage = () => {
+    setCurrentImageIndex(
+      (prevIndex) => (prevIndex - 1 + images.length) % images.length
+    );
+  };
+
+  const handlePreviewClick = (index) => {
+    setCurrentImageIndex(index);
+  };
+
+  return (
+    <Col md={8} lg={6} className="d-flex flex-column align-items-center mt-4">
+      <Card className="picture-card p-3 mb-2">
+        <div className="main-image position-relative">
+          <Image src={images[currentImageIndex]} alt="Main Image" fluid />
+          <button className="arrow-left" onClick={handlePrevImage}>
+            <FaArrowLeft />
+          </button>
+          <button className="arrow-right" onClick={handleNextImage}>
+            <FaArrowRight />
+          </button>
+        </div>
+        <div className="preview-images d-flex flex-row flex-wrap mt-3">
+          {images.map((image, index) => (
+            <img
+              key={index}
+              src={image}
+              alt={`Preview ${index + 1}`}
+              className={`preview-image mb-2 ${
+                index === currentImageIndex ? 'active' : ''
+              }`}
+              onClick={() => handlePreviewClick(index)}
+              style={{
+                height: '100px',
+                width: '15%',
+                minWidth: '100px',
+                objectFit: 'cover',
+              }}
+            />
+          ))}
+        </div>
+      </Card>
+    </Col>
+  );
+};
 
 const ProductDetailsSection = () => (
-  <Col md={8} lg={5} className="d-flex flex-column align-items-start mt-4">
+  <Col md={8} lg={6} className="d-flex flex-column align-items-start mt-4">
     <Card className="details-card p-3">
       <h4>Panasonic LUMIX FZ80D Compact Camera</h4>
       <div className="rating mb-2">
@@ -88,9 +120,9 @@ const SimilarItemsSection = ({ open, toggleOpen }) => (
   <Card className="floating-card p-4">
     <h5 className="section-title">Similar Items</h5>
     <Collapse in={open}>
-      <Row className="additional-container card-grid">
+      <Row className="additional-container card-grid justify-content-center">
         {[1, 2, 3, 4, 5].map((idx) => (
-          <Col md={2} sm={6} key={idx} className="mb-3">
+          <Col lg={3} md={5} sm={6} key={idx} className="mb-3">
             <Card className="item-card">
               <Card.Img
                 variant="top"
@@ -120,9 +152,9 @@ const OtherItemsSection = ({ open, toggleOpen }) => (
   <Card className="floating-card p-4">
     <h5 className="section-title">Other Items by the Seller</h5>
     <Collapse in={open}>
-      <Row className="additional-container card-grid">
+      <Row className="additional-container card-grid justify-content-center">
         {[1, 2, 3, 4, 5].map((idx) => (
-          <Col md={2} sm={6} key={idx} className="mb-3">
+          <Col lg={3} md={4} sm={6} key={idx} className="mb-3">
             <Card className="item-card">
               <Card.Img
                 variant="top"
@@ -153,28 +185,26 @@ const SingleListing = () => {
   const [otherItemsOpen, setOtherItemsOpen] = useState(true);
 
   return (
-    <>
+    <div style={{ height: '100vh', marginBottom: '100px' }}>
       <NavBar />
-      <Container  className="mt-4 d-flex flex-column aligni-items-center">
+      <Container className="mt-4 d-flex flex-column align-items-center">
         <Row className="justify-content-center">
           <MainProductSection />
           <ProductDetailsSection />
         </Row>
-        <br></br>
-
+        <br />
         <SimilarItemsSection
           open={similarItemsOpen}
           toggleOpen={() => setSimilarItemsOpen(!similarItemsOpen)}
         />
-
-        <br></br>
-
+        <br />
         <OtherItemsSection
           open={otherItemsOpen}
           toggleOpen={() => setOtherItemsOpen(!otherItemsOpen)}
         />
+        <br />
       </Container>
-    </>
+    </div>
   );
 };
 

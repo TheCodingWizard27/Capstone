@@ -124,9 +124,3 @@ const Home = () => {
 };
 
 export default Home;
-
-// const Home = () => {
-//   return <NavBar />;
-// };
-
-// export default Home;
