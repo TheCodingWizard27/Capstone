@@ -10,11 +10,8 @@ import NotFound from './pages/404';
 import Home from './pages/home';
 import Category from './pages/category';
 import ForgotPassword from './pages/forgotPassword';
-<<<<<<< HEAD
 import SingleListing from './pages/singleLIsting';
-=======
 import SearchPage from './pages/searchItem'; 
->>>>>>> c09184bf72ad3ba3a86e8bfc7361ffd73e534dd2
 
 function App() {
   const { userLoggedIn } = useAuth(); // Access userLoggedIn from context
@@ -33,12 +30,9 @@ function App() {
           <Route path="/home" element={userLoggedIn ? <Home /> : <Navigate to="/signIn" />} />
           <Route path="/addListing" element={userLoggedIn ? <AddListing /> : <Navigate to="/signIn" />} />
           <Route path="/category" element={userLoggedIn ? <Category /> : <Navigate to="/signIn" />} />
-<<<<<<< HEAD
           <Route path="/singleListing" element={userLoggedIn ? <SingleListing /> : <Navigate to="/singleListing" />} />
-=======
           <Route path="/searchItem" element={userLoggedIn ? <SearchPage /> : <Navigate to="/signIn" />} />
           
->>>>>>> c09184bf72ad3ba3a86e8bfc7361ffd73e534dd2
           {/* 404 Not Found route */}
           <Route path="*" element={<NotFound />} />
         </Routes>

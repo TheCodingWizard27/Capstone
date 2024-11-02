@@ -1,142 +1,101 @@
-/* stylingsingle.css */
+.image-preview-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
-.listing-container {
-    display: flex;
-    gap: 20px;
-    align-items: flex-start;
-    padding: 20px;
-    max-width: 1200px;
-    width: 100%;
+.preview-images {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.preview-image {
+  width: 60px;
+  height: auto;
+  cursor: pointer;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.main-image img {
+  width: 100%;
+  max-height: 400px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.details-section {
+  padding-left: 15px;
+}
+
+.details-card {
+  width: 100%;
+  border: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.rating {
+  font-size: 1rem;
+  color: #ffcc00;
+}
+
+.price {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.button-group button {
+  width: 100%;
+  margin-bottom: 5px;
+}
+
+.additional-container {
+  margin-top: 20px;
+}
+
+.section-title {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.card-grid {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.item-card {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+.preview-image {
+  width: 60px; /* Adjust as needed */
+  height: auto;
+  cursor: pointer;
+}
+
+.image-container {
+  display: flex;
+  flex-direction: row;
+}
+
+@media (max-width: 767px) {
+  .preview-images {
+    display: none !important;
   }
+}
+
+.floating-card {
+  background-color: #ffffff;
+  border: none;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Floating shadow effect */
+  border-radius: 10px; /* Rounded corners */
+  margin: 2px; /* Reduce the margin to bring the card closer to the edges */
+  width: 95%; /* Make the card wider */
   
-  .image-preview {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    max-height: 300px;
-    overflow-y: auto;
-    width: 100px;
-    scrollbar-width: thin;
-  }
-  
-  .image-preview img {
-    width: 80px;
-    height: 80px;
-    cursor: pointer;
-    border: 2px solid #ccc;
-    border-radius: 5px;
-    transition: border-color 0.2s ease;
-  }
-  
-  .image-preview img:hover {
-    border-color: #007bff;
-  }
-  
-  .main-image {
-    flex: 1;
-    max-width: 600px;
-    border: 2px solid #ccc;
-    border-radius: 5px;
-    overflow: hidden;
-  }
-  
-  .details-section {
-    flex: 1;
-    padding: 20px;
-  }
-  
-  .details-card {
-    padding: 20px;
-    background-color: #f8f9fa;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  .details-card h4 {
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin-bottom: 10px;
-  }
-  
-  .details-card .price {
-    font-size: 1.4rem;
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 15px;
-  }
-  
-  .details-card .rating {
-    color: #f5b50a;
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-  }
-  
-  .details-card .rating span {
-    font-size: 1rem;
-    margin-left: 5px;
-  }
-  
-  .details-card .divider {
-    border-top: 1px solid #ccc;
-    margin: 15px 0;
-  }
-  
-  .details-card .button-group {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-top: 20px;
-  }
-  
-  /* Additional containers */
-  .additional-container {
-    margin-top: 40px;
-  }
-  
-  .additional-container h5 {
-    font-weight: bold;
-    margin-bottom: 20px;
-  }
-  
-  .card-grid {
-    display: flex;
-    gap: 15px;
-    overflow-x: auto;
-  }
-  
-  .item-card {
-    min-width: 150px;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    text-align: center;
-    background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  .item-card img {
-    width: 100%;
-    border-radius: 5px;
-  }
-  
-  .item-card h6 {
-    font-size: 0.9rem;
-    margin-top: 10px;
-  }
-  
-  .item-card p {
-    font-size: 0.8rem;
-    color: #666;
-  }
-  
-  @media (max-width: 768px) {
-    .main-image {
-      max-width: 100%;
-    }
-  
-    .details-card h4 {
-      font-size: 1.2rem;
-    }
-  }
-  
+}
