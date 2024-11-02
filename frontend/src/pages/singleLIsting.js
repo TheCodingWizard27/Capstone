@@ -38,7 +38,7 @@ const MainProductSection = () => {
   };
 
   return (
-    <Col md={8} lg={6} className="d-flex flex-column align-items-center mt-4">
+    <Col md={12} lg={6} className="d-flex flex-column align-items-center mt-4">
       <Card className="picture-card p-3 mb-2">
         <div className="main-image position-relative">
           <Image src={images[currentImageIndex]} alt="Main Image" fluid />
@@ -74,7 +74,7 @@ const MainProductSection = () => {
 };
 
 const ProductDetailsSection = () => (
-  <Col md={8} lg={6} className="d-flex flex-column align-items-start mt-4">
+  <Col md={12} lg={6} className="d-flex flex-column align-items-start mt-4">
     <Card className="details-card p-3">
       <h4>Panasonic LUMIX FZ80D Compact Camera</h4>
       <div className="rating mb-2">
