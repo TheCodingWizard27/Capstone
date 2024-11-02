@@ -2,17 +2,11 @@ const { auth, db } = require("../firebase/firebase");
 
 exports.addUser = async (req, res) => {
   const { uid, name } = req.body;
-  const idToken =
-    req.headers.authorization && req.headers.authorization.split("Bearer ")[1];
 
-  if (!idToken) {
-    return res.status(401).send("Unauthorized: No token provided");
-  }
+  // The `verifyAuthToken` middleware already verifies the token and attaches `decodedToken` to `req.user`
+  const decodedToken = req.user;
 
   try {
-    // Verify the ID token
-    const decodedToken = await auth.verifyIdToken(idToken);
-
     // Check if the decoded token's UID matches the provided UID
     if (decodedToken.uid !== uid) {
       return res.status(403).send("Forbidden: Invalid token for the given UID");
@@ -45,11 +39,6 @@ exports.addUser = async (req, res) => {
   } catch (error) {
     if (error.code === "auth/user-not-found") {
       res.status(404).send("User not found in Firebase Authentication");
-    } else if (
-      error.code === "auth/argument-error" ||
-      error.message.includes("Decoding Firebase ID token failed")
-    ) {
-      res.status(401).send("Unauthorized: Invalid or expired token");
     } else {
       res.status(500).send(`Error: ${error.message}`);
     }
