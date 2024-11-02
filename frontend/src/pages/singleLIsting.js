@@ -21,13 +21,19 @@ const MainProductSection = () => (
           fluid
         />
       </div>
-      <div className="preview-images d-flex flex-row mt-3">
+      <div className="preview-images d-flex flex-row flex-wrap mt-3">
         {[1, 2, 3, 4, 5, 6].map((index) => (
           <img
             key={index}
-            src={`${process.env.PUBLIC_URL}/images/preview${index}.jpg`}
+            src={`${process.env.PUBLIC_URL}/images/landingPage.jpg`}
             alt={`Preview ${index}`}
             className="preview-image mb-2"
+            style={{
+              height: '100px',
+              width: '15%',
+              minWidth: '100px', // Ensures images don't shrink too small
+              objectFit: 'cover',
+            }}
           />
         ))}
       </div>
@@ -154,15 +160,14 @@ const SingleListing = () => {
           <MainProductSection />
           <ProductDetailsSection />
         </Row>
-
-        <hr className="my-4" />
+        <br></br>
 
         <SimilarItemsSection
           open={similarItemsOpen}
           toggleOpen={() => setSimilarItemsOpen(!similarItemsOpen)}
         />
 
-        <hr className="my-4" />
+        <br></br>
 
         <OtherItemsSection
           open={otherItemsOpen}

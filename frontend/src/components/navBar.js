@@ -22,7 +22,7 @@ const NavBar = () => {
         <Container fluid>
           <Row className="w-100 align-items-center justify-evenly">
             {/* Home Icon */}
-            <Col xs={1} className="d-flex justify-content-start">
+            <Col xs={2} className="d-flex justify-content-start">
               <Link to="/home" className="text-white">
                 <FaHome size={25} />
               </Link>
@@ -31,7 +31,7 @@ const NavBar = () => {
             {/* SearchBar */}
             <Col
               lg={7}
-              xs={10}
+              xs={9}
               md={9}
               className="d-flex justify-content-center"
             >
