@@ -1,4 +1,5 @@
-const { auth, db } = require("../firebase/firebase");
+const { db } = require("../firebase/firebase");
+const admin = require("firebase-admin"); // Make sure admin SDK is imported
 
 
 exports.addUser = async (req, res) => {
@@ -6,21 +7,23 @@ exports.addUser = async (req, res) => {
 
   try {
     // Check if the user already exists in Firestore
-    const userSnapshot = await db
-      .collection("users")
-      .where("uid", "==", user_id)
-      .get();
+    const userSnapshot = await db.collection("users").doc(user_id).get();
 
-    if (!userSnapshot.empty) {
+    if (userSnapshot.exists) {
       return res.status(409).send("User already exists in Firestore");
     }
 
-    // Add user to Firestore if they don't already exist
-    await db.collection("users").add({
-      uid: user_id,
-      email: email,
-      userName: email.split("@")[0], // Use provided name or derive from email
-    });
+    // Add user to Firestore using the uid as the document ID
+    await db
+      .collection("users")
+      .doc(user_id)
+      .set({
+        uid: user_id,
+        email: email,
+        userName: email.split("@")[0], // Derive the username from the email
+        createdAt: admin.firestore.FieldValue.serverTimestamp(), // Timestamp for creation
+        modifiedAt: admin.firestore.FieldValue.serverTimestamp(),
+      });
 
     res.status(201).send("User added successfully");
   } catch (error) {

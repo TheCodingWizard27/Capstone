@@ -1,0 +1,17 @@
+const express = require("express");
+const router = express.Router();
+const verifyAuthToken = require("../middlewares/authMiddleware");
+const listingController = require("../controllers/listingController");
+
+const multer = require("multer");
+
+const upload = multer({ dest: "uploads/" });
+
+router.post(
+  "/addListing",
+  verifyAuthToken,
+  upload.array("files", 5),
+  listingController.addListing
+);
+
+module.exports = router;
