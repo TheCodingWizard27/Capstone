@@ -1,27 +1,14 @@
 const { auth, db } = require("../firebase/firebase");
 
-exports.addUser = async (req, res) => {
-  const { uid, name } = req.body;
 
-  // The `verifyAuthToken` middleware already verifies the token and attaches `decodedToken` to `req.user`
-  const decodedToken = req.user;
+exports.addUser = async (req, res) => {
+  const { user_id, email } = req.user;
 
   try {
-    // Check if the decoded token's UID matches the provided UID
-    if (decodedToken.uid !== uid) {
-      return res.status(403).send("Forbidden: Invalid token for the given UID");
-    }
-
-    console.log(`User session verified: ${decodedToken.email}`);
-
-    // Check if the user exists in Firebase Authentication
-    const userRecord = await auth.getUser(uid);
-    console.log(`User exists: ${userRecord.email}`);
-
     // Check if the user already exists in Firestore
     const userSnapshot = await db
       .collection("users")
-      .where("uid", "==", userRecord.uid)
+      .where("uid", "==", user_id)
       .get();
 
     if (!userSnapshot.empty) {
@@ -30,9 +17,9 @@ exports.addUser = async (req, res) => {
 
     // Add user to Firestore if they don't already exist
     await db.collection("users").add({
-      uid: userRecord.uid,
-      email: userRecord.email,
-      name: name || userRecord.email.split("@")[0], // Use provided name or derive from email
+      uid: user_id,
+      email: email,
+      userName: email.split("@")[0], // Use provided name or derive from email
     });
 
     res.status(201).send("User added successfully");
