@@ -45,54 +45,7 @@ const categories = [
       'https://en.reset.org/app/uploads/2021/02/1024px-google_loon_-_launch_event.jpg',
     ],
   },
-  {
-    name: 'Sports',
-    photos: [
-      'https://en.reset.org/app/uploads/2021/02/1024px-google_loon_-_launch_event.jpg',
-      'https://en.reset.org/app/uploads/2021/02/1024px-google_loon_-_launch_event.jpg',
-      'https://en.reset.org/app/uploads/2021/02/1024px-google_loon_-_launch_event.jpg',
-    ],
-  },
-  {
-    name: 'Furniture',
-    photos: [
-      'https://en.reset.org/app/uploads/2021/02/1024px-google_loon_-_launch_event.jpg',
-      'https://en.reset.org/app/uploads/2021/02/1024px-google_loon_-_launch_event.jpg',
-      'https://en.reset.org/app/uploads/2021/02/1024px-google_loon_-_launch_event.jpg',
-    ],
-  },
-  {
-    name: 'Books, Movies, Games-CD',
-    photos: [
-      'https://en.reset.org/app/uploads/2021/02/1024px-google_loon_-_launch_event.jpg',
-      'https://en.reset.org/app/uploads/2021/02/1024px-google_loon_-_launch_event.jpg',
-      'https://en.reset.org/app/uploads/2021/02/1024px-google_loon_-_launch_event.jpg',
-    ],
-  },
-  {
-    name: 'Sports',
-    photos: [
-      'https://en.reset.org/app/uploads/2021/02/1024px-google_loon_-_launch_event.jpg',
-      'https://en.reset.org/app/uploads/2021/02/1024px-google_loon_-_launch_event.jpg',
-      'https://en.reset.org/app/uploads/2021/02/1024px-google_loon_-_launch_event.jpg',
-    ],
-  },
-  {
-    name: 'Furniture',
-    photos: [
-      'https://en.reset.org/app/uploads/2021/02/1024px-google_loon_-_launch_event.jpg',
-      'https://en.reset.org/app/uploads/2021/02/1024px-google_loon_-_launch_event.jpg',
-      'https://en.reset.org/app/uploads/2021/02/1024px-google_loon_-_launch_event.jpg',
-    ],
-  },
-  {
-    name: 'Books, Movies, Games-CD',
-    photos: [
-      'https://en.reset.org/app/uploads/2021/02/1024px-google_loon_-_launch_event.jpg',
-      'https://en.reset.org/app/uploads/2021/02/1024px-google_loon_-_launch_event.jpg',
-      'https://en.reset.org/app/uploads/2021/02/1024px-google_loon_-_launch_event.jpg',
-    ],
-  },
+
   {
     name: 'Sports',
     photos: [

@@ -10,9 +10,14 @@ import {
 import { FaTimes } from 'react-icons/fa';
 import NavBar from '../components/navBar';
 
+import { submitListing } from '../api/listing';
+import { useAuth } from '../contexts/authContext';
+
 const AddListing = () => {
+  const { currentUser } = useAuth();
   const [step, setStep] = useState(1); // Track current step
   const [files, setFiles] = useState([]);
+  const [alert, setAlert] = useState({});
   const [description, setDescription] = useState('');
   const [wordCount, setWordCount] = useState(0);
   const [formData, setFormData] = useState({
@@ -24,6 +29,11 @@ const AddListing = () => {
 
   // Handle file selection
   const handleFileChange = (e) => {
+    setAlert({
+      show: false,
+      message: '',
+      variant: '',
+    });
     const selectedFiles = Array.from(e.target.files);
     const filePreviews = selectedFiles.map((file) => ({
       file,
@@ -34,12 +44,22 @@ const AddListing = () => {
 
   // Handle file removal
   const removeFile = (index) => {
+    setAlert({
+      show: false,
+      message: '',
+      variant: '',
+    });
     const newFiles = files.filter((_, i) => i !== index);
     setFiles(newFiles);
   };
 
   // Handle input change
   const handleInputChange = (e) => {
+    setAlert({
+      show: false,
+      message: '',
+      variant: '',
+    });
     const { id, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [id]: value }));
     setErrors((prevErrors) => ({ ...prevErrors, [id]: '' })); // Clear error if any
@@ -47,6 +67,11 @@ const AddListing = () => {
 
   // Handle description change with word limit
   const handleDescriptionChange = (e) => {
+    setAlert({
+      show: false,
+      message: '',
+      variant: '',
+    });
     const text = e.target.value;
     const words = text.trim().split(/\s+/).filter(Boolean);
     if (words.length <= 250) {
@@ -63,6 +88,44 @@ const AddListing = () => {
     if (!formData.category) newErrors.category = 'Category is required';
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0; // Return true if no errors
+  };
+
+  // Submit form data to backend
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!validateFields()) {
+      setAlert({
+        show: true,
+        message: 'Please fill in all required fields correctly.',
+        variant: 'danger',
+      });
+      return;
+    }
+    try {
+      // Combine all form data and files
+      const data = { ...formData, description, files };
+      await submitListing(data, currentUser.accessToken);
+      setStep(1);
+      setFormData({
+        listing: '',
+        brand: '',
+        category: '',
+      });
+      setDescription('');
+      setFiles([]);
+      setAlert({
+        show: true,
+        message: 'Listing submitted successfully!',
+        variant: 'success',
+      });
+    } catch (error) {
+      setAlert({
+        show: true,
+        message: error.response.data,
+        variant: 'danger',
+      });
+      console.error('Error submitting listing:', error);
+    }
   };
 
   // Navigate to next step with validation
@@ -85,12 +148,21 @@ const AddListing = () => {
           className="p-4 shadow-lg"
           style={{ width: '100%', minWidth: '300px', maxWidth: '1000px' }}
         >
+          {alert.show && (
+            <Alert
+              variant={alert.variant}
+              onClose={() => setAlert({ show: false })}
+              dismissible
+            >
+              {alert.message}
+            </Alert>
+          )}
           <ProgressBar
             now={(step / 3) * 100}
             label={`Step ${step} of 3`}
             className="mb-4"
           />
-          <Form>
+          <Form onSubmit={handleSubmit}>
             {/* Step 1: Basic Information */}
             {step === 1 && (
               <>
@@ -104,7 +176,7 @@ const AddListing = () => {
                     placeholder="Tell us what you're selling"
                     value={formData.listing}
                     onChange={handleInputChange}
-                    isInvalid={!!errors.listing}
+                    isInvalid={errors.listing}
                   />
                   <Form.Control.Feedback type="invalid">
                     {errors.listing}
@@ -121,7 +193,7 @@ const AddListing = () => {
                     placeholder="Tell us the brand"
                     value={formData.brand}
                     onChange={handleInputChange}
-                    isInvalid={!!errors.brand}
+                    isInvalid={errors.brand}
                   />
                   <Form.Control.Feedback type="invalid">
                     {errors.brand}
@@ -138,7 +210,7 @@ const AddListing = () => {
                     placeholder="Tell us the category"
                     value={formData.category}
                     onChange={handleInputChange}
-                    isInvalid={!!errors.category}
+                    isInvalid={errors.category}
                   />
                   <Form.Control.Feedback type="invalid">
                     {errors.category}
