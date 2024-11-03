@@ -37,13 +37,10 @@ const Register = () => {
           throw new Error('Passwords do not match');
         }
 
-        const response = await doCreateUserWithEmailAndPassword(
+       await doCreateUserWithEmailAndPassword(
           email,
           password
         );
-
-        console.log(response.user.email);
-        console.log(response.user.uid);
         navigate('/home');
       } catch (error) {
         setErrorMessage(error.message);

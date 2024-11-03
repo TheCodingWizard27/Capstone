@@ -5,7 +5,7 @@ import {
   Route,
   Navigate,
 } from 'react-router-dom';
-import { useAuth } from './contexts/authContext/index'; // Import the useAuth hook
+import { useAuth } from './contexts/authContext'; // Import the useAuth hook
 
 import LandingPage from './pages/landingPage';
 import SignIn from './pages/signIn';
@@ -13,7 +13,6 @@ import Register from './pages/register';
 import AddListing from './pages/addListing';
 import NotFound from './pages/404';
 import Home from './pages/home';
-import Category from './pages/category';
 import ForgotPassword from './pages/forgotPassword';
 import SingleListing from './pages/singleLIsting';
 import SearchPage from './pages/itemList';
