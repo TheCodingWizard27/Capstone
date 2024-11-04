@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Container,
   Form,
@@ -9,11 +9,12 @@ import {
 } from 'react-bootstrap';
 import { FaTimes } from 'react-icons/fa';
 import NavBar from '../components/navBar';
-
+import axios from 'axios';
 import { submitListing } from '../api/listing';
 import { useAuth } from '../contexts/authContext';
 
 const AddListing = () => {
+  const [categories, setCategories] = useState([]);
   const { currentUser } = useAuth();
   const [step, setStep] = useState(1); // Track current step
   const [files, setFiles] = useState([]);
@@ -26,6 +27,17 @@ const AddListing = () => {
     category: '',
   });
   const [errors, setErrors] = useState({}); // Track errors for required fields
+
+  useEffect(() => {
+    axios
+      .get(`${process.env.REACT_APP_BACKEND}/api/categories`)
+      .then((response) => {
+        setCategories(response.data); // Set the categories from the response
+      })
+      .catch((err) => {
+        setErrors(err.message); // Handle any errors
+      });
+  }, []);
 
   // Handle file selection
   const handleFileChange = (e) => {
@@ -204,14 +216,19 @@ const AddListing = () => {
                   <Form.Label>
                     <h5>Category</h5>
                   </Form.Label>
-                  <Form.Control
+                  <Form.Select
                     size="md"
-                    type="text"
-                    placeholder="Tell us the category"
                     value={formData.category}
                     onChange={handleInputChange}
                     isInvalid={errors.category}
-                  />
+                  >
+                    <option value="">Select a category</option>
+                    {categories.map((category, index) => (
+                      <option key={index} value={category}>
+                        {category}
+                      </option>
+                    ))}
+                  </Form.Select>
                   <Form.Control.Feedback type="invalid">
                     {errors.category}
                   </Form.Control.Feedback>
