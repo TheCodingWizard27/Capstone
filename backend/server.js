@@ -17,6 +17,19 @@ app.use(bodyParser.json());
 app.use("/api", userRoutes);
 app.use("/api", listingRoutes);
 
+app.get("/api/categories", (req, res) => {
+  const categories = [
+    "Furniture",
+    "Books",
+    "Electronics",
+    "Clothes",
+    "Kitchen",
+    "Miscellaneous",
+  ];
+
+  res.status(200).send(categories);
+});
+
 // Start the server
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);

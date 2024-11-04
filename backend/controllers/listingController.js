@@ -10,6 +10,14 @@ exports.addListing = async (req, res) => {
       console.log("Uploaded files:", req.files);
     }
 
+    const picUrls = [
+      "https://picsum.photos/200",
+      "https://picsum.photos/200",
+      "https://picsum.photos/200",
+      "https://picsum.photos/200",
+      "https://picsum.photos/200",
+    ];
+
     // Add user to Firestore if they don't already exist
     await db.collection("listings").add({
       listing: listing,
@@ -17,6 +25,7 @@ exports.addListing = async (req, res) => {
       description: description, // Use provided name or derive from email
       category: category,
       user: req.user.user_id,
+      picUrls: picUrls,
       createdAt: admin.firestore.FieldValue.serverTimestamp(), // Timestamp for creation
       modifiedAt: admin.firestore.FieldValue.serverTimestamp(),
     });
@@ -29,3 +38,7 @@ exports.addListing = async (req, res) => {
       .send({ message: "Error adding listing", error: error.message });
   }
 };
+
+exports.getListings = async (req, res) => {};
+
+exports.getSingleListing = async (req, res) => {};

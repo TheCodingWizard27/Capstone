@@ -14,4 +14,6 @@ router.post(
   listingController.addListing
 );
 
+router.get('/getListing')
+
 module.exports = router;
