@@ -42,7 +42,7 @@ const NavBar = () => {
                 </Link>
               ) : (
                 <Link to="/">
-                  <img src="/images/Logo.png" alt="Logo" style={{ width: '120px' }} />
+                  <img src="/images/landingPage.jpg" alt="Logo" style={{ width: '120px' }} />
                   {/* Logo for large screens */}
                 </Link>
               )}
