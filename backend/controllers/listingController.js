@@ -3,7 +3,7 @@ const admin = require("firebase-admin"); // Make sure admin SDK is imported
 
 exports.addListing = async (req, res) => {
   try {
-    const { listing, brand, category, description } = req.body;
+    const { title, brand, category, description, price } = req.body;
 
     // Log uploaded files if any
     if (req.files) {
@@ -20,8 +20,9 @@ exports.addListing = async (req, res) => {
 
     // Add user to Firestore if they don't already exist
     await db.collection("listings").add({
-      listing: listing,
+      title: title,
       brand: brand,
+      price: price,
       description: description, // Use provided name or derive from email
       category: category,
       user: req.user.user_id,

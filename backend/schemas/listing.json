@@ -1,6 +1,6 @@
 {
-  "title": { "type": "string", "required": true },
-  "category": { "type": "string", "required": true },
-  "price": { "type": "float", "required": true },
-  "description": { "type": "string", "required": true, "maxWords": 250 }
+  "title": { "required": true },
+  "category": { "required": true },
+  "price": { "required": true },
+  "description": { "required": true, "maxWords": 250 }
 }

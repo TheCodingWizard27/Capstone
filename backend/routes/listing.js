@@ -10,8 +10,9 @@ const upload = multer({ dest: "uploads/" });
 
 router.post(
   "/addListing",
-  validateListing,
+  verifyAuthToken,
   upload.array("files", 5),
+  validateListing,
   listingController.addListing
 );
 

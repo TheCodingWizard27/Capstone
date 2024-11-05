@@ -3,54 +3,31 @@ const validateListing = async (req, res, next) => {
   const body = req.body;
   const errors = [];
 
+  // Ensure body behaves as an object
+  const bodyObj = typeof body === "object" && body !== null ? body : {};
+
   for (const key in schema) {
     const property = schema[key];
 
     // Check if the property is required and missing
-    if (property.required && !body.hasOwnProperty(key)) {
+    if (
+      property.required &&
+      !Object.prototype.hasOwnProperty.call(bodyObj, key)
+    ) {
       errors.push(`${key} is required.`);
       continue;
     }
 
-    // Skip validation if the property is not required and missing
-    if (!property.required && !body.hasOwnProperty(key)) {
+    // Skip further checks if the property is not present
+    if (!Object.prototype.hasOwnProperty.call(bodyObj, key)) {
       continue;
     }
 
-    for (const propKey in property) {
-      switch (propKey) {
-        case "type":
-          if (
-            property.type === "float" &&
-            (typeof body[key] !== "number" || Number.isInteger(body[key]))
-          ) {
-            errors.push(`${key} must be a float.`);
-          } else if (property.type === "int" && !Number.isInteger(body[key])) {
-            errors.push(`${key} must be an integer.`);
-          } else if (
-            property.type === "string" &&
-            typeof body[key] !== "string"
-          ) {
-            errors.push(`${key} must be a string.`);
-          } else if (property.type === "url") {
-            try {
-              new URL(body[key]);
-            } catch (e) {
-              errors.push(`${key} must be a valid URL.`);
-            }
-          }
-          break;
-
-        case "maxWords":
-          if (typeof body[key] === "string") {
-            const wordCount = body[key].split(/\s+/).filter(Boolean).length;
-            if (wordCount > property.maxWords) {
-              errors.push(`${key} must not exceed ${property.maxWords} words.`);
-            }
-          }
-          break;
-
-        // Add more cases here for other property checks if necessary
+    // Additional checks (e.g., max words)
+    if (property.maxWords && typeof bodyObj[key] === "string") {
+      const wordCount = bodyObj[key].split(/\s+/).filter(Boolean).length;
+      if (wordCount > property.maxWords) {
+        errors.push(`${key} must not exceed ${property.maxWords} words.`);
       }
     }
   }
