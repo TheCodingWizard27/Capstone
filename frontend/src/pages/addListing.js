@@ -25,6 +25,7 @@ const AddListing = () => {
     listing: '',
     brand: '',
     category: '',
+    price:'',
   });
   const [errors, setErrors] = useState({}); // Track errors for required fields
 
@@ -98,6 +99,7 @@ const AddListing = () => {
     if (!formData.listing) newErrors.listing = 'Listing is required';
     if (!formData.brand) newErrors.brand = 'Brand is required';
     if (!formData.category) newErrors.category = 'Category is required';
+    if (!formData.price) newErrors.price = 'Price is required';
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0; // Return true if no errors
   };
@@ -233,6 +235,27 @@ const AddListing = () => {
                     {errors.category}
                   </Form.Control.Feedback>
                 </Form.Group>
+               
+
+               {/* // */}
+               <Form.Group controlId="price" className="mb-3">
+                  <Form.Label>
+                    <h5>Price</h5>
+                  </Form.Label>
+                  <Form.Control
+                    size="md"
+                    type="number"
+                    placeholder="Price"
+                    value={formData.price}
+                    onChange={handleInputChange}
+                    isInvalid={errors.price}
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    {errors.price}
+                  </Form.Control.Feedback>
+                </Form.Group>
+               
+               {/* // */}
 
                 <Button variant="primary" className="mt-3" onClick={nextStep}>
                   Next
