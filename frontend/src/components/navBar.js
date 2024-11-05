@@ -1,29 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Navbar, Button, Col, Row, Container } from 'react-bootstrap';
 import SearchBar from './searchBar';
 import { Link } from 'react-router-dom';
-import { FaEnvelope, FaUser, FaBars, FaTimes, FaHome } from 'react-icons/fa';
-import DropDown from './dropDown';
+import { FaEnvelope, FaBars, FaTimes, FaHome } from 'react-icons/fa';
 import DropUser from './dropUser';
 import './NavBar.css'; // Importing custom CSS
 // import Logo from './images/Logo.png'; // Import the logo image
 
 const NavBar = () => {
   const [showDrawer, setShowDrawer] = useState(false); // Drawer state
-  const [isSmallScreen, setIsSmallScreen] = useState(false); // Screen size state
 
   const toggleDrawer = () => setShowDrawer(!showDrawer); // Toggle drawer state
-
-  // Update screen size state on resize
-  useEffect(() => {
-    const handleResize = () => {
-      setIsSmallScreen(window.innerWidth < 992); // 992px is Bootstrap's large screen breakpoint
-    };
-
-    handleResize(); // Check screen size on initial load
-    window.addEventListener('resize', handleResize); // Add event listener for window resize
-    return () => window.removeEventListener('resize', handleResize); // Clean up listener on component unmount
-  }, []);
 
   return (
     <>

@@ -22,7 +22,7 @@ const AddListing = () => {
   const [description, setDescription] = useState('');
   const [wordCount, setWordCount] = useState(0);
   const [formData, setFormData] = useState({
-    listing: '',
+    title: '',
     brand: '',
     category: '',
     price: '',
@@ -74,7 +74,7 @@ const AddListing = () => {
       variant: '',
     });
     const { id, value } = e.target;
-    setFormData((prevData) => ({ ...prevData, [id]: value.trimStart() }));
+    setFormData((prevData) => ({ ...prevData, [id]: value }));
     setErrors((prevErrors) => ({ ...prevErrors, [id]: '' })); // Clear error if any
   };
 
@@ -85,7 +85,7 @@ const AddListing = () => {
       message: '',
       variant: '',
     });
-    const text = e.target.value.trimStart();
+    const text = e.target.value;
     const words = text.trim().split(/\s+/).filter(Boolean);
     if (words.length <= 250) {
       setDescription(text);
@@ -96,10 +96,10 @@ const AddListing = () => {
   // Validate required fields
   const validateFields = () => {
     const newErrors = {};
-    if (!formData.listing.trim()) newErrors.listing = 'Listing is required';
-    if (!formData.brand.trim()) newErrors.brand = 'Brand is required';
-    if (!formData.category.trim()) newErrors.category = 'Category is required';
-    if (!formData.price.trim()) newErrors.price = 'Price is required';
+    if (!formData.listing) newErrors.listing = 'Listing is required';
+    if (!formData.brand) newErrors.brand = 'Brand is required';
+    if (!formData.category) newErrors.category = 'Category is required';
+    if (!formData.price) newErrors.price = 'Price is required';
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0; // Return true if no errors
   };
@@ -117,7 +117,7 @@ const AddListing = () => {
     }
     try {
       // Combine all form data and files
-      const data = { ...formData, description: description.trim(), files };
+      const data = { ...formData, description, files };
       await submitListing(data, currentUser.accessToken);
       setStep(1);
       setFormData({
@@ -134,6 +134,7 @@ const AddListing = () => {
         variant: 'success',
       });
     } catch (error) {
+      console.log(error);
       setAlert({
         show: true,
         message: error.response.data,
@@ -254,6 +255,8 @@ const AddListing = () => {
                   </Form.Control.Feedback>
                 </Form.Group>
 
+                {/* // */}
+
                 <Button variant="primary" className="mt-3" onClick={nextStep}>
                   Next
                 </Button>
@@ -291,39 +294,65 @@ const AddListing = () => {
               </>
             )}
 
-            {/* Step 3: File Upload */}
+            {/* Step 3: Media Upload */}
             {step === 3 && (
               <>
-                <Form.Group controlId="formFile" className="mb-3">
-                  <Form.Label>
-                    <h5>Upload Images</h5>
-                  </Form.Label>
+                <Form.Group controlId="formMedia" className="mb-3">
+                  <h5>Media</h5>
+
                   <Form.Control
                     size="md"
                     type="file"
                     multiple
                     onChange={handleFileChange}
+                    style={{ opacity: 0, position: 'absolute', zIndex: -1 }}
                   />
-                </Form.Group>
+                  <Button
+                    style={{ backgroundColor: '#0f9e48' }}
+                    size="sm"
+                    onClick={() => document.getElementById('formMedia').click()}
+                  >
+                    Choose Files
+                  </Button>
 
-                {files.map((file, index) => (
-                  <div key={index} className="d-flex align-items-center mb-3">
-                    <img
-                      src={file.preview}
-                      alt="Preview"
-                      width="100"
-                      height="100"
-                      className="me-3"
-                    />
-                    <Button
-                      variant="danger"
-                      size="sm"
-                      onClick={() => removeFile(index)}
-                    >
-                      <FaTimes /> Remove
-                    </Button>
+                  <div className="d-flex flex-wrap mt-3">
+                    {files.map((file, index) => (
+                      <Card
+                        key={index}
+                        className="position-relative m-2"
+                        style={{ width: '140px', height: '140px' }}
+                      >
+                        <Button
+                          variant="danger"
+                          size="sm"
+                          className="position-absolute top-0 start-100 translate-middle"
+                          onClick={() => removeFile(index)}
+                          style={{
+                            borderRadius: '50%',
+                            width: '20px',
+                            height: '20px',
+                            padding: 0,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                          }}
+                        >
+                          <FaTimes size={12} />
+                        </Button>
+                        <Card.Img
+                          variant="top"
+                          src={file.preview}
+                          alt="thumbnail"
+                          style={{
+                            width: '100%',
+                            height: '100%',
+                            objectFit: 'cover',
+                          }}
+                        />
+                      </Card>
+                    ))}
                   </div>
-                ))}
+                </Form.Group>
 
                 <Button
                   variant="secondary"

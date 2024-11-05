@@ -3,7 +3,7 @@ import axios from 'axios';
 export const submitListing = async (data, token) => {
   try {
     const formData = new FormData();
-    formData.append('listing', data.listing);
+    formData.append('title', data.listing);
     formData.append('brand', data.brand);
     formData.append('category', data.category);
     formData.append('price', data.price);
