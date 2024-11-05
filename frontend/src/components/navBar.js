@@ -35,6 +35,7 @@ const NavBar = () => {
         <Container fluid>
           <Row className="w-100 align-items-center justify-evenly">
             {/* Logo or Home Icon based on screen size */}
+<<<<<<< HEAD
             <Col lg={2} md={2} xs={12} className="d-flex align-items-center">
               {isSmallScreen ? (
                 <Link to="/">
@@ -46,15 +47,26 @@ const NavBar = () => {
                   {/* Logo for large screens */}
                 </Link>
               )}
+=======
+            <Col lg={2} md={2} xs={2} className="d-flex align-items-center">
+              <Link to="/" className="d-lg-none d-flex">
+                {/* Home icon for small screens */}
+                <FaHome size={25} className="text-white" />
+              </Link>
+              <Link to="/" className="d-none d-lg-flex">
+                {/* Logo for large screens */}
+                <img
+                  src="/images/Logo.png"
+                  alt="Logo"
+                  className="img-fluid"
+                  style={{ maxWidth: '120px' }}
+                />
+              </Link>
+>>>>>>> 82da8bfa8b1f1267bba07ae981c403013bdaf24f
             </Col>
 
             {/* SearchBar */}
-            <Col
-              lg={7}
-              xs={11}
-              md={9}
-              className="d-flex justify-content-center"
-            >
+            <Col lg={7} xs={9} md={9} className="d-flex justify-content-center">
               <SearchBar />
             </Col>
 
@@ -134,7 +146,6 @@ const NavBar = () => {
           >
             Messages
           </Link>
-          
           <DropUser /> {/* Replace "Profile" with DropUser component */}
         </div>
       </div>
