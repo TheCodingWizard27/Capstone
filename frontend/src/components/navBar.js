@@ -35,19 +35,6 @@ const NavBar = () => {
         <Container fluid>
           <Row className="w-100 align-items-center justify-evenly">
             {/* Logo or Home Icon based on screen size */}
-<<<<<<< HEAD
-            <Col lg={2} md={2} xs={12} className="d-flex align-items-center">
-              {isSmallScreen ? (
-                <Link to="/">
-                  <FaHome size={25} color="white" /> {/* Home icon for small screens */}
-                </Link>
-              ) : (
-                <Link to="/">
-                  <img src="/images/landingPage.jpg" alt="Logo" style={{ width: '120px' }} />
-                  {/* Logo for large screens */}
-                </Link>
-              )}
-=======
             <Col lg={2} md={2} xs={2} className="d-flex align-items-center">
               <Link to="/" className="d-lg-none d-flex">
                 {/* Home icon for small screens */}
@@ -62,7 +49,6 @@ const NavBar = () => {
                   style={{ maxWidth: '120px' }}
                 />
               </Link>
->>>>>>> 82da8bfa8b1f1267bba07ae981c403013bdaf24f
             </Col>
 
             {/* SearchBar */}
