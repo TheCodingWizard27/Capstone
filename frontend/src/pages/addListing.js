@@ -104,7 +104,6 @@ const AddListing = () => {
     return Object.keys(newErrors).length === 0; // Return true if no errors
   };
 
-  // Submit form data to backend
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateFields()) {
@@ -135,9 +134,13 @@ const AddListing = () => {
       });
     } catch (error) {
       console.log(error);
+      const errorMessage =
+        error.response?.data?.message ||
+        JSON.stringify(error.response?.data) ||
+        'An error occurred.';
       setAlert({
         show: true,
-        message: error.response.data,
+        message: errorMessage, // Ensure it's a string
         variant: 'danger',
       });
       console.error('Error submitting listing:', error);
@@ -146,7 +149,7 @@ const AddListing = () => {
 
   // Navigate to next step with validation
   const nextStep = () => {
-    if (step === 1 && !validateFields()) return; // Check validation only on step 1
+    if (step === 1 && !validateFields()) return;
     setStep((prevStep) => prevStep + 1);
   };
 
