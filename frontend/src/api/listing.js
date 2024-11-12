@@ -3,14 +3,14 @@ import axios from 'axios';
 export const submitListing = async (data, token) => {
   try {
     const formData = new FormData();
-    formData.append('title', data.listing);
+    formData.append('title', data.title);
     formData.append('brand', data.brand);
     formData.append('category', data.category);
     formData.append('price', data.price);
     formData.append('description', data.description);
 
-    data.files.forEach((fileObj, index) => {
-      formData.append(`files`, fileObj.file);
+    data.files.forEach((fileObj) => {
+      formData.append('files', fileObj.file);
     });
 
     const response = await axios.post(
@@ -23,8 +23,10 @@ export const submitListing = async (data, token) => {
         },
       }
     );
+
     return response.data;
   } catch (error) {
+    console.error('Failed to submit listing:', error);
     throw error;
   }
 };

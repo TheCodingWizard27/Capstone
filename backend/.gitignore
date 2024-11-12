@@ -6,4 +6,4 @@
 .env
 
 # Ignore service account key
-serviceAccount.json
+backend/firebase/serviceAccount.json

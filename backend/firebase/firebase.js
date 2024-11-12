@@ -20,15 +20,16 @@ const serviceAccount = {
 
 // Create the serviceAccount.json file dynamically
 const serviceAccountPath = path.join(__dirname, "serviceAccount.json");
-
 fs.writeFileSync(serviceAccountPath, JSON.stringify(serviceAccount, null, 2));
 
 // Initialize Firebase Admin SDK with the dynamically created service account
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
+  storageBucket: process.env.FIREBASE_STORAGE_BUCKET, // Add this line
 });
 
 const auth = admin.auth();
 const db = admin.firestore();
+const bucket = admin.storage().bucket();
 
-module.exports = { auth, db };
+module.exports = { auth, db, bucket };

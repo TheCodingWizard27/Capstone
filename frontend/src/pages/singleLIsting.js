@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import NavBar from '../components/navBar';
 import {
   Image,
@@ -10,19 +10,14 @@ import {
   Collapse,
 } from 'react-bootstrap';
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
+import axios from 'axios';
 import '../style/stylingsingle.css';
 
-const MainProductSection = () => {
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
-  const images = [
-    `${process.env.PUBLIC_URL}/images/landingPage.jpg`,
-    `${process.env.PUBLIC_URL}/images/aloo.jpg`,
-    `${process.env.PUBLIC_URL}/images/landingPage.jpg`,
-    `${process.env.PUBLIC_URL}/images/aloo.jpg`,
-    `${process.env.PUBLIC_URL}/images/landingPage.jpg`,
-  ];
-
+const MainProductSection = ({
+  images,
+  currentImageIndex,
+  setCurrentImageIndex,
+}) => {
   const handleNextImage = () => {
     setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
   };
@@ -73,45 +68,29 @@ const MainProductSection = () => {
   );
 };
 
-const ProductDetailsSection = () => (
+const ProductDetailsSection = ({ details }) => (
   <Col md={12} lg={6} className="d-flex flex-column align-items-start mt-4">
     <Card className="details-card p-3">
-      <h4>Panasonic LUMIX FZ80D Compact Camera</h4>
+      <h4>{details.title}</h4>
       <div className="rating mb-2">
-        <span>4.4 ★★★★☆</span> | <span>10 Ratings</span>
+        <span>{details.rating} ★★★★☆</span> |{' '}
+        <span>{details.ratingsCount} Ratings</span>
       </div>
-      <div className="price mb-2">$1000.00</div>
+      <div className="price mb-2">${details.price}</div>
       <div>
-        <strong>Brand:</strong> Panasonic
-      </div>
-      <div>
-        <strong>Condition:</strong> Open Box
+        <strong>Brand:</strong> {details.brand}
       </div>
       <div>
-        <strong>Color:</strong> Black
+        <strong>Condition:</strong> {details.condition}
       </div>
       <div>
-        <strong>Status:</strong> Available
+        <strong>Color:</strong> {details.color}
+      </div>
+      <div>
+        <strong>Status:</strong> {details.status}
       </div>
       <hr />
-      <p>
-        Panoramas in Extraordinary Detail: 20mm wide-angle lens creates
-        breathtaking landscapes, with a powerful 60x zoom to capture the big
-        picture as well as fine details.
-      </p>
-      <p>
-        An Always-Clear View, Even in Bright Sunlight: 2,360k-dot. Large LVF
-        ensures you'll see your screen without glare.
-      </p>
-      <p>
-        An Always-Clear View, Even in Bright Sunlight: 2,360k-dot. Large LVF
-        ensures you'll see your screen without glare.
-      </p>
-      <p>
-        An Always-Clear View, Even in Bright Sunlight: 2,360k-dot. Large LVF
-        ensures you'll see your screen without glare.
-      </p>
-
+      <p>{details.description}</p>
       <div className="button-group mt-3">
         <Button variant="primary" className="me-2">
           Contact Seller
@@ -125,21 +104,18 @@ const ProductDetailsSection = () => (
   </Col>
 );
 
-const SimilarItemsSection = ({ open, toggleOpen }) => (
+const SimilarItemsSection = ({ items, open, toggleOpen }) => (
   <Card className="floating-card p-4">
     <h5 className="section-title">Similar Items</h5>
     <Collapse in={open}>
       <Row className="additional-container card-grid justify-content-center">
-        {[1, 2, 3, 4, 5].map((idx) => (
+        {items.map((item, idx) => (
           <Col lg={3} md={5} sm={6} key={idx} className="mb-3">
             <Card className="item-card">
-              <Card.Img
-                variant="top"
-                src={`${process.env.PUBLIC_URL}/images/landingPage.jpg`}
-              />
+              <Card.Img variant="top" src={item.imageUrl} />
               <Card.Body>
-                <Card.Title>Similar Item {idx}</Card.Title>
-                <Card.Text>$500.00</Card.Text>
+                <Card.Title>{item.title}</Card.Title>
+                <Card.Text>${item.price}</Card.Text>
               </Card.Body>
             </Card>
           </Col>
@@ -157,21 +133,18 @@ const SimilarItemsSection = ({ open, toggleOpen }) => (
   </Card>
 );
 
-const OtherItemsSection = ({ open, toggleOpen }) => (
+const OtherItemsSection = ({ items, open, toggleOpen }) => (
   <Card className="floating-card p-4">
     <h5 className="section-title">Other Items by the Seller</h5>
     <Collapse in={open}>
       <Row className="additional-container card-grid justify-content-center">
-        {[1, 2, 3, 4, 5].map((idx) => (
+        {items.map((item, idx) => (
           <Col lg={3} md={4} sm={6} key={idx} className="mb-3">
             <Card className="item-card">
-              <Card.Img
-                variant="top"
-                src={`${process.env.PUBLIC_URL}/images/landingPage.jpg`}
-              />
+              <Card.Img variant="top" src={item.imageUrl} />
               <Card.Body>
-                <Card.Title>Other Item {idx}</Card.Title>
-                <Card.Text>$650.00</Card.Text>
+                <Card.Title>{item.title}</Card.Title>
+                <Card.Text>${item.price}</Card.Text>
               </Card.Body>
             </Card>
           </Col>
@@ -189,25 +162,52 @@ const OtherItemsSection = ({ open, toggleOpen }) => (
   </Card>
 );
 
-const SingleListing = () => {
+const SingleListing = ({ match }) => {
+  const [listingData, setListingData] = useState(null);
+  const [similarItems, setSimilarItems] = useState([]);
+  const [otherItems, setOtherItems] = useState([]);
   const [similarItemsOpen, setSimilarItemsOpen] = useState(true);
   const [otherItemsOpen, setOtherItemsOpen] = useState(true);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  // Fetch item details and similar items based on item ID from URL
+  useEffect(() => {
+    const fetchListingData = async () => {
+      try {
+        const response = await axios.get(`/api/listings/${match.params.id}`);
+        setListingData(response.data);
+        setSimilarItems(response.data.similarItems); // Assuming response contains similar items
+        setOtherItems(response.data.otherItems); // Assuming response contains other items by the seller
+      } catch (error) {
+        console.error('Error fetching listing data:', error);
+      }
+    };
+    fetchListingData();
+  }, [match.params.id]);
+
+  if (!listingData) return <div>Loading...</div>;
 
   return (
     <div style={{ height: '100vh', marginBottom: '100px' }}>
       <NavBar />
       <Container className="mt-4 d-flex flex-column align-items-center">
         <Row className="justify-content-center">
-          <MainProductSection />
-          <ProductDetailsSection />
+          <MainProductSection
+            images={listingData.picUrls} // Set images from backend
+            currentImageIndex={currentImageIndex}
+            setCurrentImageIndex={setCurrentImageIndex}
+          />
+          <ProductDetailsSection details={listingData} />
         </Row>
         <br />
         <SimilarItemsSection
+          items={similarItems}
           open={similarItemsOpen}
           toggleOpen={() => setSimilarItemsOpen(!similarItemsOpen)}
         />
         <br />
         <OtherItemsSection
+          items={otherItems}
           open={otherItemsOpen}
           toggleOpen={() => setOtherItemsOpen(!otherItemsOpen)}
         />

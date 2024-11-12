@@ -1,33 +1,50 @@
 const { db } = require("../firebase/firebase");
-const admin = require("firebase-admin"); // Make sure admin SDK is imported
+const admin = require("firebase-admin");
+const path = require("path");
+const { v4: uuidv4 } = require("uuid"); // For generating unique file names
 
 exports.addListing = async (req, res) => {
   try {
     const { title, brand, category, description, price } = req.body;
+    const userId = req.user.user_id; // Assuming user is set from `verifyAuthToken` middleware
+    const storage = admin.storage().bucket(); // Access Firebase Storage bucket
 
-    // Log uploaded files if any
-    if (req.files) {
-      console.log("Uploaded files:", req.files);
+    let picUrls = [];
+
+    // Upload each file to Firebase Storage and get its URL
+    if (req.files && req.files.length > 0) {
+      const uploadPromises = req.files.map(async (file) => {
+        const uniqueFileName = `uploads/${userId}/${uuidv4()}_${
+          file.originalname
+        }`;
+        const fileUpload = storage.file(uniqueFileName);
+
+        await fileUpload.save(file.buffer, {
+          contentType: file.mimetype,
+        });
+
+        // Get the URL of the uploaded file
+        const url = await fileUpload.getSignedUrl({
+          action: "read",
+          expires: "03-01-2500", // Set a far expiration date
+        });
+
+        return url[0]; // URL is returned as an array
+      });
+
+      picUrls = await Promise.all(uploadPromises);
     }
 
-    const picUrls = [
-      "https://picsum.photos/200",
-      "https://picsum.photos/200",
-      "https://picsum.photos/200",
-      "https://picsum.photos/200",
-      "https://picsum.photos/200",
-    ];
-
-    // Add user to Firestore if they don't already exist
+    // Save listing data in Firestore
     await db.collection("listings").add({
-      title: title,
-      brand: brand,
-      price: price,
-      description: description, // Use provided name or derive from email
-      category: category,
-      user: req.user.user_id,
-      picUrls: picUrls,
-      createdAt: admin.firestore.FieldValue.serverTimestamp(), // Timestamp for creation
+      title,
+      brand,
+      category,
+      description,
+      price,
+      user: userId,
+      picUrls,
+      createdAt: admin.firestore.FieldValue.serverTimestamp(),
       modifiedAt: admin.firestore.FieldValue.serverTimestamp(),
     });
 
@@ -40,6 +57,20 @@ exports.addListing = async (req, res) => {
   }
 };
 
-exports.getListings = async (req, res) => {};
+// Assuming we're listing all listings in Firestore collection
+exports.getListings = async (req, res) => {
+  try {
+    const snapshot = await db.collection("listings").get();
+    const listings = snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
 
-exports.getSingleListing = async (req, res) => {};
+    res.status(200).json(listings);
+  } catch (error) {
+    console.error("Error fetching listings:", error);
+    res
+      .status(500)
+      .send({ message: "Error fetching listings", error: error.message });
+  }
+};
