@@ -13,6 +13,8 @@ import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import axios from 'axios';
 import '../style/stylingsingle.css';
 
+import { useParams } from 'react-router-dom';
+
 const MainProductSection = ({
   images,
   currentImageIndex,
@@ -162,7 +164,9 @@ const OtherItemsSection = ({ items, open, toggleOpen }) => (
   </Card>
 );
 
-const SingleListing = ({ match }) => {
+const SingleListing = () => {
+  // Inside the component
+  const { id } = useParams();
   const [listingData, setListingData] = useState(null);
   const [similarItems, setSimilarItems] = useState([]);
   const [otherItems, setOtherItems] = useState([]);
@@ -174,7 +178,10 @@ const SingleListing = ({ match }) => {
   useEffect(() => {
     const fetchListingData = async () => {
       try {
-        const response = await axios.get(`/api/listings/${match.params.id}`);
+        const response = await axios.get(
+          `${process.env.REACT_APP_BACKEND}/api/listings/${id}`
+        );
+        console.log(response.data);
         setListingData(response.data);
         setSimilarItems(response.data.similarItems); // Assuming response contains similar items
         setOtherItems(response.data.otherItems); // Assuming response contains other items by the seller
@@ -183,7 +190,7 @@ const SingleListing = ({ match }) => {
       }
     };
     fetchListingData();
-  }, [match.params.id]);
+  }, [id]);
 
   if (!listingData) return <div>Loading...</div>;
 

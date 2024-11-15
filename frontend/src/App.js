@@ -14,7 +14,7 @@ import AddListing from './pages/addListing';
 import NotFound from './pages/404';
 import Home from './pages/home';
 import ForgotPassword from './pages/forgotPassword';
-import SingleListing from './pages/singleLIsting';
+import SingleListing from './pages/singleListing';
 import SearchPage from './pages/itemList';
 
 function App() {
