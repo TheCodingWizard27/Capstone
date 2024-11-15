@@ -194,6 +194,7 @@ const SingleListing = () => {
 
   if (!listingData) return <div>Loading...</div>;
 
+  //Return
   return (
     <div style={{ height: '100vh', marginBottom: '100px' }}>
       <NavBar />
