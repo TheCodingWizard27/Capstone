@@ -37,13 +37,13 @@ const DropUser = () => {
 
       <Dropdown.Menu>
         <Dropdown.Item href="/category?selectedvalue=action-1">
-          Action
+          My Profile
         </Dropdown.Item>
         <Dropdown.Item href="/category?selectedvalue=action-2">
-          Another action
+          My Listings
         </Dropdown.Item>
         <Dropdown.Item href="/category?selectedvalue=action-3">
-          Something else
+          Transactions
         </Dropdown.Item>
         <Dropdown.Divider />
         <Dropdown.Item onClick={handleLogout}>
