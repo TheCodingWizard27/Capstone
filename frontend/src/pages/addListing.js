@@ -12,6 +12,7 @@ import NavBar from '../components/navBar';
 import axios from 'axios';
 import { submitListing } from '../api/listing';
 import { useAuth } from '../contexts/authContext';
+import { useNavigate } from 'react-router-dom';
 
 const AddListing = () => {
   const [categories, setCategories] = useState([]);
@@ -21,6 +22,7 @@ const AddListing = () => {
   const [alert, setAlert] = useState({});
   const [description, setDescription] = useState('');
   const [wordCount, setWordCount] = useState(0);
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     title: '',
     brand: '',
@@ -132,6 +134,10 @@ const AddListing = () => {
         message: 'Listing submitted successfully!',
         variant: 'success',
       });
+      setTimeout(() => {
+        navigate('/'); // Replace '/' with your desired route
+      }, 3000);
+    
     } catch (error) {
       console.log(error);
       const errorMessage =
