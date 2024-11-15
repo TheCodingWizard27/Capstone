@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const userRoutes = require("./routes/user");
 const listingRoutes = require("./routes/listing");
@@ -9,6 +10,9 @@ const PORT = 8000;
 
 //For cross origin
 app.use(cors());
+
+//For logging requests
+app.use(morgan("dev"));
 
 // Middleware
 app.use(bodyParser.json());

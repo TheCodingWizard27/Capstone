@@ -20,7 +20,7 @@ router.post(
 router.get("/getListings", listingController.getListings);
 
 // Fetch listing by ID
-router.get("/api/listings/:id", async (req, res) => {
+router.get("/listings/:id", async (req, res) => {
   try {
     const listingId = req.params.id;
     const listingRef = db.collection("listings").doc(listingId);
