@@ -5,6 +5,8 @@ const bodyParser = require("body-parser");
 const userRoutes = require("./routes/user");
 const listingRoutes = require("./routes/listing");
 
+const setupWebSocket = require("./messageHandler");
+
 const app = express();
 const PORT = 8000;
 
@@ -35,6 +37,9 @@ app.get("/api/categories", (req, res) => {
 });
 
 // Start the server
-app.listen(PORT, "0.0.0.0", () => {
+const server = app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
+
+//Setup web socket
+setupWebSocket(server);
