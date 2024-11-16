@@ -67,7 +67,9 @@ function App() {
 
           <Route
             path="/accountInfo"
-            element={userLoggedIn ? <AccountSettings /> : <Navigate to="/signIn" />}
+            element={
+              userLoggedIn ? <AccountSettings /> : <Navigate to="/signIn" />
+            }
           />
 
           {/* 404 Not Found route */}
