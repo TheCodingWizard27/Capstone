@@ -41,7 +41,7 @@ const DropUser = () => {
         <Dropdown.Item href="/category?selectedvalue=action-2">
           My Listings
         </Dropdown.Item>
-        <Dropdown.Item href="/category?selectedvalue=action-3">
+        <Dropdown.Item href="/transaction">
           Transactions
         </Dropdown.Item>
         <Dropdown.Divider />
