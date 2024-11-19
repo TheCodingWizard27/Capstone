@@ -40,7 +40,7 @@ const AccountSettings = () => {
     <>
       <NavBar />
       <Container fluid className="d-flex flex-column align-items-center mt-5 mb-5" style={{ maxWidth: '600px' }}>
-        <h2 className="mb-4">Account Settings</h2>
+        <h2 className="mb-4">Account Information</h2>
         
         {/* Profile Picture Circle with Edit Icon */}
         <div
@@ -69,7 +69,7 @@ const AccountSettings = () => {
             style={{
               position: 'absolute',
               bottom: '5px',
-              right: '60px',
+              right: '10px',
               backgroundColor: 'rgb(0, 0, 0)',
               border: 'none',
               borderRadius: '50%',
@@ -143,21 +143,32 @@ const AccountSettings = () => {
           <Button variant="primary" type="submit" className="mb-4 w-100">
             Change Password
           </Button>
-
-          {/* Payment Setup */}
-          <h5>Payment Setup</h5>
-          <Form.Group controlId="creditCardInfo" className="mb-3">
-            <Form.Control
-              type="text"
-              placeholder="Credit card info"
-              value={formData.creditCardInfo}
-              onChange={handleInputChange}
-            />
-          </Form.Group>
           <Button variant="primary" type="submit" className="w-100">
             Submit
           </Button>
         </Form>
+        {/* My Listings */}
+        <h4 className="mt-5">My Listings</h4>
+        <div className="d-flex flex-wrap">
+          {[0, 1, 2, 3, 4].map((listing) => (
+            <div
+              key={listing}
+              style={{
+                width: "100px",
+                height: "100px",
+                margin: "5px",
+                backgroundColor: "#e0e0e0",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                border: "1px solid #ccc",
+              }}
+            >
+              Listing {listing}
+            </div>
+          ))}
+        </div>
+
       </Container>
     </>
   );
