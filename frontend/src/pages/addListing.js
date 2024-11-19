@@ -105,6 +105,11 @@ const AddListing = () => {
       variant: '',
     });
     const { id, value } = e.target;
+
+    if (id === 'price' && !/^\d*$/.test(value)) {
+      return; // Ignore non-numeric input
+    }
+
     setFormData((prevData) => ({ ...prevData, [id]: value }));
     setErrors((prevErrors) => ({ ...prevErrors, [id]: '' })); // Clear error if any
   };
@@ -117,7 +122,7 @@ const AddListing = () => {
     });
     const text = e.target.value;
 
-    if (text.length <= 1000) {
+    if (text.length <= 500) {
       // Check character count limit
       setDescription(text);
     }
@@ -229,6 +234,7 @@ const AddListing = () => {
                     value={formData.title}
                     onChange={handleInputChange}
                     isInvalid={errors.title}
+                    maxLength={50}
                   />
                   <Form.Control.Feedback type="invalid">
                     {errors.title}
@@ -246,6 +252,7 @@ const AddListing = () => {
                     value={formData.brand}
                     onChange={handleInputChange}
                     isInvalid={errors.brand}
+                    maxLength={30}
                   />
                   <Form.Control.Feedback type="invalid">
                     {errors.brand}
@@ -280,11 +287,12 @@ const AddListing = () => {
                   </Form.Label>
                   <Form.Control
                     size="md"
-                    type="number"
+                    type="text"
                     placeholder="Price"
                     value={formData.price}
                     onChange={handleInputChange}
                     isInvalid={errors.price}
+                    maxLength={10}
                   />
                   <Form.Control.Feedback type="invalid">
                     {errors.price}
@@ -313,9 +321,9 @@ const AddListing = () => {
                     placeholder="Write a description for your item"
                     value={description}
                     onChange={handleDescriptionChange}
-                    maxLength={1000}
+                    maxLength={500}
                   />
-                  <div>Character Count: {description.length}/1000</div>
+                  <div>Character Count: {description.length}/500</div>
                 </Form.Group>
 
                 <Button
