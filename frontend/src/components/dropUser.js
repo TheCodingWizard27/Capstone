@@ -38,9 +38,6 @@ const DropUser = () => {
         <Dropdown.Item href="/accountInfo">
           My Profile
         </Dropdown.Item>
-        <Dropdown.Item href="/category?selectedvalue=action-2">
-          My Listings
-        </Dropdown.Item>
         <Dropdown.Item href="/transaction">
           Transactions
         </Dropdown.Item>
