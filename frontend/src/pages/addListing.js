@@ -98,7 +98,7 @@ const AddListing = () => {
   // Validate required fields
   const validateFields = () => {
     const newErrors = {};
-    if (!formData.listing) newErrors.listing = 'Listing is required';
+    if (!formData.title) newErrors.title = 'Title is required';
     if (!formData.brand) newErrors.brand = 'Brand is required';
     if (!formData.category) newErrors.category = 'Category is required';
     if (!formData.price) newErrors.price = 'Price is required';
@@ -137,7 +137,6 @@ const AddListing = () => {
       setTimeout(() => {
         navigate('/'); // Replace '/' with your desired route
       }, 3000);
-    
     } catch (error) {
       console.log(error);
       const errorMessage =
@@ -191,7 +190,7 @@ const AddListing = () => {
             {/* Step 1: Basic Information */}
             {step === 1 && (
               <>
-                <Form.Group controlId="listing" className="mb-3">
+                <Form.Group controlId="title" className="mb-3">
                   <Form.Label>
                     <h5>Start your Listing</h5>
                   </Form.Label>
@@ -199,7 +198,7 @@ const AddListing = () => {
                     size="md"
                     type="text"
                     placeholder="Tell us what you're selling"
-                    value={formData.listing}
+                    value={formData.title}
                     onChange={handleInputChange}
                     isInvalid={errors.listing}
                   />
