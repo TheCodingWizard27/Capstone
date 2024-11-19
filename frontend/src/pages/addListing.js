@@ -80,7 +80,6 @@ const AddListing = () => {
     setErrors((prevErrors) => ({ ...prevErrors, [id]: '' })); // Clear error if any
   };
 
-  // Handle description change with word limit
   const handleDescriptionChange = (e) => {
     setAlert({
       show: false,
@@ -88,10 +87,10 @@ const AddListing = () => {
       variant: '',
     });
     const text = e.target.value;
-    const words = text.trim().split(/\s+/).filter(Boolean);
-    if (words.length <= 250) {
+
+    if (text.length <= 1000) {
+      // Check character count limit
       setDescription(text);
-      setWordCount(words.length);
     }
   };
 
@@ -200,10 +199,10 @@ const AddListing = () => {
                     placeholder="Tell us what you're selling"
                     value={formData.title}
                     onChange={handleInputChange}
-                    isInvalid={errors.listing}
+                    isInvalid={errors.title}
                   />
                   <Form.Control.Feedback type="invalid">
-                    {errors.listing}
+                    {errors.title}
                   </Form.Control.Feedback>
                 </Form.Group>
 
@@ -285,8 +284,9 @@ const AddListing = () => {
                     placeholder="Write a description for your item"
                     value={description}
                     onChange={handleDescriptionChange}
+                    maxLength={1000}
                   />
-                  <div>Word Count: {wordCount}/250</div>
+                  <div>Character Count: {description.length}/1000</div>
                 </Form.Group>
 
                 <Button
