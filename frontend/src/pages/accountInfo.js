@@ -1,31 +1,21 @@
 import React, { useState } from "react";
 import { Container, Form, Button, Row, Col } from "react-bootstrap";
-import NavBar from "../components/navBar";
 import { FaEdit } from "react-icons/fa";
+import NavBar from "../components/navBar";
 
 const AccountSettings = () => {
   const [profilePhoto, setProfilePhoto] = useState(null);
   const [editMode, setEditMode] = useState(false);
   const [accountInfo, setAccountInfo] = useState({
-    name: "Name of the User",
-    email: "name@domain.com",
-    bio: "A description of this user.",
+    name: '',
+    email: '',
+    bio: '',
   });
 
   const [formData, setFormData] = useState(accountInfo);
 
-  const handleEditClick = () => {
-    setEditMode(true);
-  };
-
   const handleSave = () => {
     setAccountInfo(formData);
-    setEditMode(false);
-  };
-
-  const handleCancel = () => {
-    setFormData(accountInfo);
-    setEditMode(false);
   };
 
   const handleInputChange = (e) => {
@@ -44,29 +34,31 @@ const AccountSettings = () => {
     <>
       <NavBar />
       <Container className="d-flex flex-column align-items-center mt-5" style={{ maxWidth: "600px" }}>
-         <div
+        <h2 className="mb-4">Account Information</h2>
+
+        {/* Profile Image */}
+        <div
           style={{
-            position: 'relative',
-            width: '100px',
-            height: '100px',
-            borderRadius: '50%',
-            overflow: 'hidden',
-            marginBottom: '20px',
-            backgroundColor: '#f0f0f0',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
+            position: "relative",
+            width: "100px",
+            height: "100px",
+            borderRadius: "50%",
+            overflow: "hidden",
+            backgroundColor: "#f0f0f0",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            marginBottom: "20px",
           }}
         >
           {profilePhoto ? (
-            <img src={profilePhoto} alt="Profile" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            <img src={profilePhoto} alt="Profile" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
           ) : (
             <span>Photo</span>
           )}
-
           {/* Edit Icon Overlay */}
           <button
-            onClick={handleEditClick}
+            onClick={() => document.getElementById("profilePhotoInput").click()}
             style={{
               position: 'absolute',
               bottom: '5px',
@@ -81,18 +73,24 @@ const AccountSettings = () => {
             <FaEdit color="white" />
           </button>
         </div>
+        <Form.Control
+          type="file"
+          id="profilePhotoInput"
+          style={{ display: "none" }}
+          accept="image/*"
+          onChange={handleFileChange}
+        />
 
         {/* Account Information */}
         <Form className="w-100">
           <Row className="mb-3">
             <Col>
               <h5>Name</h5>
-              {!editMode ? (
-                <p>{accountInfo.name}</p>
-              ) : (
+              {(
                 <Form.Control
                   id="name"
                   type="text"
+                  placeholder="Name of the User"
                   value={formData.name}
                   onChange={handleInputChange}
                 />
@@ -102,12 +100,11 @@ const AccountSettings = () => {
           <Row className="mb-3">
             <Col>
               <h5>Email</h5>
-              {!editMode ? (
-                <p>{accountInfo.email}</p>
-              ) : (
+              {(
                 <Form.Control
                   id="email"
                   type="email"
+                  placeholder="name@domain.com"
                   value={formData.email}
                   onChange={handleInputChange}
                 />
@@ -117,29 +114,21 @@ const AccountSettings = () => {
           <Row className="mb-3">
             <Col>
               <h5>Bio</h5>
-              {!editMode ? (
-                <p>{accountInfo.bio}</p>
-              ) : (
+              {(
                 <Form.Control
                   id="bio"
                   type="text"
+                  placeholder="A description of this user."
                   value={formData.bio}
                   onChange={handleInputChange}
                 />
               )}
             </Col>
           </Row>
-          {!editMode ? (
-            <Button variant="outline-primary" onClick={handleEditClick}>
-              EDIT
-            </Button>
-          ) : (
+          {(
             <div>
               <Button variant="primary" className="me-2" onClick={handleSave}>
                 Save
-              </Button>
-              <Button variant="secondary" onClick={handleCancel}>
-                Cancel
               </Button>
             </div>
           )}
@@ -165,6 +154,31 @@ const AccountSettings = () => {
               Listing {listing}
             </div>
           ))}
+        </div>
+      {/* Delete Account and Log Out Buttons */}
+        <div className="mt-5 d-flex flex-column justify-content-center align-items-center gap-3">
+          <Button
+            variant="outline-danger"
+            className="px-4"
+            style={{
+              border: "1px solid red",
+              color: "red",
+              backgroundColor: "transparent",
+            }}
+          >
+            Delete Account
+          </Button>
+          <Button
+            variant="success"
+            className="px-4"
+            style={{
+              backgroundColor: "#005d8d",
+              color: "white",
+              border: "none",
+            }}
+          >
+            Log Out
+          </Button>
         </div>
       </Container>
     </>
