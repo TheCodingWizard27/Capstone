@@ -34,9 +34,8 @@ const DropUser = () => {
       <FaUser size={20} className="me-2" />
         {selectedValue ? `Selected: ${selectedValue}` : ''}
       </Dropdown.Toggle>
-
       <Dropdown.Menu>
-        <Dropdown.Item href="/category?selectedvalue=action-1">
+        <Dropdown.Item href="/accountInfo">
           My Profile
         </Dropdown.Item>
         <Dropdown.Item href="/category?selectedvalue=action-2">
