@@ -42,18 +42,47 @@ const AddListing = () => {
       });
   }, []);
 
-  // Handle file selection
   const handleFileChange = (e) => {
     setAlert({
       show: false,
       message: '',
       variant: '',
     });
+
     const selectedFiles = Array.from(e.target.files);
-    const filePreviews = selectedFiles.map((file) => ({
+    const validExtensions = [
+      'image/jpeg',
+      'image/jpg',
+      'image/png',
+      'image/gif',
+    ];
+    const maxSize = 3 * 1024 * 1024;
+
+    const filteredFiles = selectedFiles.filter((file) => {
+      if (!validExtensions.includes(file.type)) {
+        setAlert({
+          show: true,
+          message: `File "${file.name}" is not a valid image format.`,
+          variant: 'danger',
+        });
+        return false;
+      }
+      if (file.size > maxSize) {
+        setAlert({
+          show: true,
+          message: `File "${file.name}" exceeds the 3MB size limit.`,
+          variant: 'danger',
+        });
+        return false;
+      }
+      return true;
+    });
+
+    const filePreviews = filteredFiles.map((file) => ({
       file,
       preview: URL.createObjectURL(file),
     }));
+
     setFiles((prevFiles) => [...prevFiles, ...filePreviews]);
   };
 
