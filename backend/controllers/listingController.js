@@ -1,13 +1,12 @@
-const { db } = require("../firebase/firebase");
+const { db, bucket } = require("../firebase/firebase");
 const admin = require("firebase-admin");
-const path = require("path");
 const { v4: uuidv4 } = require("uuid"); // For generating unique file names
 
 exports.addListing = async (req, res) => {
   try {
     const { title, brand, category, description, price } = req.body;
     const userId = req.user.user_id; // Assuming user is set from `verifyAuthToken` middleware
-    const storage = admin.storage().bucket(); // Access Firebase Storage bucket
+    const storage = bucket; // Access Firebase Storage bucket
 
     let picUrls = [];
 
@@ -34,6 +33,7 @@ exports.addListing = async (req, res) => {
 
       picUrls = await Promise.all(uploadPromises);
     }
+    console.log(title);
 
     // Save listing data in Firestore
     await db.collection("listings").add({

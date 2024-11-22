@@ -1,7 +1,6 @@
 const { db } = require("../firebase/firebase");
 const admin = require("firebase-admin"); // Make sure admin SDK is imported
 
-
 exports.addUser = async (req, res) => {
   const { user_id, email } = req.user;
 

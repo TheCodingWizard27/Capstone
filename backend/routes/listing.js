@@ -4,15 +4,14 @@ const verifyAuthToken = require("../middlewares/authMiddleware");
 const validateListing = require("../middlewares/listingDataValidator");
 const listingController = require("../controllers/listingController");
 const multer = require("multer");
-const { db } = require("../firebase/firebase");
 
 // Configure multer to use memory storage
-const upload = multer({ storage: multer.memoryStorage() });
+const upload = multer({ storage: multer.memoryStorage() }).any();
 
 router.post(
   "/addListing",
   verifyAuthToken,
-  upload.array("files", 5),
+  upload,
   validateListing,
   listingController.addListing
 );
