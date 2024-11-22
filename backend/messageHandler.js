@@ -26,8 +26,7 @@ class ClientHandler {
     const tokenResponse = await this.validateToken(token);
 
     if (tokenResponse.verified) {
-      ws.activeClients = ws.activeClients || [];
-      ws.activeClients.push(ws);
+      this.activeClients.push(ws);
       console.log("Client connected successfully.");
     } else {
       if (
