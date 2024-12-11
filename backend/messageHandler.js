@@ -1,12 +1,12 @@
-// wsHandler.js
 const WebSocket = require("ws");
 const url = require("url");
-const { auth } = require("./firebase/firebase");
+const { auth,db } = require("./firebase/firebase");
+const admin = require("firebase-admin");
 
 class ClientHandler {
   constructor() {
     if (!ClientHandler.instance) {
-      this.activeClients = [];
+      this.activeClients = new Map(); // Use Map for better client tracking: { userId: WebSocket }
       ClientHandler.instance = this;
     }
     return ClientHandler.instance;
@@ -15,8 +15,8 @@ class ClientHandler {
   async validateToken(token) {
     try {
       // Verify the ID token
-      await auth.verifyIdToken(token);
-      return { verified: true, error: null };
+      const decodedToken = await auth.verifyIdToken(token);
+      return { verified: true, userId: decodedToken.uid, error: null };
     } catch (error) {
       return { verified: false, error };
     }
@@ -26,37 +26,35 @@ class ClientHandler {
     const tokenResponse = await this.validateToken(token);
 
     if (tokenResponse.verified) {
-      this.activeClients.push(ws);
-      console.log("Client connected successfully.");
+      const userId = tokenResponse.userId;
+      this.activeClients.set(userId, ws); // Track client by userId
+      console.log(`Client connected: ${userId}`);
     } else {
-      if (
+      const errorMessage =
         tokenResponse.error.code === "auth/argument-error" ||
         tokenResponse.error.message.includes(
           "Decoding Firebase ID token failed"
         )
-      ) {
-        ws.send(
-          JSON.stringify({
-            type: "error",
-            message: "Unauthorized: Invalid or expired token",
-          })
-        );
-      } else {
-        ws.send(
-          JSON.stringify({
-            type: "error",
-            message: tokenResponse.error.message,
-          })
-        );
-      }
+          ? "Unauthorized: Invalid or expired token"
+          : tokenResponse.error.message;
+
+      ws.send(
+        JSON.stringify({
+          type: "error",
+          message: errorMessage,
+        })
+      );
       ws.close();
     }
   }
 
   removeClient(ws) {
-    const index = this.activeClients.indexOf(ws);
-    if (index !== -1) {
-      this.activeClients.splice(index, 1);
+    for (const [userId, clientWs] of this.activeClients.entries()) {
+      if (clientWs === ws) {
+        this.activeClients.delete(userId);
+        console.log(`Client disconnected: ${userId}`);
+        break;
+      }
     }
   }
 
@@ -67,16 +65,23 @@ class ClientHandler {
     }
   }
 
+  sendMessageToUser(userId, data) {
+    const ws = this.activeClients.get(userId);
+    if (ws && ws.readyState === WebSocket.OPEN) {
+      ws.send(JSON.stringify(data));
+      console.log(`Sent message to user: ${userId}`);
+    } else {
+      console.log(`User ${userId} is not connected`);
+    }
+  }
+
   getActiveClients() {
-    return this.activeClients;
+    return Array.from(this.activeClients.keys());
   }
 }
 
 const setupWebSocket = (server) => {
-  // Create a WebSocket server using the provided HTTP server
   const wss = new WebSocket.Server({ server });
-
-  // Create a single instance of ClientHandler
   const clientHandler = new ClientHandler();
 
   // Handle WebSocket connections
@@ -85,27 +90,54 @@ const setupWebSocket = (server) => {
     const token = parameters.token;
 
     if (!token) {
-      ws.send("No token"); // Send a message to the client
-      ws.close(); // Close the WebSocket connection
-      return; // Stop further processing
+      ws.send(JSON.stringify({ type: "error", message: "No token provided" }));
+      ws.close();
+      return;
     }
 
-    console.log(`New WebSocket connection with token: ${token}`);
-
-    // Add the WebSocket client to the handler
     clientHandler.addClient(ws, token);
 
     ws.on("message", (message) => {
-      // Delegate message handling to the clientHandler
       clientHandler.handleMessage(ws, message);
     });
 
     ws.on("close", () => {
       console.log("WebSocket connection closed");
-      // Remove client from active connections
       clientHandler.removeClient(ws);
     });
   });
+
+  // Set up Firestore listener
+  setupFirestoreListener(clientHandler);
+};
+
+//Listen for firestore changes
+const setupFirestoreListener = (clientHandler) => {
+  const threadsCollection = db.collection("threads");
+
+  threadsCollection.onSnapshot((snapshot) => {
+    snapshot.docChanges().forEach((change) => {
+      if (change.type === "modified" || change.type === "added") {
+        const threadId = change.doc.id;
+        const threadData = change.doc.data();
+        const { messages } = threadData;
+
+        if (messages && messages.length > 0) {
+          const latestMessage = messages[messages.length - 1];
+          const { receiver } = latestMessage;
+
+          // Notify the recipient of the new message
+          clientHandler.sendMessageToUser(receiver, {
+            type: "message",
+            threadId,
+            data: latestMessage,
+          });
+        }
+      }
+    });
+  });
+
+  console.log("Firestore listener for threads collection initialized");
 };
 
 module.exports = setupWebSocket;

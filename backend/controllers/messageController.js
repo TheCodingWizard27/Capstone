@@ -1,9 +1,8 @@
 const admin = require("firebase-admin");
 
-exports.addMessage = async (message) => {
-  const { buyer, seller, listing, thread } = message;
+exports.addMessage = async (req, res) => {
+  const { listing, message } = req;
 
-  //Check if seller-listing-buyer
   await db.collection("listings").add({
     title,
     brand,
