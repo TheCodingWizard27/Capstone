@@ -17,6 +17,7 @@ import ForgotPassword from './pages/forgotPassword';
 import SingleListing from './pages/singleListing';
 import AccountSettings from './pages/accountInfo';
 import SearchPage from './pages/itemList';
+import MessagingPage from './pages/messageList';
 
 function App() {
   const { userLoggedIn } = useAuth(); // Access userLoggedIn from context
@@ -69,6 +70,13 @@ function App() {
             path="/accountInfo"
             element={
               userLoggedIn ? <AccountSettings /> : <Navigate to="/signIn" />
+            }
+          />
+
+          <Route
+            path="/messageList"
+            element={
+              userLoggedIn ? <MessagingPage /> : <Navigate to="/signIn" />
             }
           />
 
