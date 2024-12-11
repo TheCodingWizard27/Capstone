@@ -17,6 +17,7 @@ import ForgotPassword from './pages/forgotPassword';
 import SingleListing from './pages/singleListing';
 import AccountSettings from './pages/accountInfo';
 import SearchPage from './pages/itemList';
+import MessageList from './pages/messageList';
 
 function App() {
   const { userLoggedIn } = useAuth(); // Access userLoggedIn from context
@@ -70,6 +71,11 @@ function App() {
             element={
               userLoggedIn ? <AccountSettings /> : <Navigate to="/signIn" />
             }
+          />
+
+          <Route
+            path="/messageList"
+            element={userLoggedIn ? <MessageList /> : <Navigate to="/signIn" />}
           />
 
           {/* 404 Not Found route */}

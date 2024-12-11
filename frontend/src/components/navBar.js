@@ -76,7 +76,7 @@ const NavBar = () => {
                 Sell
               </Link>
               <Link
-                to="/messages"
+                to="/messageList"
                 className="text-white me-3"
                 style={{ textDecoration: 'none', fontSize: '1.25rem' }}
               >
@@ -112,7 +112,7 @@ const NavBar = () => {
             Sell
           </Link>
           <Link
-            to="/messages"
+            to="/messageList"
             className="d-flex align-items-center mb-3 text-light"
             style={{ textDecoration: 'none', fontSize: '1.25rem' }}
             onClick={toggleDrawer}
