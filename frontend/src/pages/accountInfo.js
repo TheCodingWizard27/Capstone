@@ -1,7 +1,8 @@
-import React, { useState } from "react";
-import { Container, Form, Button, Row, Col } from "react-bootstrap";
-import { FaEdit } from "react-icons/fa";
-import NavBar from "../components/navBar";
+import React, { useState } from 'react';
+import { Container, Form, Button, Row, Col } from 'react-bootstrap';
+import { FaEdit } from 'react-icons/fa';
+import NavBar from '../components/navBar';
+import { getAuth, signOut } from 'firebase/auth';
 
 const AccountSettings = () => {
   const [profilePhoto, setProfilePhoto] = useState(null);
@@ -30,35 +31,55 @@ const AccountSettings = () => {
     }
   };
 
+  const handleLogout = () => {
+    const auth = getAuth();
+    signOut(auth)
+      .then(() => {
+        console.log('Sign-out successful.');
+        // Redirect to login page or any other page after logout
+        window.location.href = '/';
+      })
+      .catch((error) => {
+        console.error('An error happened during sign out:', error);
+      });
+  };
+
   return (
     <>
       <NavBar />
-      <Container className="d-flex flex-column align-items-center mt-5" style={{ maxWidth: "600px" }}>
+      <Container
+        className="d-flex flex-column align-items-center mt-5"
+        style={{ maxWidth: '600px' }}
+      >
         <h2 className="mb-4">Account Information</h2>
 
         {/* Profile Image */}
         <div
           style={{
-            position: "relative",
-            width: "100px",
-            height: "100px",
-            borderRadius: "50%",
-            overflow: "hidden",
-            backgroundColor: "#f0f0f0",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            marginBottom: "20px",
+            position: 'relative',
+            width: '100px',
+            height: '100px',
+            borderRadius: '50%',
+            overflow: 'hidden',
+            backgroundColor: '#f0f0f0',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginBottom: '20px',
           }}
         >
           {profilePhoto ? (
-            <img src={profilePhoto} alt="Profile" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+            <img
+              src={profilePhoto}
+              alt="Profile"
+              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+            />
           ) : (
             <span>Photo</span>
           )}
           {/* Edit Icon Overlay */}
           <button
-            onClick={() => document.getElementById("profilePhotoInput").click()}
+            onClick={() => document.getElementById('profilePhotoInput').click()}
             style={{
               position: 'absolute',
               bottom: '5px',
@@ -76,7 +97,7 @@ const AccountSettings = () => {
         <Form.Control
           type="file"
           id="profilePhotoInput"
-          style={{ display: "none" }}
+          style={{ display: 'none' }}
           accept="image/*"
           onChange={handleFileChange}
         />
@@ -86,7 +107,7 @@ const AccountSettings = () => {
           <Row className="mb-3">
             <Col>
               <h5>Name</h5>
-              {(
+              {
                 <Form.Control
                   id="name"
                   type="text"
@@ -94,13 +115,13 @@ const AccountSettings = () => {
                   value={formData.name}
                   onChange={handleInputChange}
                 />
-              )}
+              }
             </Col>
           </Row>
           <Row className="mb-3">
             <Col>
               <h5>Email</h5>
-              {(
+              {
                 <Form.Control
                   id="email"
                   type="email"
@@ -108,13 +129,13 @@ const AccountSettings = () => {
                   value={formData.email}
                   onChange={handleInputChange}
                 />
-              )}
+              }
             </Col>
           </Row>
           <Row className="mb-3">
             <Col>
               <h5>Bio</h5>
-              {(
+              {
                 <Form.Control
                   id="bio"
                   type="text"
@@ -122,16 +143,16 @@ const AccountSettings = () => {
                   value={formData.bio}
                   onChange={handleInputChange}
                 />
-              )}
+              }
             </Col>
           </Row>
-          {(
+          {
             <div>
               <Button variant="primary" className="me-2" onClick={handleSave}>
                 Save
               </Button>
             </div>
-          )}
+          }
         </Form>
 
         {/* My Listings */}
@@ -141,29 +162,29 @@ const AccountSettings = () => {
             <div
               key={listing}
               style={{
-                width: "100px",
-                height: "100px",
-                margin: "5px",
-                backgroundColor: "#e0e0e0",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                border: "1px solid #ccc",
+                width: '100px',
+                height: '100px',
+                margin: '5px',
+                backgroundColor: '#e0e0e0',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                border: '1px solid #ccc',
               }}
             >
               Listing {listing}
             </div>
           ))}
         </div>
-      {/* Delete Account and Log Out Buttons */}
+        {/* Delete Account and Log Out Buttons */}
         <div className="mt-5 d-flex flex-column justify-content-center align-items-center gap-3">
           <Button
             variant="outline-danger"
             className="px-4"
             style={{
-              border: "1px solid red",
-              color: "red",
-              backgroundColor: "transparent",
+              border: '1px solid red',
+              color: 'red',
+              backgroundColor: 'transparent',
             }}
           >
             Delete Account
@@ -171,10 +192,11 @@ const AccountSettings = () => {
           <Button
             variant="success"
             className="px-4"
+            onClick={handleLogout}
             style={{
-              backgroundColor: "#005d8d",
-              color: "white",
-              border: "none",
+              backgroundColor: '#005d8d',
+              color: 'white',
+              border: 'none',
             }}
           >
             Log Out
