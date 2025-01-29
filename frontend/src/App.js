@@ -16,7 +16,7 @@ import Home from './pages/home';
 import ForgotPassword from './pages/forgotPassword';
 import SingleListing from './pages/singleListing';
 import AccountSettings from './pages/accountInfo';
-import SearchPage from './pages/itemList';
+import ListPage from './pages/itemList';
 import MessagingPage from './pages/messageList';
 
 function App() {
@@ -63,7 +63,7 @@ function App() {
           />
           <Route
             path="/itemList/:category"
-            element={userLoggedIn ? <SearchPage /> : <Navigate to="/signIn" />}
+            element={userLoggedIn ? <ListPage /> : <Navigate to="/signIn" />}
           />
 
           <Route

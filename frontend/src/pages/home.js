@@ -14,15 +14,16 @@ const Home = () => {
     axios
       .get(`${process.env.REACT_APP_BACKEND}/api/categories`)
       .then((response) => {
-        console.log(response);
+        console.log(response.data);
+        setCategories(response.data);
 
-        // Transform the response data to include `photos`
-        const transformedCategories = response.data.map((category) => ({
-          name: category,
-          photos: generateRandomPhotos(3), // Generates 3 random photos
-        }));
+        // // Transform the response data to include `photos`
+        // const transformedCategories = response.data.map((category) => ({
+        //   name: category,
+        //   photos: generateRandomPhotos(3), // Generates 3 random photos
+        // }));
 
-        setCategories(transformedCategories); // Set the transformed categories
+        // setCategories(transformedCategories); // Set the transformed categories
         setError(null); // Reset error if successful
       })
       .catch((err) => {

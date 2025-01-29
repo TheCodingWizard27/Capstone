@@ -1,7 +1,6 @@
 const WebSocket = require("ws");
 const url = require("url");
-const { auth,db } = require("./firebase/firebase");
-const admin = require("firebase-admin");
+const { auth, db } = require("./firebase/firebase");
 
 class ClientHandler {
   constructor() {
@@ -60,6 +59,8 @@ class ClientHandler {
 
   handleMessage(ws, message) {
     if (ws.readyState === WebSocket.OPEN) {
+      //Handle message changes
+
       console.log(`Handling message: ${message}`);
       ws.send(`Processed message: ${message}`);
     }
@@ -107,37 +108,8 @@ const setupWebSocket = (server) => {
     });
   });
 
-  // Set up Firestore listener
-  setupFirestoreListener(clientHandler);
 };
 
-//Listen for firestore changes
-const setupFirestoreListener = (clientHandler) => {
-  const threadsCollection = db.collection("threads");
 
-  threadsCollection.onSnapshot((snapshot) => {
-    snapshot.docChanges().forEach((change) => {
-      if (change.type === "modified" || change.type === "added") {
-        const threadId = change.doc.id;
-        const threadData = change.doc.data();
-        const { messages } = threadData;
-
-        if (messages && messages.length > 0) {
-          const latestMessage = messages[messages.length - 1];
-          const { receiver } = latestMessage;
-
-          // Notify the recipient of the new message
-          clientHandler.sendMessageToUser(receiver, {
-            type: "message",
-            threadId,
-            data: latestMessage,
-          });
-        }
-      }
-    });
-  });
-
-  console.log("Firestore listener for threads collection initialized");
-};
 
 module.exports = setupWebSocket;
