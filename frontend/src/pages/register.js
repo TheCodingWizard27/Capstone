@@ -12,6 +12,7 @@ const Register = () => {
   const navigate = useNavigate();
   const { userLoggedIn } = useAuth();
 
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -37,10 +38,7 @@ const Register = () => {
           throw new Error('Passwords do not match');
         }
 
-       await doCreateUserWithEmailAndPassword(
-          email,
-          password
-        );
+        await doCreateUserWithEmailAndPassword(email, password);
         navigate('/home');
       } catch (error) {
         setErrorMessage(error.message);
@@ -68,25 +66,36 @@ const Register = () => {
   return (
     <Container
       fluid
-      className="vh-auto d-flex align-items-center justify-content-center mb-5 mt-5"
-      style={{ width: '100%' }}
+      className="vh-100 d-flex align-items-center justify-content-center"
     >
-      <Row style={{ minWidth: '40%' }}>
-        <Col className="d-flex align-items-center justify-content-center h-auto">
-          <Card
-            style={{ width: '100%', minWidth: '300px', maxWidth: '1000px' }}
-            className="p-3 shadow-lg h-100"
-          >
-            <Card.Body className="d-flex flex-column justify-content-center">
-              <h5 className="text-center mb-4">Create your Account</h5>
+      <Row className="w-100 justify-content-center">
+        <Col xs={12} sm={10} md={8} lg={6} xl={5}>
+          <Card className="p-3 shadow-lg">
+            <Card.Body>
+              <h5 className="text-center mb-2">Create your Account</h5>
               {errorMessage && (
                 <div className="alert alert-danger text-center">
                   {errorMessage}
                 </div>
               )}
-              <Form className="w-100" onSubmit={onSubmit}>
+              <Form onSubmit={onSubmit}>
+                {/* Name field */}
+                <Form.Group controlId="formName" className="mb-3">
+                  <Form.Label>
+                    <h6>Name</h6>
+                  </Form.Label>
+                  <Form.Control
+                    size="md"
+                    type="name"
+                    placeholder="Enter your Name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    disabled={isRegistering}
+                  />
+                </Form.Group>
+
                 {/* Email field */}
-                <Form.Group controlId="formEmail" className="mb-4">
+                <Form.Group controlId="formEmail" className="mb-3">
                   <Form.Label>
                     <h6>Email</h6>
                   </Form.Label>
@@ -101,7 +110,7 @@ const Register = () => {
                 </Form.Group>
 
                 {/* Password field */}
-                <Form.Group controlId="formPassword" className="mb-4">
+                <Form.Group controlId="formPassword" className="mb-3">
                   <Form.Label>
                     <h6>Password</h6>
                   </Form.Label>
@@ -116,7 +125,7 @@ const Register = () => {
                 </Form.Group>
 
                 {/* Re-enter Password field */}
-                <Form.Group controlId="formReEnterPassword" className="mb-4">
+                <Form.Group controlId="formReEnterPassword" className="mb-2">
                   <Form.Label>
                     <h6>Re-enter Password</h6>
                   </Form.Label>
@@ -143,7 +152,7 @@ const Register = () => {
                 {/* Create Account button */}
                 <Button
                   variant="primary"
-                  className="w-100 py-3 mb-3"
+                  className="w-100 py-2 mb-2"
                   type="submit"
                   size="sm"
                   disabled={isRegistering}
@@ -157,7 +166,7 @@ const Register = () => {
                   <Link to="/signIn" className="w-100">
                     <Button
                       variant="dark"
-                      className="w-100 py-3 mb-3"
+                      className="w-100 py-2 mb-1"
                       size="sm"
                     >
                       Log In
@@ -166,14 +175,14 @@ const Register = () => {
                 </div>
 
                 {/* OR separator */}
-                <div className="text-center mb-3">
+                <div className="text-center mb-2">
                   <span className="text-muted">- OR -</span>
                 </div>
 
                 {/* Sign In with Google button */}
                 <Button
                   variant="outline-secondary"
-                  className="w-100 mt-3 py-3 d-flex align-items-center justify-content-center"
+                  className="w-100 mt-2 py-2 d-flex align-items-center justify-content-center"
                   size="sm"
                   onClick={onGoogleSignIn}
                   disabled={isRegistering}

@@ -61,25 +61,21 @@ const SignIn = () => {
   return (
     <Container
       fluid
-      className="vh-auto d-flex align-items-center justify-content-center mb-5 mt-5"
-      style={{ width: '100%' }}
+      className="vh-100 d-flex align-items-center justify-content-center"
     >
-      <Row style={{ minWidth: '40%' }}>
-        <Col className="d-flex align-items-center justify-content-center h-auto">
-          <Card
-            style={{ width: '100%', minWidth: '300px', maxWidth: '1000px' }}
-            className="p-3 shadow-lg h-100"
-          >
-            <Card.Body className="d-flex flex-column justify-content-center">
-              <h5 className="text-center mb-4">Sign In</h5>
+      <Row className="w-100 justify-content-center">
+        <Col xs={12} sm={10} md={8} lg={6} xl={5}>
+          <Card className="p-3 shadow-lg">
+            <Card.Body>
+              <h5 className="text-center mb-4 mt-4">Sign In</h5>
               {errorMessage && (
                 <div className="alert alert-danger text-center">
                   {errorMessage}
                 </div>
               )}
-              <Form className="w-100" onSubmit={onSubmit}>
+              <Form onSubmit={onSubmit}>
                 {/* Email field */}
-                <Form.Group controlId="formEmail" className="mb-4">
+                <Form.Group controlId="formEmail" className="mb-3">
                   <Form.Label>
                     <h6>Email</h6>
                   </Form.Label>
@@ -94,13 +90,13 @@ const SignIn = () => {
                 </Form.Group>
 
                 {/* Password field */}
-                <Form.Group controlId="formPassword" className="mb-4">
+                <Form.Group controlId="formPassword" className="mb-3">
                   <Form.Label>
                     <h6>Password</h6>
                   </Form.Label>
                   <Form.Control
                     size="md"
-                    type={showPassword ? 'text' : 'password'} // Toggle between 'text' and 'password' type
+                    type={showPassword ? 'text' : 'password'}
                     placeholder="Enter your Password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
@@ -109,7 +105,7 @@ const SignIn = () => {
                 </Form.Group>
 
                 {/* Checkbox for Show/Hide Password */}
-                <Form.Group controlId="formBasicCheckbox" className="mb-4">
+                <Form.Group controlId="formBasicCheckbox" className="mb-3">
                   <Form.Check
                     type="checkbox"
                     label={showPassword ? 'Hide Password' : 'Show Password'}
@@ -135,7 +131,7 @@ const SignIn = () => {
                 {/* Sign In button */}
                 <Button
                   variant="primary"
-                  className="w-100 py-3 mb-3 mt-3"
+                  className="w-100 py-2 mb-3 mt-3"
                   type="submit"
                   size="sm"
                   disabled={isSigningIn}
@@ -146,7 +142,7 @@ const SignIn = () => {
                 {/* Sign In with Google button */}
                 <Button
                   variant="outline-secondary"
-                  className="w-100 mt-3 py-3 d-flex align-items-center justify-content-center"
+                  className="w-100 mt-3 py-2 d-flex align-items-center justify-content-center"
                   size="sm"
                   onClick={onGoogleSignIn}
                   disabled={isSigningIn}
@@ -156,18 +152,18 @@ const SignIn = () => {
                 </Button>
 
                 {/* OR separator */}
-                <div className="text-center mt-4 mb-2">
+                <div className="text-center mt-2 mb-2">
                   <span className="text-muted">- OR -</span>
                 </div>
 
                 {/* Don't have an account text */}
-                <div className="text-center mt-3">
+                <div className="text-center mt-2">
                   <p>Don't have an account yet?</p>
                 </div>
 
                 {/* Register button wrapped in Link */}
                 <Link to="/register" className="w-100">
-                  <Button variant="dark" className="w-100 py-3 mt-2" size="sm">
+                  <Button variant="dark" className="w-100 py-2 mt-1" size="sm">
                     Register
                   </Button>
                 </Link>
