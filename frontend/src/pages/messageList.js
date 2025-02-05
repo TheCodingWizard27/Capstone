@@ -12,8 +12,10 @@ import {
 } from 'react-bootstrap';
 import { FaPaperPlane, FaPlus, FaBars, FaPaperclip } from 'react-icons/fa';
 import '../style/messaging.css';
+import { useAuth } from '../contexts/authContext';
 
 const MessagingPage = () => {
+  const { currentUser } = useAuth();
   const [messages, setMessages] = useState({
     'Mark Appleyard': [
       {
@@ -21,7 +23,7 @@ const MessagingPage = () => {
         sender: 'Mark Appleyard',
         profilePic: 'https://via.placeholder.com/30',
         time: '2:31 AM',
-        content: 'Lunch tomorrow. I’ll call you.',
+        content: 'get lost fatass. I’ll call you.',
         type: 'received',
       },
       {
@@ -52,6 +54,22 @@ const MessagingPage = () => {
   useEffect(() => {
     messageEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages[selectedUser]]);
+
+  useEffect(() => {
+    const ws = new WebSocket(`ws://localhost:8000?token=${currentUser.accessToken}`);
+    ws.onopen = () => {
+      console.log('Connected to the WebSocket server');
+      ws.send('Hello from the client!');
+    };
+
+    ws.onmessage = (event) => {
+      console.log('Message from server:', event.data);
+    };
+
+    ws.onclose = () => {
+      console.log('Disconnected from the server');
+    };
+  });
 
   // File upload handler
   const handleFileUpload = (event) => {

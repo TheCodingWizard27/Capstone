@@ -1,4 +1,4 @@
-const ws = new WebSocket('ws://localhost:8000');
+const ws = new WebSocket('ws://localhost:8000?token=1245');
 
 ws.onopen = () => {
   console.log('Connected to the WebSocket server');
