@@ -23,7 +23,7 @@ app.use(bodyParser.json());
 app.use("/api", userRoutes);
 app.use("/api", listingRoutes);
 
-app.get("/api/categories", (req, res) => {
+app.get("/api/categoriesInfo", (req, res) => {
   const categories = [
     {
       name: "Furniture",
@@ -75,6 +75,11 @@ app.get("/api/categories", (req, res) => {
     },
   ];
 
+  res.status(200).send(categories);
+});
+
+app.get("/api/categories/list", (req, res) => {
+  const categories = ["A", "B", "C", "D", "E"];
   res.status(200).send(categories);
 });
 
