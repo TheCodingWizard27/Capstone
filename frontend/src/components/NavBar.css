@@ -40,11 +40,27 @@
   position: absolute;
   width: 100%;
   max-height: 200px; /* Limits height, allows scrolling */
-  overflow-y: auto; /* Enables scrolling */
+  overflow-y: scroll; /* Ensures the scrollbar is always visible */
+  overflow-x: hidden; /* Hides horizontal scrolling */
   background-color: #669ebb;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   border-radius: 5px;
   z-index: 1050;
+  scrollbar-width: 5px; /* Makes scrollbar always visible in Firefox */
+}
+
+/* For WebKit browsers (Chrome, Edge, Safari) */
+.search-dropdown::-webkit-scrollbar {
+  width: 7px; /* Always show scrollbar */
+}
+
+.search-dropdown::-webkit-scrollbar-thumb {
+  background-color: #444; /* Color of the scrollbar */
+  border-radius: 4px;
+}
+
+.search-dropdown::-webkit-scrollbar-track {
+  background-color: #f0f0f0; /* Background of the scrollbar track */
 }
 
 .search-item {

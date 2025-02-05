@@ -107,9 +107,6 @@ const setupWebSocket = (server) => {
       clientHandler.removeClient(ws);
     });
   });
-
 };
-
-
 
 module.exports = setupWebSocket;
