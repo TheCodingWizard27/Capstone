@@ -165,7 +165,6 @@ const OtherItemsSection = ({ items, open, toggleOpen }) => (
 );
 
 const SingleListing = () => {
-  // Inside the component
   const { id } = useParams();
   const [listingData, setListingData] = useState(null);
   const [similarItems, setSimilarItems] = useState([]);
@@ -174,7 +173,6 @@ const SingleListing = () => {
   const [otherItemsOpen, setOtherItemsOpen] = useState(true);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-  // Fetch item details and similar items based on item ID from URL
   useEffect(() => {
     const fetchListingData = async () => {
       try {
@@ -183,8 +181,8 @@ const SingleListing = () => {
         );
         console.log(response.data);
         setListingData(response.data);
-        setSimilarItems(response.data.similarItems); // Assuming response contains similar items
-        setOtherItems(response.data.otherItems); // Assuming response contains other items by the seller
+        setSimilarItems(response.data.similarItems);
+        setOtherItems(response.data.otherItems);
       } catch (error) {
         console.error('Error fetching listing data:', error);
       }
@@ -194,14 +192,13 @@ const SingleListing = () => {
 
   if (!listingData) return <div>Loading...</div>;
 
-  //Return
   return (
     <div style={{ height: '100vh', marginBottom: '100px' }}>
       <NavBar />
       <Container className="mt-4 d-flex flex-column align-items-center">
         <Row className="justify-content-center">
           <MainProductSection
-            images={listingData.picUrls} // Set images from backend
+            images={listingData.picUrls}
             currentImageIndex={currentImageIndex}
             setCurrentImageIndex={setCurrentImageIndex}
           />
