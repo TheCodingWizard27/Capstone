@@ -10,42 +10,27 @@ const Home = () => {
   const [loading, setLoading] = useState(true); // Loading state
   const [error, setError] = useState(null); // Error state
 
-  useEffect(() => {
-    axios
-      .get(`${process.env.REACT_APP_BACKEND}/api/categories`)
-      .then((response) => {
-        console.log(response.data);
-        setCategories(response.data);
+ useEffect(() => {
+   const fetchCategories = async () => {
+     try {
+       const response = await axios.get(
+         `${process.env.REACT_APP_BACKEND}/api/categoriesInfo`
+       );
+       console.log(response.data);
+       setCategories(response.data);
+       setError(null); // Reset error if successful
+     } catch (err) {
+       console.error(err);
+       setError('No data available at the moment. Please try again later.');
+     } finally {
+       setLoading(false); // Set loading to false after fetching
+     }
+   };
 
-        // // Transform the response data to include `photos`
-        // const transformedCategories = response.data.map((category) => ({
-        //   name: category,
-        //   photos: generateRandomPhotos(3), // Generates 3 random photos
-        // }));
+   fetchCategories();
+ }, []);
 
-        // setCategories(transformedCategories); // Set the transformed categories
-        setError(null); // Reset error if successful
-      })
-      .catch((err) => {
-        console.log(err);
-        setError('No data available at the moment. Please try again later.');
-      })
-      .finally(() => {
-        setLoading(false); // Set loading to false after fetching
-      });
-  }, []);
-
-  // Function to generate an array of random image URLs from Lorem Picsum
-  const generateRandomPhotos = (count = 3) => {
-    return Array.from(
-      { length: count },
-      () =>
-        `https://picsum.photos/200/300?random=${Math.floor(
-          Math.random() * 1000
-        )}`
-    );
-  };
-
+ 
   return (
     <>
       <NavBar />
