@@ -1,208 +1,129 @@
 import React, { useState } from 'react';
-import { Container, Form, Button, Row, Col } from 'react-bootstrap';
-import { FaEdit } from 'react-icons/fa';
+import {
+  Container,
+  Form,
+  Button,
+  Row,
+  Col,
+  Card,
+  ToggleButton,
+  ToggleButtonGroup,
+} from 'react-bootstrap';
+import { FaLinkedin } from 'react-icons/fa';
 import NavBar from '../components/navBar';
-import { getAuth, signOut } from 'firebase/auth';
 
 const AccountSettings = () => {
-  const [profilePhoto, setProfilePhoto] = useState(null);
-  const [editMode, setEditMode] = useState(false);
-  const [accountInfo, setAccountInfo] = useState({
-    name: '',
-    email: '',
-    bio: '',
+  const [formData, setFormData] = useState({
+    email: 'person@email.com',
+    phone: '(XXX)-XXX-XXXX',
+    oldPassword: '',
+    newPassword: '',
+    memberStatus: 'Mentee',
   });
 
-  const [formData, setFormData] = useState(accountInfo);
-
-  const handleSave = () => {
-    setAccountInfo(formData);
-  };
-
-  const handleInputChange = (e) => {
+  const handleChange = (e) => {
     const { id, value } = e.target;
-    setFormData((prevData) => ({ ...prevData, [id]: value }));
+    setFormData((prev) => ({ ...prev, [id]: value }));
   };
 
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setProfilePhoto(URL.createObjectURL(file));
-    }
+  const handleMemberStatusChange = (value) => {
+    setFormData((prev) => ({ ...prev, memberStatus: value }));
   };
 
-  const handleLogout = () => {
-    const auth = getAuth();
-    signOut(auth)
-      .then(() => {
-        console.log('Sign-out successful.');
-        // Redirect to login page or any other page after logout
-        window.location.href = '/';
-      })
-      .catch((error) => {
-        console.error('An error happened during sign out:', error);
-      });
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log('Updated Info:', formData);
+    // Add API call or local storage saving logic
   };
 
   return (
     <>
-      <NavBar />
-      <Container
-        className="d-flex flex-column align-items-center mt-5"
-        style={{ maxWidth: '600px' }}
-      >
-        <h2 className="mb-4">Account Information</h2>
-
-        {/* Profile Image */}
+    <NavBar />
+    <Container
+      fluid
+      className="d-flex justify-content-center align-items-center vh-100"
+      style={{ backgroundColor: '#f0f4ff' }}
+    >
+      <div className="d-flex w-75 shadow-lg rounded bg-white">
+        {/* Sidebar */}
         <div
-          style={{
-            position: 'relative',
-            width: '100px',
-            height: '100px',
-            borderRadius: '50%',
-            overflow: 'hidden',
-            backgroundColor: '#f0f0f0',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginBottom: '20px',
-          }}
+          className="p-4 d-flex flex-column align-items-start"
+          style={{ width: '250px', backgroundColor: '#f8f9fa' }}
         >
-          {profilePhoto ? (
-            <img
-              src={profilePhoto}
-              alt="Profile"
-              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-            />
-          ) : (
-            <span>Photo</span>
-          )}
-          {/* Edit Icon Overlay */}
-          <button
-            onClick={() => document.getElementById('profilePhotoInput').click()}
-            style={{
-              position: 'absolute',
-              bottom: '5px',
-              right: '10px',
-              backgroundColor: 'rgb(0, 0, 0)',
-              border: 'none',
-              borderRadius: '50%',
-              padding: '5px',
-              cursor: 'pointer',
-            }}
-          >
-            <FaEdit color="white" />
-          </button>
+          <h4 className="mb-4">Settings</h4>
+          <div className="mb-3">
+            <span className="text-muted">PROFILE</span>
+          </div>
+          <div className="fw-bold text-primary border-bottom pb-1">ACCOUNT</div>
         </div>
-        <Form.Control
-          type="file"
-          id="profilePhotoInput"
-          style={{ display: 'none' }}
-          accept="image/*"
-          onChange={handleFileChange}
-        />
 
-        {/* Account Information */}
-        <Form className="w-100">
-          <Row className="mb-3">
-            <Col>
-              <h5>Name</h5>
-              {
-                <Form.Control
-                  id="name"
-                  type="text"
-                  placeholder="Name of the User"
-                  value={formData.name}
-                  onChange={handleInputChange}
-                />
-              }
-            </Col>
-          </Row>
-          <Row className="mb-3">
-            <Col>
-              <h5>Email</h5>
-              {
-                <Form.Control
-                  id="email"
-                  type="email"
-                  placeholder="name@domain.com"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                />
-              }
-            </Col>
-          </Row>
-          <Row className="mb-3">
-            <Col>
-              <h5>Bio</h5>
-              {
-                <Form.Control
-                  id="bio"
-                  type="text"
-                  placeholder="A description of this user."
-                  value={formData.bio}
-                  onChange={handleInputChange}
-                />
-              }
-            </Col>
-          </Row>
-          {
-            <div>
-              <Button variant="primary" className="me-2" onClick={handleSave}>
+        {/* Account Details */}
+        <div className="p-4 flex-grow-1">
+          <h4 className="mb-4">Account Settings</h4>
+
+          <Form onSubmit={handleSubmit}>
+            {/* Email & Phone */}
+            <Row className="mb-3">
+              <Col md={6}>
+                <Form.Group controlId="email">
+                  <Form.Label>Email</Form.Label>
+                  <Form.Control
+                    type="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                  />
+                </Form.Group>
+              </Col>
+              <Col md={6}>
+                <Form.Group controlId="phone">
+                  <Form.Label>Number</Form.Label>
+                  <Form.Control
+                    type="tel"
+                    value={formData.phone}
+                    onChange={handleChange}
+                  />
+                </Form.Group>
+              </Col>
+            </Row>
+
+            {/* Password Fields */}
+            <h5 className="mt-4">Change Password</h5>
+            <Row className="mb-3">
+              <Col md={6}>
+                <Form.Group controlId="oldPassword">
+                  <Form.Label>Old Password</Form.Label>
+                  <Form.Control
+                    type="password"
+                    value={formData.oldPassword}
+                    onChange={handleChange}
+                  />
+                </Form.Group>
+              </Col>
+              <Col md={6}>
+                <Form.Group controlId="newPassword">
+                  <Form.Label>New Password</Form.Label>
+                  <Form.Control
+                    type="password"
+                    value={formData.newPassword}
+                    onChange={handleChange}
+                  />
+                </Form.Group>
+              </Col>
+            </Row>
+            <Button variant="outline-primary" className="mb-4">
+              Submit
+            </Button>
+
+            {/* Save Button */}
+            <div className="text-end">
+              <Button variant="primary" type="submit">
                 Save
               </Button>
             </div>
-          }
-        </Form>
-
-        {/* My Listings */}
-        <h4 className="mt-5">My Listings</h4>
-        <div className="d-flex flex-wrap">
-          {[0, 1, 2, 3, 4].map((listing) => (
-            <div
-              key={listing}
-              style={{
-                width: '100px',
-                height: '100px',
-                margin: '5px',
-                backgroundColor: '#e0e0e0',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                border: '1px solid #ccc',
-              }}
-            >
-              Listing {listing}
-            </div>
-          ))}
+          </Form>
         </div>
-        {/* Delete Account and Log Out Buttons */}
-        <div className="mt-5 d-flex flex-column justify-content-center align-items-center gap-3">
-          <Button
-            variant="outline-danger"
-            className="px-4"
-            style={{
-              border: '1px solid red',
-              color: 'red',
-              backgroundColor: 'transparent',
-            }}
-          >
-            Delete Account
-          </Button>
-          <Button
-            variant="success"
-            className="px-4"
-            onClick={handleLogout}
-            style={{
-              backgroundColor: '#005d8d',
-              color: 'white',
-              border: 'none',
-            }}
-          >
-            Log Out
-          </Button>
-        </div>
-      </Container>
+      </div>
+    </Container>
     </>
   );
 };
