@@ -108,7 +108,7 @@ const ProductDetailsSection = ({ details }) => (
 
 const SimilarItemsSection = ({ items, open, toggleOpen }) => (
   <Card className="floating-card p-4">
-    <h5 className="section-title">Similar Items</h5>
+    <h5 className="section-title">Same Category Items</h5>
     <Collapse in={open}>
       <Row className="additional-container card-grid justify-content-center">
         {items.map((item, idx) => (
@@ -130,7 +130,7 @@ const SimilarItemsSection = ({ items, open, toggleOpen }) => (
       aria-expanded={open}
       className="collapse-button"
     >
-      {open ? 'Collapse' : 'Expand'} Similar Items
+      {open ? 'Collapse' : 'Expand'} Same Category Items
     </Button>
   </Card>
 );
