@@ -1,17 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, Button } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const SearchResults = ({ results }) => {
-  const [visibleItems, setVisibleItems] = useState(3); // Initially show 3 items
+  const [visibleItems, setVisibleItems] = useState(3);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Check if the search query is empty and navigate back when cleared
+  useEffect(() => {
+    if (results.length === 0 && location.pathname !== '/') {
+      // Show 'Item Not Found' instead of redirecting
+    }
+  }, [results, location.pathname]);
 
   const handleViewMore = () => {
-    setVisibleItems((prev) => prev + 3); // Show 3 more items when clicked
+    setVisibleItems((prev) => prev + 3);
   };
 
   const handleNavigate = (id) => {
-    navigate(`/singleListing/${id}`); // Redirect to the single listing page
+    navigate(`/singleListing/${id}`);
   };
 
   return (
@@ -29,7 +37,7 @@ const SearchResults = ({ results }) => {
               <p
                 className="text-truncate"
                 style={{
-                  maxWidth: '90%', // Limit width for truncation
+                  maxWidth: '90%',
                   whiteSpace: 'nowrap',
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
@@ -42,7 +50,6 @@ const SearchResults = ({ results }) => {
             </Card>
           ))}
 
-          {/* Show 'View More' Button If There Are More Items */}
           {visibleItems < results.length && (
             <Button variant="primary" onClick={handleViewMore}>
               View More
@@ -50,7 +57,7 @@ const SearchResults = ({ results }) => {
           )}
         </>
       ) : (
-        <p>No results found</p>
+        <p className="text-center mt-3">Item Not Found</p>
       )}
     </div>
   );
