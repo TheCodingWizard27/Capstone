@@ -5,9 +5,9 @@ import { Link } from 'react-router-dom';
 import { FaEnvelope, FaBars, FaTimes, FaHome } from 'react-icons/fa';
 import DropUser from './dropUser';
 import './NavBar.css'; // Importing custom CSS
-// import Logo from './images/Logo.png'; // Import the logo image
 
-const NavBar = () => {
+const NavBar = ({ setSearchResults }) => {
+  // Accept setSearchResults as a prop
   const [showDrawer, setShowDrawer] = useState(false); // Drawer state
 
   const toggleDrawer = () => setShowDrawer(!showDrawer); // Toggle drawer state
@@ -24,11 +24,9 @@ const NavBar = () => {
             {/* Logo or Home Icon based on screen size */}
             <Col lg={2} md={2} xs={2} className="d-flex align-items-center">
               <Link to="/" className="d-lg-none d-flex">
-                {/* Home icon for small screens */}
                 <FaHome size={25} className="text-white" />
               </Link>
               <Link to="/" className="d-none d-lg-flex">
-                {/* Logo for large screens */}
                 <img
                   src="/images/Logo.png"
                   alt="Logo"
@@ -38,9 +36,9 @@ const NavBar = () => {
               </Link>
             </Col>
 
-            {/* SearchBar */}
+            {/* SearchBar with setSearchResults prop */}
             <Col lg={7} xs={9} md={9} className="d-flex justify-content-center">
-              <SearchBar />
+              <SearchBar setSearchResults={setSearchResults} />
             </Col>
 
             {/* Toggle Button for Drawer */}

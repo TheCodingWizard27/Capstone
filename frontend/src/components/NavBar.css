@@ -35,3 +35,24 @@
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 1; /* Below the drawer */
 }
+
+.search-dropdown {
+  position: absolute;
+  width: 100%;
+  max-height: 300px; /* Limits height, allows scrolling */
+  overflow-y: auto; /* Enables scrolling */
+  background-color: white;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  z-index: 1050;
+}
+
+.search-item {
+  padding: 10px;
+  cursor: pointer;
+  border-bottom: 1px solid #ddd;
+}
+
+.search-item:hover {
+  background-color: #f8f9fa;
+}

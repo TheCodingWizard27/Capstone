@@ -1,47 +1,57 @@
-import { Form } from 'react-bootstrap';
-import { useState, useRef } from 'react';
+import React, { useState } from 'react';
+import { Form, InputGroup, ListGroup } from 'react-bootstrap';
+import axios from 'axios';
 
-const SearchBar = () => {
-  const [searchContent, setSearchContent] = useState('');
-  const inputRef = useRef(null); // Create a ref to access the input element
-  const [focused, setFocused] = useState(false);
+const SearchBar = ({ setSearchResults }) => {
+  const [query, setQuery] = useState('');
+  const [results, setResults] = useState([]);
 
-  const focus = () => {
-    alert('Hello');
-  };
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    alert(`Form Submitted with search content: ${searchContent}`);
-    setSearchContent(''); // Clear the form
-    inputRef.current.blur(); // Unfocus the input field
-  };
+  const handleSearch = async (event) => {
+    const value = event.target.value;
+    setQuery(value);
 
-  const handleChange = (e) => {
-    setSearchContent(e.target.value);
+    if (value.trim() === '') {
+      setResults([]);
+      setSearchResults([]);
+      return;
+    }
+
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_BACKEND}/api/search?query=${value}`
+      );
+      setResults(response.data);
+      setSearchResults(response.data);
+    } catch (error) {
+      console.error('Error fetching search results:', error);
+      setResults([]);
+    }
   };
 
   return (
-    <Form onSubmit={handleSubmit} style={{ width: '100%' }}>
-      <Form.Control
-        type="text"
-        value={searchContent}
-        onChange={handleChange}
-        placeholder="&#xf002; Search..."
-        ref={inputRef}
-        style={{
-          width: '100%',
-          backgroundColor: '#669ebb',
-          border: focused ? '1px solid white' : 'none', // Add a visible border
-          color: 'white',
-          padding: '10px',
-          fontFamily: 'Arial, FontAwesome',
-          fontSize: '16px',
-          borderRadius: '4px', // Add some border radius for better appearance
-        }}
-        onFocus={() => setFocused(true)}
-        onBlur={() => setFocused(false)}
-      />
-    </Form>
+    <div className="position-relative w-100">
+      {/* Search Input */}
+      <InputGroup>
+        <Form.Control
+          type="text"
+          placeholder="Search items..."
+          value={query}
+          onChange={handleSearch}
+        />
+      </InputGroup>
+
+      {/* Search Results Dropdown */}
+      {results.length > 0 && (
+        <ListGroup className="search-dropdown">
+          {results.map((item) => (
+            <ListGroup.Item key={item.id} className="search-item">
+              <strong>{item.name}</strong>
+              <p className="mb-0 text-muted">${item.price}</p>
+            </ListGroup.Item>
+          ))}
+        </ListGroup>
+      )}
+    </div>
   );
 };
 

@@ -107,3 +107,33 @@ exports.getSingleListing = async (req, res) => {
     res.status(500).json({ message: "Error fetching listing data" });
   }
 };
+
+exports.searchListings = async (req, res) => {
+  try {
+    const { query } = req.query; // Get search query from request
+
+    if (!query) {
+      return res.status(400).json({ message: "Search query is required" });
+    }
+
+    const listingsRef = db.collection("listings");
+    const snapshot = await listingsRef
+      .where("title", ">=", query)
+      .where("title", "<=", query + "\uf8ff")
+      .get();
+
+    if (snapshot.empty) {
+      return res.status(200).json([]);
+    }
+
+    const results = snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+
+    res.status(200).json(results);
+  } catch (error) {
+    console.error("Error searching listings:", error);
+    res.status(500).json({ message: "Error searching listings" });
+  }
+};

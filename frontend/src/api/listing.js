@@ -30,3 +30,17 @@ export const submitListing = async (data, token) => {
     throw error;
   }
 };
+
+export const searchListings = async (query) => {
+  try {
+    const response = await axios.get(
+      `${process.env.REACT_APP_BACKEND}/api/search?query=${encodeURIComponent(
+        query
+      )}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error('Search failed:', error);
+    throw error;
+  }
+};

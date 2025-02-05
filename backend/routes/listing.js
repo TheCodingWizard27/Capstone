@@ -21,4 +21,6 @@ router.get("/getListings", listingController.getListings);
 // Fetch listing by ID
 router.get("/listings/:id", listingController.getSingleListing);
 
+router.get("/search", listingController.searchListings);
+
 module.exports = router;
