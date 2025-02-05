@@ -4,6 +4,7 @@ const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const userRoutes = require("./routes/user");
 const listingRoutes = require("./routes/listing");
+const messageRoutes = require("./routes/message");
 
 const setupWebSocket = require("./messageHandler");
 
@@ -22,6 +23,7 @@ app.use(bodyParser.json());
 // Routes
 app.use("/api", userRoutes);
 app.use("/api", listingRoutes);
+app.use("/api", messageRoutes);
 
 app.get("/api/categoriesInfo", (req, res) => {
   const categories = [
@@ -79,7 +81,7 @@ app.get("/api/categoriesInfo", (req, res) => {
 });
 
 app.get("/api/categories/list", (req, res) => {
-  const categories = ["A", "B", "C", "D", "E"];
+  const categories = ["Electronics", "B", "C", "D", "E"];
   res.status(200).send(categories);
 });
 

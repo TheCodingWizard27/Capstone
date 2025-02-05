@@ -23,7 +23,9 @@ const ItemList = () => {
     setLoading(true);
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_BACKEND}/api/listings/category/${encodeURIComponent(category)}`
+        `${
+          process.env.REACT_APP_BACKEND
+        }/api/listings/category/${encodeURIComponent(category)}`
       );
       const data = await response.json();
       if (Array.isArray(data)) {

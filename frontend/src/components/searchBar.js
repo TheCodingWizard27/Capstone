@@ -18,7 +18,7 @@ const SearchBar = ({ setSearchResults }) => {
       setResults([]);
       setSearchResults([]);
       setShowDropdown(false);
-      navigate('/'); // Redirect to home page when search bar is empty
+      // navigate('/'); // Redirect to home page when search bar is empty
       return;
     }
 

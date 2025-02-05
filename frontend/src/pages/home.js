@@ -33,34 +33,34 @@ const Home = () => {
   return (
     <>
       {/* Navbar (Assuming SearchBar is inside NavBar) */}
-      <NavBar setSearchResults={setSearchResults} />
+      <NavBar />
 
       <Container className="mt-5 mb-5">
         {/* Show search results if available */}
-        {searchResults.length > 0 ? (
+        {/* {searchResults.length > 0 ? (
           <SearchResults results={searchResults} />
-        ) : (
-          <>
-            {loading ? (
-              <p>Loading categories...</p>
-            ) : error ? (
-              <Alert variant="warning">{error}</Alert>
-            ) : categories.length === 0 ? (
-              <Alert variant="info">No categories to display.</Alert>
-            ) : (
-              <Row className="g-5">
-                {categories.map((category) => (
-                  <Col xs={12} md={6} lg={4} key={category.name}>
-                    <CategoryCard
-                      categoryName={category.name}
-                      photos={category.photos}
-                    />
-                  </Col>
-                ))}
-              </Row>
-            )}
-          </>
-        )}
+        ) : ( */}
+        <>
+          {loading ? (
+            <p>Loading categories...</p>
+          ) : error ? (
+            <Alert variant="warning">{error}</Alert>
+          ) : categories.length === 0 ? (
+            <Alert variant="info">No categories to display.</Alert>
+          ) : (
+            <Row className="g-5">
+              {categories.map((category) => (
+                <Col xs={12} md={6} lg={4} key={category.name}>
+                  <CategoryCard
+                    categoryName={category.name}
+                    photos={category.photos}
+                  />
+                </Col>
+              ))}
+            </Row>
+          )}
+        </>
+        {/* )} */}
       </Container>
     </>
   );

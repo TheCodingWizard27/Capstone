@@ -6,11 +6,13 @@ import { FaEnvelope, FaBars, FaTimes, FaHome } from 'react-icons/fa';
 import DropUser from './dropUser';
 import './NavBar.css'; // Importing custom CSS
 
-const NavBar = ({ setSearchResults }) => {
+const NavBar = (/*{ setSearchResults }*/) => {
   // Accept setSearchResults as a prop
   const [showDrawer, setShowDrawer] = useState(false); // Drawer state
 
   const toggleDrawer = () => setShowDrawer(!showDrawer); // Toggle drawer state
+
+  const [searchResults, setSearchResults] = useState([]);
 
   return (
     <>

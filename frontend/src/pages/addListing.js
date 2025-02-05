@@ -33,7 +33,7 @@ const AddListing = () => {
 
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_BACKEND}/api/categories`)
+      .get(`${process.env.REACT_APP_BACKEND}/api/categories/list`)
       .then((response) => {
         setCategories(response.data); // Set the categories from the response
       })
@@ -62,7 +62,7 @@ const AddListing = () => {
       if (!validExtensions.includes(file.type)) {
         setAlert({
           show: true,
-          message: `File "${file.name}" is not a valid image format.`,
+          message: File`"${file.name}" is not a valid image format.`,
           variant: 'danger',
         });
         return false;
@@ -70,7 +70,7 @@ const AddListing = () => {
       if (file.size > maxSize) {
         setAlert({
           show: true,
-          message: `File "${file.name}" exceeds the 3MB size limit.`,
+          message: File`"${file.name}" exceeds the 3MB size limit.`,
           variant: 'danger',
         });
         return false;
