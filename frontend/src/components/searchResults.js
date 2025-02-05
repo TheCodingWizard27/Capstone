@@ -18,7 +18,7 @@ const SearchResults = ({ results }) => {
   };
 
   const handleNavigate = (id) => {
-    navigate(`/singleListing/${id}`);
+    navigate(`/singleListing/${id}`); // Navigate to singleListing with listing id
   };
 
   return (
@@ -29,7 +29,7 @@ const SearchResults = ({ results }) => {
             <Card
               key={listing.id}
               className="mb-2 p-3 shadow-sm"
-              onClick={() => handleNavigate(listing.id)}
+              onClick={() => handleNavigate(listing.id)} // Redirect to single listing page
               style={{ cursor: 'pointer' }}
             >
               {/* Display the first image as the main image */}

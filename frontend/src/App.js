@@ -18,6 +18,7 @@ import SingleListing from './pages/singleListing';
 import AccountSettings from './pages/accountInfo';
 import ListPage from './pages/itemList';
 import MessagingPage from './pages/messageList';
+import SearchResults from './components/searchResults';
 
 function App() {
   const { userLoggedIn } = useAuth(); // Access userLoggedIn from context
@@ -90,6 +91,9 @@ function App() {
               userLoggedIn ? <MessagingPage /> : <Navigate to="/signIn" />
             }
           />
+
+          <Route path="/" element={<SearchResults />} />
+          <Route path="/singleListing/:id" element={<SingleListing />} />
 
           {/* 404 Not Found route */}
           <Route path="*" element={<NotFound />} />
