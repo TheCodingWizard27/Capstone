@@ -13,6 +13,7 @@ import {
 import { FaPaperPlane, FaPlus, FaBars, FaPaperclip } from 'react-icons/fa';
 import '../style/messaging.css';
 import { useAuth } from '../contexts/authContext';
+import { sendMessage } from '../api/message'; //Function to make send message api call
 
 const MessagingPage = () => {
   const { currentUser } = useAuth();
@@ -56,7 +57,9 @@ const MessagingPage = () => {
   }, [messages[selectedUser]]);
 
   useEffect(() => {
-    const ws = new WebSocket(`ws://localhost:8000?token=${currentUser.accessToken}`);
+    const ws = new WebSocket(
+      `ws://localhost:8000?token=${currentUser.accessToken}`
+    );
     ws.onopen = () => {
       console.log('Connected to the WebSocket server');
       ws.send('Hello from the client!');
@@ -69,7 +72,7 @@ const MessagingPage = () => {
     ws.onclose = () => {
       console.log('Disconnected from the server');
     };
-  });
+  }, [currentUser.accessToken]);
 
   // File upload handler
   const handleFileUpload = (event) => {
@@ -157,6 +160,7 @@ const MessagingPage = () => {
       setNewMessage('');
       setUploadedFiles([]);
     }
+    sendMessage(newMessage, currentUser); //APi call to the backend
   };
 
   const handleSelectUser = (user) => {
