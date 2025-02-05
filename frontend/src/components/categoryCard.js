@@ -1,18 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Card, Carousel } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
-const CategoryCard = ({ categoryName, photos }) => {
-  const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
-
-  // Optional: useEffect if you want to cycle through images yourself
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentPhotoIndex((prevIndex) => (prevIndex + 1) % photos.length);
-    }, 3000);
-    return () => clearInterval(interval);
-  }, [photos]);
-
+const CategoryCard = ({ categoryName, photos, brand, description }) => {
   return (
     <Card className="h-180">
       <Card.Body>
@@ -23,17 +13,24 @@ const CategoryCard = ({ categoryName, photos }) => {
           <Card.Title>{categoryName}</Card.Title>
         </Link>
 
+        <p>{brand}</p> {/* Display the brand */}
+        <p>{description}</p> {/* Display the description */}
+
         <Carousel>
-          {photos.map((photo, index) => (
-            <Carousel.Item key={index}>
-              <img
-                className="d-block w-100"
-                src={photo}
-                alt={`${categoryName} photo ${index + 1}`}
-                style={{ objectFit: 'cover', height: '300px' }}
-              />
-            </Carousel.Item>
-          ))}
+          {photos && photos.length > 0 ? (
+            photos.map((photo, index) => (
+              <Carousel.Item key={index}>
+                <img
+                  className="d-block w-100"
+                  src={photo}
+                  alt={`Image for ${categoryName} ${index + 1}`}
+                  style={{ objectFit: 'cover', height: '300px' }}
+                />
+              </Carousel.Item>
+            ))
+          ) : (
+            <p>No images available</p> // Fallback in case no images are available
+          )}
         </Carousel>
       </Card.Body>
     </Card>

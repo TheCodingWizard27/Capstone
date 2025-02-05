@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const Card = ({ id, imageUrl, title, description }) => {
+const Card = ({ id, imageUrl, title, brand, description }) => {
   return (
     <div
       style={{
@@ -35,6 +35,11 @@ const Card = ({ id, imageUrl, title, description }) => {
         <Link to={`/listing/${id}`} className="text-decoration-none">
           <h3 style={{ margin: '0 0 10px', fontSize: '1.2em' }}>{title}</h3>
         </Link>
+
+        {/* Display the brand below the title */}
+        <p style={{ margin: '0', color: '#888', fontSize: '1em' }}>
+          Brand: <strong>{brand}</strong>
+        </p>
 
         <p
           style={{

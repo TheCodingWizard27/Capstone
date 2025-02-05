@@ -41,22 +41,22 @@ app.get("/api/categoriesInfo", (req, res) => {
         "https://firebasestorage.googleapis.com/v0/b/shop-simplify.firebasestorage.app/o/categoryImages%2Fbooks3.jpg?alt=media&token=f8836a9c-2f24-4843-9f00-0a490fc2a3a2",
       ],
     },
-    // {
-    //   name: "Electronics",
-    //   images: [
-    //     "https://dummyurl.com/electronics1.jpg",
-    //     "https://dummyurl.com/electronics2.jpg",
-    //     "https://dummyurl.com/electronics3.jpg",
-    //   ],
-    // },
-    // {
-    //   name: "Clothes",
-    //   images: [
-    //     "https://dummyurl.com/clothes1.jpg",
-    //     "https://dummyurl.com/clothes2.jpg",
-    //     "https://dummyurl.com/clothes3.jpg",
-    //   ],
-    // },
+    {
+      name: "Electronics",
+      photos: [
+        "https://firebasestorage.googleapis.com/v0/b/shop-simplify.firebasestorage.app/o/categoryImages%2Ftv2.jpeg?alt=media&token=f6694bae-c59f-4537-b818-45a558cc6c9b",
+        "https://firebasestorage.googleapis.com/v0/b/shop-simplify.firebasestorage.app/o/categoryImages%2FKitchen2.jpg?alt=media&token=a61b56ea-ade5-4bc3-96e2-371e6a758668",
+        "https://firebasestorage.googleapis.com/v0/b/shop-simplify.firebasestorage.app/o/categoryImages%2Fmisc3.jpg?alt=media&token=dc6c6883-0939-48cf-8049-d742a96f07db",
+      ],
+    },
+    {
+      name: "Clothes",
+      images: [
+        "https://dummyurl.com/clothes1.jpg",
+        "https://dummyurl.com/clothes2.jpg",
+        "https://dummyurl.com/clothes3.jpg",
+      ],
+    },
     {
       name: "Kitchen",
       photos: [

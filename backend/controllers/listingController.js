@@ -2,6 +2,7 @@ const { db, bucket } = require("../firebase/firebase");
 const admin = require("firebase-admin");
 const { v4: uuidv4 } = require("uuid"); // For generating unique file names
 
+// Endpoint to add a new listing
 exports.addListing = async (req, res) => {
   try {
     const { title, brand, category, description, price } = req.body;
@@ -33,7 +34,6 @@ exports.addListing = async (req, res) => {
 
       picUrls = await Promise.all(uploadPromises);
     }
-    console.log(title);
 
     // Save listing data in Firestore
     await db.collection("listings").add({
@@ -56,8 +56,31 @@ exports.addListing = async (req, res) => {
       .send({ message: "Error adding listing", error: error.message });
   }
 };
+exports.getListingsByCategory = async (req, res) => {
+  try {
+    const { category } = req.params; // Get the category from URL params
 
-// Assuming we're listing all listings in Firestore collection
+    // Fetch listings where the category matches the one passed in the URL
+    const snapshot = await db.collection("listings").where("category", "==", category).get();
+
+    if (snapshot.empty) {
+      return res.status(404).json({ message: `No listings found for the category: ${category}` });
+    }
+
+    // Map through the snapshot and format the listings
+    const listings = snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+
+    res.status(200).json(listings); // Send the listings as JSON
+  } catch (error) {
+    console.error("Error fetching listings by category:", error);
+    res.status(500).json({ message: "Error fetching listings by category", error: error.message });
+  }
+};
+
+// Endpoint to get all listings
 exports.getListings = async (req, res) => {
   try {
     const snapshot = await db.collection("listings").get();
@@ -75,6 +98,7 @@ exports.getListings = async (req, res) => {
   }
 };
 
+// Endpoint to get a single listing by ID
 exports.getSingleListing = async (req, res) => {
   try {
     const listingId = req.params.id;
@@ -108,6 +132,35 @@ exports.getSingleListing = async (req, res) => {
   }
 };
 
+// Endpoint to search listings by category (NEW METHOD)
+exports.getListingsByCategory = async (req, res) => {
+  try {
+    const { category } = req.params; // Category from URL parameters
+
+    // Query Firestore to fetch listings that match the category
+    const snapshot = await db
+      .collection("listings")
+      .where("category", "==", category) // Match documents where 'category' field matches
+      .get();
+
+    if (snapshot.empty) {
+      return res.status(404).json({ message: "No listings found in this category" });
+    }
+
+    // Map the results to return the data
+    const listings = snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+
+    res.status(200).json(listings); // Send the listings as JSON
+  } catch (error) {
+    console.error("Error fetching listings by category:", error);
+    res.status(500).send({ message: "Error fetching listings by category", error: error.message });
+  }
+};
+
+// Endpoint for searching listings by title (used for search functionality)
 exports.searchListings = async (req, res) => {
   try {
     const { query } = req.query; // Get search query from request

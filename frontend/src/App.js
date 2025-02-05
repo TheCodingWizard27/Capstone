@@ -16,7 +16,7 @@ import Home from './pages/home';
 import ForgotPassword from './pages/forgotPassword';
 import SingleListing from './pages/singleListing';
 import AccountSettings from './pages/accountInfo';
-import ListPage from './pages/itemList';
+import ListPage from './pages/itemList'; // Your item list page where category-based listing will happen
 import MessagingPage from './pages/messageList';
 
 function App() {
@@ -62,23 +62,29 @@ function App() {
             }
           />
           <Route
-            path="/itemList"
+            path="/itemList" // Keep this route as it handles item listing
             element={userLoggedIn ? <ListPage /> : <Navigate to="/signIn" />}
           />
-
+          
+          {/* Remove CategoryListing route since it's no longer needed */}
+          {/* <Route
+            path="/category/:categoryName" // Dynamic route for CategoryListing
+            element={userLoggedIn ? <CategoryListing /> : <Navigate to="/signIn" />}
+          /> */}
+          
           <Route
             path="/accountInfo"
             element={
               userLoggedIn ? <AccountSettings /> : <Navigate to="/signIn" />
             }
           />
-
           <Route
             path="/messageList"
             element={
               userLoggedIn ? <MessagingPage /> : <Navigate to="/signIn" />
             }
           />
+          
 
           {/* 404 Not Found route */}
           <Route path="*" element={<NotFound />} />
