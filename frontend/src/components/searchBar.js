@@ -68,10 +68,31 @@ const SearchBar = ({ setSearchResults }) => {
         <ListGroup className="search-dropdown">
           {results.length > 0 ? (
             results.map((item) => (
-              <ListGroup.Item key={item.id} className="search-item">
-                <strong>{item.name}</strong>
-                <p className="mb-0 text-muted">{item.title}</p>
-                <p className="mb-0 text-muted">${item.price}</p>
+              <ListGroup.Item
+                key={item.id}
+                className="search-item"
+                onClick={() => navigate(`/singleListing/${item.id}`)}
+                style={{ cursor: 'pointer' }}
+              >
+                <div className="d-flex align-items-center">
+                  {item.images && item.images[0] && (
+                    <img
+                      src={item.images[0].url} // Show first image
+                      alt="Preview"
+                      style={{
+                        width: '50px',
+                        height: '50px',
+                        objectFit: 'cover',
+                        marginRight: '10px',
+                      }}
+                    />
+                  )}
+                  <div>
+                    <strong>{item.name}</strong>
+                    <p className="mb-0 text-muted">{item.title}</p>
+                    <p className="mb-0 text-muted">${item.price}</p>
+                  </div>
+                </div>
               </ListGroup.Item>
             ))
           ) : (
