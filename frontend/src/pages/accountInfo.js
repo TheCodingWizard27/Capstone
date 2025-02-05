@@ -58,7 +58,7 @@ const AccountSettings = () => {
                       type="email"
                       value={formData.email}
                       onChange={handleChange}
-                      placeholder='example@email.com'
+                      placeholder="example@email.com"
                     />
                   </Form.Group>
                 </Col>
@@ -69,7 +69,7 @@ const AccountSettings = () => {
                       type="tel"
                       value={formData.phone}
                       onChange={handleChange}
-                      placeholder='(XXX)-XXX-XXXX'
+                      placeholder="(XXX)-XXX-XXXX"
                     />
                   </Form.Group>
                 </Col>
@@ -85,7 +85,7 @@ const AccountSettings = () => {
                       type="password"
                       value={formData.oldPassword}
                       onChange={handleChange}
-                      placeholder='Enter old password'
+                      placeholder="Enter old password"
                     />
                   </Form.Group>
                 </Col>
@@ -96,7 +96,7 @@ const AccountSettings = () => {
                       type="password"
                       value={formData.newPassword}
                       onChange={handleChange}
-                      placeholder='Enter new password'
+                      placeholder="Enter new password"
                     />
                   </Form.Group>
                 </Col>
