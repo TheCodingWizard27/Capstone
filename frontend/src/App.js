@@ -62,7 +62,7 @@ function App() {
             }
           />
           <Route
-            path="/itemList/:category"
+            path="/itemList"
             element={userLoggedIn ? <ListPage /> : <Navigate to="/signIn" />}
           />
 

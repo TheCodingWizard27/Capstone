@@ -1,72 +1,44 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import NavBar from '../components/navBar';
 import FilterBar from '../components/filterBar';
 import Card from '../components/itemCard';
+import { useLocation } from 'react-router-dom';
+import { use } from 'react';
 
-// Dummy data for search results
-const allSearchResults = [
-  {
-    id: 1,
-    title: 'Camera and Lens For Sale',
-    description: 'High-quality camera and lens for sale.',
-    imageUrl:
-      'https://en.reset.org/app/uploads/2021/02/1024px-google_loon_-_launch_event.jpg',
-    category: 'Electronics',
-  },
-  {
-    id: 2,
-    title: 'Camera and Lens For Sale',
-    description: 'High-quality camera and lens for sale.',
-    imageUrl:
-      'https://en.reset.org/app/uploads/2021/02/1024px-google_loon_-_launch_event.jpg',
-    category: 'Electronics',
-  },
-  {
-    id: 3,
-    title: 'Camera and Lens For Sale',
-    description: 'High-quality camera and lens for sale.',
-    imageUrl:
-      'https://en.reset.org/app/uploads/2021/02/1024px-google_loon_-_launch_event.jpg',
-    category: 'Electronics',
-  },
-  {
-    id: 4,
-    title: 'Camera and Lens For Sale',
-    description: 'High-quality camera and lens for sale.',
-    imageUrl:
-      'https://en.reset.org/app/uploads/2021/02/1024px-google_loon_-_launch_event.jpg',
-    category: 'Electronics',
-  },
-];
-
-const SearchPage = () => {
-  const [searchQuery, setSearchQuery] = useState('');
+const ItemList = () => {
+  const [allSearchResults, setAllSearchedResults] = useState([]);
   const [filteredResults, setFilteredResults] = useState(allSearchResults);
   const [selectedCategory, setSelectedCategory] = useState('All');
 
-  // Handle search input change
-  const handleSearchChange = (event) => {
-    const query = event.target.value;
-    setSearchQuery(query);
-    filterResults(query, selectedCategory);
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const categoryFromUrl = queryParams.get('category') || 'All';
+
+  useEffect(() => {
+    setSelectedCategory(categoryFromUrl);
+    fetchItems(categoryFromUrl);
+  }, []);
+
+  const fetchItems = async (category) => {
+    try {
+      const response = await fetch(
+        `${
+          process.env.REACT_APP_BACKEND
+        }/api//getListingsByCategory?category=${encodeURIComponent(category)}`
+      );
+      const data = await response.json();
+      console.log(data);
+      setFilteredResults(data);
+      console.log(filteredResults);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      setFilteredResults([]);
+    }
   };
 
   // Handle category change from FilterBar
   const handleCategoryChange = (category) => {
     setSelectedCategory(category);
-    filterResults(searchQuery, category);
-  };
-
-  // Filter results based on search query and category
-  const filterResults = (query, category) => {
-    const results = allSearchResults.filter((item) => {
-      const matchesQuery = item.title
-        .toLowerCase()
-        .includes(query.toLowerCase());
-      const matchesCategory = category === 'All' || item.category === category;
-      return matchesQuery && matchesCategory;
-    });
-    setFilteredResults(results);
   };
 
   return (
@@ -94,9 +66,14 @@ const SearchPage = () => {
             filteredResults.map((item) => (
               <Card
                 key={item.id}
-                imageUrl={item.imageUrl}
+                id={item.id}
+                imageUrl={item.picUrls[0]}
                 title={item.title}
-                description={item.description}
+                description={
+                  item.description.length > 100
+                    ? `${item.description.substring(0, 100)}...`
+                    : item.description
+                }
               />
             ))
           ) : (
@@ -108,4 +85,4 @@ const SearchPage = () => {
   );
 };
 
-export default SearchPage;
+export default ItemList;

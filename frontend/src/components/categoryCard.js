@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Carousel } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 const CategoryCard = ({ categoryName, photos }) => {
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
@@ -15,7 +16,13 @@ const CategoryCard = ({ categoryName, photos }) => {
   return (
     <Card className="h-180">
       <Card.Body>
-        <Card.Title>{categoryName}</Card.Title>
+        <Link
+          to={`/itemList?category=${encodeURIComponent(categoryName)}`}
+          className="text-decoration-none"
+        >
+          <Card.Title>{categoryName}</Card.Title>
+        </Link>
+
         <Carousel>
           {photos.map((photo, index) => (
             <Carousel.Item key={index}>

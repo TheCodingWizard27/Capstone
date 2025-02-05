@@ -1,6 +1,7 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
-const Card = ({ imageUrl, title, description }) => {
+const Card = ({ id, imageUrl, title, description }) => {
   return (
     <div
       style={{
@@ -11,7 +12,7 @@ const Card = ({ imageUrl, title, description }) => {
         padding: '15px',
         marginBottom: '20px',
         width: '100%',
-        maxWidth: '800px',
+        maxWidth: '80%',
         backgroundColor: 'white',
         boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
       }}
@@ -26,14 +27,22 @@ const Card = ({ imageUrl, title, description }) => {
           borderRadius: '4px',
         }}
       />
-      <div>
-        <h3 style={{ margin: '0 0 10px', fontSize: '1.2em' }}>{title}</h3>
+      <div
+        style={{
+          overflowWrap: 'break-word',
+        }}
+      >
+        <Link to={`/listing/${id}`} className="text-decoration-none">
+          <h3 style={{ margin: '0 0 10px', fontSize: '1.2em' }}>{title}</h3>
+        </Link>
+
         <p
           style={{
             margin: '0',
             color: '#666',
             fontSize: '0.9em',
             lineHeight: '1.5',
+            overflowWrap: 'wrap',
           }}
         >
           {description}

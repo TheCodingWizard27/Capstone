@@ -18,7 +18,7 @@ export const sendMessage = async (data, currentUser) => {
 
     return response.data; // Return the response from the backend
   } catch (error) {
-    console.error('Failed to submit listing:', error);
+    console.error('Failed to submit message:', error);
     throw error;
   }
 };
