@@ -74,6 +74,17 @@ function App() {
           />
 
           <Route
+            path="/singleListing"
+            element={
+              userLoggedIn ? (
+                <SingleListing />
+              ) : (
+                <Navigate to="/singleListing" />
+              )
+            }
+          />
+
+          <Route
             path="/messageList"
             element={
               userLoggedIn ? <MessagingPage /> : <Navigate to="/signIn" />

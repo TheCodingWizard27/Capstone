@@ -46,6 +46,7 @@ const SearchBar = ({ setSearchResults }) => {
           {results.map((item) => (
             <ListGroup.Item key={item.id} className="search-item">
               <strong>{item.name}</strong>
+              <p className="mb-0 text-muted">{item.title}</p>
               <p className="mb-0 text-muted">${item.price}</p>
             </ListGroup.Item>
           ))}
