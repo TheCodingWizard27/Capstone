@@ -76,7 +76,10 @@ const AccountSettings = () => {
                       />
                     </Form.Group>
                   </Col>
-                  <Col md={6}>
+                </Row>
+
+                <Row className="mb-4">
+                  <Col md={12}>
                     <Form.Group controlId="bio">
                       <Form.Label>Bio</Form.Label>
                       <Form.Control
@@ -84,6 +87,7 @@ const AccountSettings = () => {
                         value={formData.bio}
                         onChange={handleChange}
                         placeholder="Tell us a little about yourself"
+                        rows={4} // Increase the number of rows to make the field bigger
                       />
                     </Form.Group>
                   </Col>
@@ -114,20 +118,6 @@ const AccountSettings = () => {
                     </Form.Group>
                   </Col>
                 </Row>
-
-                {/* Pronouns */}
-                <Form.Group controlId="pronouns" className="mb-4">
-                  <Form.Label>Pronouns</Form.Label>
-                  <Form.Select
-                    value={formData.pronouns}
-                    onChange={handleChange}
-                  >
-                    <option>Don't specify</option>
-                    <option>He/Him</option>
-                    <option>She/Her</option>
-                    <option>They/Them</option>
-                  </Form.Select>
-                </Form.Group>
 
                 {/* Password Fields */}
                 <h4 className="mt-4">Change Password</h4>
