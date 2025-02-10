@@ -79,7 +79,7 @@ const AccountSettings = () => {
                 </Row>
 
                 <Row className="mb-4">
-                  <Col md={12}>
+                  <Col md={6}>
                     <Form.Group controlId="bio">
                       <Form.Label>Bio</Form.Label>
                       <Form.Control
