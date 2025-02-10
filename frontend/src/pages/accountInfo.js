@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Container, Form, Button, Row, Col, Card } from 'react-bootstrap';
-import { FaRegEdit } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import NavBar from '../components/navBar';
 
@@ -48,27 +47,21 @@ const AccountSettings = () => {
       >
         <Card className="w-75 mx-auto p-4 shadow-lg rounded bg-white">
           <Row>
+            {/* Left Side Menu - Increased Spacing */}
             <Col md={3} className="fw-bold text-primary border-bottom pb-1">
               <h4 className="mb-4">Settings</h4>
-              <div className="fw-bold text-primary border-bottom pb-1">
-                PROFILE
+              <div className="fw-bold text-primary border-bottom pb-3">
+                Profile
               </div>
               <div
-                className="fw-bold text-primary border-bottom pb-1"
-                onClick={() => navigate('/account')}
-                style={{ cursor: 'pointer' }}
-              >
-                Account
-              </div>
-              <div
-                className="fw-bold text-primary border-bottom pb-1"
+                className="fw-bold text-primary border-bottom pb-3"
                 onClick={() => navigate('/my-listings')}
                 style={{ cursor: 'pointer' }}
               >
                 My Listings
               </div>
               <div
-                className="fw-bold text-primary border-bottom pb-1"
+                className="fw-bold text-primary border-bottom pb-3"
                 onClick={() => navigate('/wishlist')}
                 style={{ cursor: 'pointer' }}
               >
@@ -76,8 +69,8 @@ const AccountSettings = () => {
               </div>
             </Col>
 
+            {/* Main Account Settings Form */}
             <Col md={6}>
-              <h4 className="mb-4">Account Settings</h4>
               <Form onSubmit={handleSubmit}>
                 <Row className="mb-4">
                   <Col md={12}>
@@ -170,6 +163,7 @@ const AccountSettings = () => {
               </Form>
             </Col>
 
+            {/* Profile Picture Section - Removed Edit Icon */}
             <Col md={3} className="d-flex flex-column align-items-center">
               <h5 className="mb-3">Profile Picture</h5>
               <label
@@ -179,8 +173,8 @@ const AccountSettings = () => {
                 <div
                   className="rounded-circle overflow-hidden d-flex align-items-center justify-content-center shadow"
                   style={{
-                    width: '120px',
-                    height: '120px',
+                    width: '150px', // Made Bigger
+                    height: '150px',
                     backgroundColor: '#222',
                     position: 'relative',
                   }}
@@ -193,20 +187,10 @@ const AccountSettings = () => {
                       style={{ objectFit: 'cover' }}
                     />
                   ) : (
-                    <FaRegEdit size={40} color="white" />
+                    <div style={{ color: 'white', fontSize: '14px' }}>
+                      No Image
+                    </div>
                   )}
-                  <div
-                    className="position-absolute"
-                    style={{
-                      bottom: '5px',
-                      right: '5px',
-                      backgroundColor: 'black',
-                      borderRadius: '50%',
-                      padding: '5px',
-                    }}
-                  >
-                    <FaRegEdit size={15} color="white" />
-                  </div>
                 </div>
               </label>
               <input
