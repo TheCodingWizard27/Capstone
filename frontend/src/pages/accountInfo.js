@@ -1,18 +1,16 @@
 import React, { useState } from 'react';
 import { Container, Form, Button, Row, Col, Card } from 'react-bootstrap';
-import { FaRegEdit } from 'react-icons/fa'; // Edit icon
 import { useNavigate } from 'react-router-dom';
 import NavBar from '../components/navBar';
 
 const AccountSettings = () => {
   const navigate = useNavigate();
-
+  const [profilePic, setProfilePic] = useState(null);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     phone: '',
     bio: '',
-    pronouns: "Don't specify",
     oldPassword: '',
     newPassword: '',
   });
@@ -27,6 +25,17 @@ const AccountSettings = () => {
     console.log('Updated Info:', formData);
   };
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setProfilePic(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   return (
     <>
       <NavBar />
@@ -37,35 +46,38 @@ const AccountSettings = () => {
       >
         <Card className="w-75 mx-auto p-4 shadow-lg rounded bg-white">
           <Row>
-            {/* Sidebar */}
-            <Col md={3} className="border-end pe-4">
+            {/* Left Side Menu - Increased Spacing */}
+            <Col md={3} className="fw-bold text-primary">
               <h4 className="mb-4">Settings</h4>
-              <div className="fw-bold text-primary border-bottom pb-1">
-                ACCOUNT
+              <div
+                className="fw-bold text-primary border-bottom pb-4"
+                onClick={() => navigate('/account')}
+                style={{ cursor: 'pointer' }}
+              >
+                Account
+              </div>
+              <div
+                className="fw-bold text-primary border-bottom pb-4"
+                onClick={() => navigate('/my-listings')}
+                style={{ cursor: 'pointer' }}
+              >
+                My Listings
+              </div>
+              <div
+                className="fw-bold text-primary border-bottom pb-4"
+                onClick={() => navigate('/wishlist')}
+                style={{ cursor: 'pointer' }}
+              >
+                Wishlist
               </div>
             </Col>
 
-            {/* Account Details */}
-            <Col md={9}>
+            {/* Main Account Settings Form */}
+            <Col md={6}>
               <h4 className="mb-4">Account Settings</h4>
-
-              {/* Profile Picture */}
-              <div className="d-flex align-items-center mb-4">
-                <div
-                  className="rounded-circle bg-secondary d-flex align-items-center justify-content-center"
-                  style={{ width: '80px', height: '80px' }}
-                >
-                  <FaRegEdit size={30} color="white" />
-                </div>
-                <Button variant="outline-primary" className="ms-3">
-                  Edit
-                </Button>
-              </div>
-
               <Form onSubmit={handleSubmit}>
-                {/* Name & Bio */}
                 <Row className="mb-4">
-                  <Col md={6}>
+                  <Col md={12}>
                     <Form.Group controlId="name">
                       <Form.Label>Name</Form.Label>
                       <Form.Control
@@ -87,15 +99,14 @@ const AccountSettings = () => {
                         value={formData.bio}
                         onChange={handleChange}
                         placeholder="Tell us a little about yourself"
-                        rows={4} // Increase the number of rows to make the field bigger
+                        rows={4}
                       />
                     </Form.Group>
                   </Col>
                 </Row>
 
-                {/* Email & Phone */}
                 <Row className="mb-4">
-                  <Col md={6}>
+                  <Col md={12}>
                     <Form.Group controlId="email">
                       <Form.Label>Email</Form.Label>
                       <Form.Control
@@ -106,7 +117,9 @@ const AccountSettings = () => {
                       />
                     </Form.Group>
                   </Col>
-                  <Col md={6}>
+                </Row>
+                <Row className="mb-4">
+                  <Col md={12}>
                     <Form.Group controlId="phone">
                       <Form.Label>Phone Number</Form.Label>
                       <Form.Control
@@ -119,7 +132,6 @@ const AccountSettings = () => {
                   </Col>
                 </Row>
 
-                {/* Password Fields */}
                 <h4 className="mt-4">Change Password</h4>
                 <Row className="mb-4">
                   <Col md={6}>
@@ -153,6 +165,54 @@ const AccountSettings = () => {
                   Save
                 </Button>
               </Form>
+            </Col>
+
+            {/* Profile Picture Section */}
+            <Col md={3} className="d-flex flex-column align-items-center">
+              <h5 className="mb-3">Profile Picture</h5>
+              <label
+                htmlFor="profile-pic-upload"
+                className="position-relative d-flex flex-column align-items-center"
+              >
+                <div
+                  className="rounded-circle overflow-hidden d-flex align-items-center justify-content-center shadow"
+                  style={{
+                    width: '150px', // Kept Bigger
+                    height: '150px',
+                    backgroundColor: '#222',
+                    position: 'relative',
+                  }}
+                >
+                  {profilePic ? (
+                    <img
+                      src={profilePic}
+                      alt="Profile"
+                      className="w-100 h-100"
+                      style={{ objectFit: 'cover' }}
+                    />
+                  ) : (
+                    <div style={{ color: 'white', fontSize: '14px' }}>
+                      No Image
+                    </div>
+                  )}
+                </div>
+              </label>
+              <input
+                type="file"
+                id="profile-pic-upload"
+                accept="image/*"
+                onChange={handleImageChange}
+                style={{ display: 'none' }}
+              />
+              <Button
+                variant="outline-primary"
+                className="mt-2"
+                onClick={() =>
+                  document.getElementById('profile-pic-upload').click()
+                }
+              >
+                Edit
+              </Button>
             </Col>
           </Row>
         </Card>
