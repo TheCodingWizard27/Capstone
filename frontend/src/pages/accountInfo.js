@@ -11,7 +11,6 @@ const AccountSettings = () => {
     email: '',
     phone: '',
     bio: '',
-    pronouns: "Don't specify",
     oldPassword: '',
     newPassword: '',
   });
@@ -48,20 +47,27 @@ const AccountSettings = () => {
         <Card className="w-75 mx-auto p-4 shadow-lg rounded bg-white">
           <Row>
             {/* Left Side Menu - Increased Spacing */}
-            <Col md={3} className="fw-bold text-primary border-bottom pb-1">
+            <Col md={3} className="fw-bold text-primary">
               <h4 className="mb-4">Settings</h4>
-              <div className="fw-bold text-primary border-bottom pb-3">
+              <div className="fw-bold text-primary border-bottom pb-4">
                 Profile
               </div>
               <div
-                className="fw-bold text-primary border-bottom pb-3"
+                className="fw-bold text-primary border-bottom pb-4"
+                onClick={() => navigate('/account')}
+                style={{ cursor: 'pointer' }}
+              >
+                Account
+              </div>
+              <div
+                className="fw-bold text-primary border-bottom pb-4"
                 onClick={() => navigate('/my-listings')}
                 style={{ cursor: 'pointer' }}
               >
                 My Listings
               </div>
               <div
-                className="fw-bold text-primary border-bottom pb-3"
+                className="fw-bold text-primary border-bottom pb-4"
                 onClick={() => navigate('/wishlist')}
                 style={{ cursor: 'pointer' }}
               >
@@ -71,6 +77,7 @@ const AccountSettings = () => {
 
             {/* Main Account Settings Form */}
             <Col md={6}>
+              <h4 className="mb-4">Account Settings</h4>
               <Form onSubmit={handleSubmit}>
                 <Row className="mb-4">
                   <Col md={12}>
@@ -163,7 +170,7 @@ const AccountSettings = () => {
               </Form>
             </Col>
 
-            {/* Profile Picture Section - Removed Edit Icon */}
+            {/* Profile Picture Section */}
             <Col md={3} className="d-flex flex-column align-items-center">
               <h5 className="mb-3">Profile Picture</h5>
               <label
@@ -173,7 +180,7 @@ const AccountSettings = () => {
                 <div
                   className="rounded-circle overflow-hidden d-flex align-items-center justify-content-center shadow"
                   style={{
-                    width: '150px', // Made Bigger
+                    width: '150px', // Kept Bigger
                     height: '150px',
                     backgroundColor: '#222',
                     position: 'relative',
