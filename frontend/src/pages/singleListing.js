@@ -3,7 +3,7 @@ import NavBar from '../components/navBar';
 import {
   Image,
   Button,
-  Card,
+  Card as BootstrapCard, // Alias Bootstrap's Card component
   Container,
   Row,
   Col,
@@ -12,9 +12,10 @@ import {
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import axios from 'axios';
 import '../style/stylingsingle.css';
+import { useParams} from 'react-router-dom';
+import Card from '../components/itemCard'; // Custom Card component for displaying item
 
-import { useParams } from 'react-router-dom';
-
+// Main product image section with prev/next functionality
 const MainProductSection = ({
   images,
   currentImageIndex,
@@ -36,7 +37,7 @@ const MainProductSection = ({
 
   return (
     <Col md={12} lg={6} className="d-flex flex-column align-items-center mt-4">
-      <Card className="picture-card p-3 mb-2">
+      <BootstrapCard className="picture-card p-3 mb-2">
         <div className="main-image">
           <Image src={images[currentImageIndex]} alt="Main Image" fluid />
           <button className="arrow-left" onClick={handlePrevImage}>
@@ -65,14 +66,15 @@ const MainProductSection = ({
             />
           ))}
         </div>
-      </Card>
+      </BootstrapCard>
     </Col>
   );
 };
 
+// Product details section
 const ProductDetailsSection = ({ details }) => (
   <Col md={12} lg={6} className="d-flex flex-column align-items-start mt-4">
-    <Card className="details-card p-3">
+    <BootstrapCard className="details-card p-3">
       <h4>{details.title}</h4>
       <div className="rating mb-2">
         <span>{details.rating} ★★★★☆</span> |{' '}
@@ -102,24 +104,26 @@ const ProductDetailsSection = ({ details }) => (
         </Button>
         <Button variant="danger">Report Listing</Button>
       </div>
-    </Card>
+    </BootstrapCard>
   </Col>
 );
 
+// Section displaying similar items
 const SimilarItemsSection = ({ items, open, toggleOpen }) => (
-  <Card className="floating-card p-4">
+  <BootstrapCard className="floating-card p-4">
     <h5 className="section-title">Same Category Items</h5>
     <Collapse in={open}>
       <Row className="additional-container card-grid justify-content-center">
         {items.map((item, idx) => (
-          <Col lg={3} md={5} sm={6} key={idx} className="mb-3">
-            <Card className="item-card">
-              <Card.Img variant="top" src={item.imageUrl} />
-              <Card.Body>
-                <Card.Title>{item.title}</Card.Title>
-                <Card.Text>${item.price}</Card.Text>
-              </Card.Body>
-            </Card>
+          <Col lg={4} md={6} sm={6} key={idx} className="mb-3">
+            {/* Use the custom Card component for each similar item */}
+            <Card
+           id={item.id}
+           imageUrl={item.picUrls[0]}
+           title={item.title}
+           brand={item.brand}
+           price={item.price}
+            />
           </Col>
         ))}
       </Row>
@@ -132,23 +136,25 @@ const SimilarItemsSection = ({ items, open, toggleOpen }) => (
     >
       {open ? 'Collapse' : 'Expand'} Same Category Items
     </Button>
-  </Card>
+  </BootstrapCard>
 );
 
+// Section displaying other items by the seller
 const OtherItemsSection = ({ items, open, toggleOpen }) => (
-  <Card className="floating-card p-4">
+  <BootstrapCard className="floating-card p-4">
     <h5 className="section-title">Other Items by the Seller</h5>
     <Collapse in={open}>
       <Row className="additional-container card-grid justify-content-center">
         {items.map((item, idx) => (
-          <Col lg={3} md={4} sm={6} key={idx} className="mb-3">
-            <Card className="item-card">
-              <Card.Img variant="top" src={item.imageUrl} />
-              <Card.Body>
-                <Card.Title>{item.title}</Card.Title>
-                <Card.Text>${item.price}</Card.Text>
-              </Card.Body>
-            </Card>
+          <Col lg={4} md={6} sm={6} key={idx} className="mb-3">
+            {/* Use the custom Card component for each seller's item */}
+            <Card
+              id={item.id}
+              imageUrl={item.picUrls[0]}
+              title={item.title}
+              brand={item.brand}
+              price={item.price}
+            />
           </Col>
         ))}
       </Row>
@@ -161,19 +167,20 @@ const OtherItemsSection = ({ items, open, toggleOpen }) => (
     >
       {open ? 'Collapse' : 'Expand'} Other Items
     </Button>
-  </Card>
+  </BootstrapCard>
 );
 
 const SingleListing = () => {
-  const { id } = useParams();
-  const [listingData, setListingData] = useState(null);
-  const [similarItems, setSimilarItems] = useState([]);
-  const [otherItems, setOtherItems] = useState([]);
-  const [similarItemsOpen, setSimilarItemsOpen] = useState(true);
-  const [otherItemsOpen, setOtherItemsOpen] = useState(true);
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const { id } = useParams(); // Use the id from the URL params
+  const [listingData, setListingData] = useState(null); // Store the data of the listing
+  const [similarItems, setSimilarItems] = useState([]); // Store the similar items
+  const [otherItems, setOtherItems] = useState([]); // Store other items by the seller
+  const [similarItemsOpen, setSimilarItemsOpen] = useState(true); // Control visibility of similar items
+  const [otherItemsOpen, setOtherItemsOpen] = useState(true); // Control visibility of other seller's items
+  const [currentImageIndex, setCurrentImageIndex] = useState(0); // Track the current image for the main image section
 
   useEffect(() => {
+    // Fetch the listing data when the component mounts
     const fetchListingData = async () => {
       try {
         const response = await axios.get(
@@ -188,9 +195,9 @@ const SingleListing = () => {
       }
     };
     fetchListingData();
-  }, [id]);
+  }, [id]); // Re-fetch data if the id changes
 
-  if (!listingData) return <div>Loading...</div>;
+  if (!listingData) return <div>Loading...</div>; // Show loading text while data is being fetched
 
   return (
     <div style={{ height: '100vh', marginBottom: '100px' }}>
@@ -198,19 +205,21 @@ const SingleListing = () => {
       <Container className="mt-4 d-flex flex-column align-items-center">
         <Row className="justify-content-center">
           <MainProductSection
-            images={listingData.picUrls}
+            images={listingData.picUrls} // Use the images from the fetched listing data
             currentImageIndex={currentImageIndex}
             setCurrentImageIndex={setCurrentImageIndex}
           />
-          <ProductDetailsSection details={listingData} />
+          <ProductDetailsSection details={listingData} /> {/* Display product details */}
         </Row>
         <br />
+        {/* Display Similar Items Section */}
         <SimilarItemsSection
           items={similarItems}
           open={similarItemsOpen}
           toggleOpen={() => setSimilarItemsOpen(!similarItemsOpen)}
         />
         <br />
+        {/* Display Other Items Section */}
         <OtherItemsSection
           items={otherItems}
           open={otherItemsOpen}

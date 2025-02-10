@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const Card = ({ id, imageUrl, title, brand, description }) => {
+const Card = ({ id, imageUrl, title, price,brand, description }) => {
   return (
     <div
       style={{
@@ -37,6 +37,9 @@ const Card = ({ id, imageUrl, title, brand, description }) => {
         </Link>
 
         {/* Display the brand below the title */}
+        <p style={{ margin: '0', color: '#888', fontSize: '1em' }}>
+          Price: $<strong>{price}</strong>
+        </p>
         <p style={{ margin: '0', color: '#888', fontSize: '1em' }}>
           Brand: <strong>{brand}</strong>
         </p>
