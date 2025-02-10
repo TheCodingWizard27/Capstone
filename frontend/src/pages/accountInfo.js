@@ -49,9 +49,6 @@ const AccountSettings = () => {
             {/* Left Side Menu - Increased Spacing */}
             <Col md={3} className="fw-bold text-primary">
               <h4 className="mb-4">Settings</h4>
-              <div className="fw-bold text-primary border-bottom pb-4">
-                Profile
-              </div>
               <div
                 className="fw-bold text-primary border-bottom pb-4"
                 onClick={() => navigate('/account')}
