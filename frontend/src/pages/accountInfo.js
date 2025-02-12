@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { Container, Form, Button, Row, Col, Card } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
 import NavBar from '../components/navBar';
 
 const AccountSettings = () => {
-  const navigate = useNavigate();
+  const [activeSection, setActiveSection] = useState('profile');
   const [profilePic, setProfilePic] = useState(null);
   const [formData, setFormData] = useState({
     name: '',
@@ -46,125 +45,151 @@ const AccountSettings = () => {
       >
         <Card className="w-75 mx-auto p-4 shadow-lg rounded bg-white">
           <Row>
-            {/* Left Side Menu - Increased Spacing */}
+            {/* Left Side Menu */}
             <Col md={3} className="fw-bold text-primary">
-              <h4 className="mb-4">Settings</h4>
+              <h4 className="mb-4">Profile</h4>
               <div
-                className="fw-bold text-primary border-bottom pb-4"
-                onClick={() => navigate('/account')}
+                className={`fw-bold text-primary border-bottom pb-4 ${
+                  activeSection === 'profile' ? 'text-dark' : ''
+                }`}
+                onClick={() => setActiveSection('profile')}
                 style={{ cursor: 'pointer' }}
               >
-                Account
+                Profile
               </div>
               <div
-                className="fw-bold text-primary border-bottom pb-4"
-                onClick={() => navigate('/my-listings')}
+                className={`fw-bold text-primary border-bottom pb-4 ${
+                  activeSection === 'listings' ? 'text-dark' : ''
+                }`}
+                onClick={() => setActiveSection('listings')}
                 style={{ cursor: 'pointer' }}
               >
                 My Listings
               </div>
               <div
-                className="fw-bold text-primary border-bottom pb-4"
-                onClick={() => navigate('/wishlist')}
+                className={`fw-bold text-primary border-bottom pb-4 ${
+                  activeSection === 'wishlist' ? 'text-dark' : ''
+                }`}
+                onClick={() => setActiveSection('wishlist')}
                 style={{ cursor: 'pointer' }}
               >
                 Wishlist
               </div>
             </Col>
 
-            {/* Main Account Settings Form */}
+            {/* Dynamic Content Area */}
             <Col md={6}>
-              <h4 className="mb-4">Account Settings</h4>
-              <Form onSubmit={handleSubmit}>
-                <Row className="mb-4">
-                  <Col md={12}>
-                    <Form.Group controlId="name">
-                      <Form.Label>Name</Form.Label>
-                      <Form.Control
-                        type="text"
-                        value={formData.name}
-                        onChange={handleChange}
-                        placeholder="Your name"
-                      />
-                    </Form.Group>
-                  </Col>
-                </Row>
+              {activeSection === 'profile' && (
+                <>
+                  <h4 className="mb-4">Profile</h4>
+                  <Form onSubmit={handleSubmit}>
+                    <Row className="mb-4">
+                      <Col md={12}>
+                        <Form.Group controlId="name">
+                          <Form.Label>Name</Form.Label>
+                          <Form.Control
+                            type="text"
+                            value={formData.name}
+                            onChange={handleChange}
+                            placeholder="Your name"
+                          />
+                        </Form.Group>
+                      </Col>
+                    </Row>
 
-                <Row className="mb-4">
-                  <Col md={12}>
-                    <Form.Group controlId="bio">
-                      <Form.Label>Bio</Form.Label>
-                      <Form.Control
-                        as="textarea"
-                        value={formData.bio}
-                        onChange={handleChange}
-                        placeholder="Tell us a little about yourself"
-                        rows={4}
-                      />
-                    </Form.Group>
-                  </Col>
-                </Row>
+                    <Row className="mb-4">
+                      <Col md={12}>
+                        <Form.Group controlId="bio">
+                          <Form.Label>Bio</Form.Label>
+                          <Form.Control
+                            as="textarea"
+                            value={formData.bio}
+                            onChange={handleChange}
+                            placeholder="Tell us a little about yourself"
+                            rows={4}
+                          />
+                        </Form.Group>
+                      </Col>
+                    </Row>
 
-                <Row className="mb-4">
-                  <Col md={12}>
-                    <Form.Group controlId="email">
-                      <Form.Label>Email</Form.Label>
-                      <Form.Control
-                        type="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        placeholder="example@email.com"
-                      />
-                    </Form.Group>
-                  </Col>
-                </Row>
-                <Row className="mb-4">
-                  <Col md={12}>
-                    <Form.Group controlId="phone">
-                      <Form.Label>Phone Number</Form.Label>
-                      <Form.Control
-                        type="tel"
-                        value={formData.phone}
-                        onChange={handleChange}
-                        placeholder="(XXX)-XXX-XXXX"
-                      />
-                    </Form.Group>
-                  </Col>
-                </Row>
+                    <Row className="mb-4">
+                      <Col md={12}>
+                        <Form.Group controlId="email">
+                          <Form.Label>Email</Form.Label>
+                          <Form.Control
+                            type="email"
+                            value={formData.email}
+                            onChange={handleChange}
+                            placeholder="example@email.com"
+                          />
+                        </Form.Group>
+                      </Col>
+                    </Row>
+                    <Row className="mb-4">
+                      <Col md={12}>
+                        <Form.Group controlId="phone">
+                          <Form.Label>Phone Number</Form.Label>
+                          <Form.Control
+                            type="tel"
+                            value={formData.phone}
+                            onChange={handleChange}
+                            placeholder="(XXX)-XXX-XXXX"
+                          />
+                        </Form.Group>
+                      </Col>
+                    </Row>
 
-                <h4 className="mt-4">Change Password</h4>
-                <Row className="mb-4">
-                  <Col md={6}>
-                    <Form.Group controlId="oldPassword">
-                      <Form.Label>Old Password</Form.Label>
-                      <Form.Control
-                        type="password"
-                        value={formData.oldPassword}
-                        onChange={handleChange}
-                        placeholder="Enter old password"
-                      />
-                    </Form.Group>
-                  </Col>
-                  <Col md={6}>
-                    <Form.Group controlId="newPassword">
-                      <Form.Label>New Password</Form.Label>
-                      <Form.Control
-                        type="password"
-                        value={formData.newPassword}
-                        onChange={handleChange}
-                        placeholder="Enter new password"
-                      />
-                    </Form.Group>
-                  </Col>
-                </Row>
+                    <h4 className="mt-4">Change Password</h4>
+                    <Row className="mb-4">
+                      <Col md={6}>
+                        <Form.Group controlId="oldPassword">
+                          <Form.Label>Old Password</Form.Label>
+                          <Form.Control
+                            type="password"
+                            value={formData.oldPassword}
+                            onChange={handleChange}
+                            placeholder="Enter old password"
+                          />
+                        </Form.Group>
+                      </Col>
+                      <Col md={6}>
+                        <Form.Group controlId="newPassword">
+                          <Form.Label>New Password</Form.Label>
+                          <Form.Control
+                            type="password"
+                            value={formData.newPassword}
+                            onChange={handleChange}
+                            placeholder="Enter new password"
+                          />
+                        </Form.Group>
+                      </Col>
+                    </Row>
 
-                <Button variant="outline-primary" className="me-3">
-                  Submit
-                </Button>
-                <Button variant="primary" type="submit">
-                  Save
-                </Button>
-              </Form>
+                    <Button variant="outline-primary" className="me-3">
+                      Submit
+                    </Button>
+                    <Button variant="primary" type="submit">
+                      Save
+                    </Button>
+                  </Form>
+                </>
+              )}
+
+              {activeSection === 'listings' && (
+                <div>
+                  <h4>My Listings</h4>
+                  <p>Here you can manage your product listings.</p>
+                  {/* Add your listings management UI here */}
+                </div>
+              )}
+
+              {activeSection === 'wishlist' && (
+                <div>
+                  <h4>Wishlist</h4>
+                  <p>Here you can view and manage your wishlist.</p>
+                  {/* Add your wishlist UI here */}
+                </div>
+              )}
             </Col>
 
             {/* Profile Picture Section */}
@@ -177,7 +202,7 @@ const AccountSettings = () => {
                 <div
                   className="rounded-circle overflow-hidden d-flex align-items-center justify-content-center shadow"
                   style={{
-                    width: '150px', // Kept Bigger
+                    width: '150px',
                     height: '150px',
                     backgroundColor: '#222',
                     position: 'relative',
