@@ -12,7 +12,7 @@ const Card = ({ id, imageUrl, title, price,brand, description }) => {
         padding: '15px',
         marginBottom: '20px',
         width: '100%',
-        maxWidth: '80%',
+        height: '25vh',
         backgroundColor: 'white',
         boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
       }}
@@ -22,7 +22,7 @@ const Card = ({ id, imageUrl, title, price,brand, description }) => {
         alt={title}
         style={{
           width: '150px',
-          height: 'auto',
+          height: '150px',
           marginRight: '20px',
           borderRadius: '4px',
         }}

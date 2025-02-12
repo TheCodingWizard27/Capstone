@@ -160,7 +160,7 @@ const MessagingPage = () => {
       setNewMessage('');
       setUploadedFiles([]);
     }
-    sendMessage(newMessage, currentUser); //APi call to the backend
+    sendMessage(1, 1, newMessage, currentUser); //APi call to the backend
   };
 
   const handleSelectUser = (user) => {

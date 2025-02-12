@@ -1,13 +1,18 @@
 import axios from 'axios';
 
-export const sendMessage = async (data, currentUser) => {
+export const sendMessage = async (
+  threadId,
+  listingId,
+  message,
+  currentUser
+) => {
   try {
-    console.log(data);
+    console.log(message);
     console.log(currentUser.accessToken);
 
     const response = await axios.post(
       `${process.env.REACT_APP_BACKEND}/api/sendMessage`,
-      { message: data },
+      { listingId: listingId, threadId: threadId, message: message },
       {
         headers: {
           Authorization: `Bearer ${currentUser.accessToken}`,

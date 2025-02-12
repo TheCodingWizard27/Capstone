@@ -53,7 +53,15 @@ const ItemList = () => {
   return (
     <>
       <NavBar />
-      <div style={{ padding: '20px' }}>
+      <div
+        style={{
+          width: '95vw',
+          margin: '1vw 2.5vw 1vw 2.5vw',
+          padding: '2.5vw',
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+      >
         {/* Filter Bar */}
         <div style={{ marginBottom: '20px' }}>
           <FilterBar
