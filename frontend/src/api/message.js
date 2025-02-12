@@ -12,7 +12,7 @@ export const sendMessage = async (
 
     const response = await axios.post(
       `${process.env.REACT_APP_BACKEND}/api/sendMessage`,
-      { message: data, listingId: 'WZhkcU4303NYizr5Btra' },
+      { message, listingId: 'WZhkcU4303NYizr5Btra' },
       {
         headers: {
           Authorization: `Bearer ${currentUser.accessToken}`,
