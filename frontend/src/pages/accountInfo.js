@@ -1,10 +1,24 @@
 import React, { useState } from 'react';
-import { Container, Form, Button, Row, Col, Card } from 'react-bootstrap';
+import {
+  Container,
+  Form,
+  Button,
+  Row,
+  Col,
+  Card,
+  InputGroup,
+} from 'react-bootstrap';
 import NavBar from '../components/navBar';
 
 const AccountSettings = () => {
   const [activeSection, setActiveSection] = useState('profile');
   const [profilePic, setProfilePic] = useState(null);
+  const [editField, setEditField] = useState({
+    email: false,
+    phone: false,
+    password: false,
+  });
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -112,33 +126,65 @@ const AccountSettings = () => {
                       </Col>
                     </Row>
 
+                    {/* Email Field with Edit Button */}
                     <Row className="mb-4">
                       <Col md={12}>
                         <Form.Group controlId="email">
                           <Form.Label>Email</Form.Label>
-                          <Form.Control
-                            type="email"
-                            value={formData.email}
-                            onChange={handleChange}
-                            placeholder="example@email.com"
-                          />
-                        </Form.Group>
-                      </Col>
-                    </Row>
-                    <Row className="mb-4">
-                      <Col md={12}>
-                        <Form.Group controlId="phone">
-                          <Form.Label>Phone Number</Form.Label>
-                          <Form.Control
-                            type="tel"
-                            value={formData.phone}
-                            onChange={handleChange}
-                            placeholder="(XXX)-XXX-XXXX"
-                          />
+                          <InputGroup>
+                            <Form.Control
+                              type="email"
+                              value={formData.email}
+                              onChange={handleChange}
+                              placeholder="example@email.com"
+                              disabled={!editField.email}
+                            />
+                            <Button
+                              variant="outline-primary"
+                              onClick={() =>
+                                setEditField((prev) => ({
+                                  ...prev,
+                                  email: !prev.email,
+                                }))
+                              }
+                            >
+                              {editField.email ? 'Save' : 'Edit'}
+                            </Button>
+                          </InputGroup>
                         </Form.Group>
                       </Col>
                     </Row>
 
+                    {/* Phone Number Field with Edit Button */}
+                    <Row className="mb-4">
+                      <Col md={12}>
+                        <Form.Group controlId="phone">
+                          <Form.Label>Phone Number</Form.Label>
+                          <InputGroup>
+                            <Form.Control
+                              type="tel"
+                              value={formData.phone}
+                              onChange={handleChange}
+                              placeholder="(XXX)-XXX-XXXX"
+                              disabled={!editField.phone}
+                            />
+                            <Button
+                              variant="outline-primary"
+                              onClick={() =>
+                                setEditField((prev) => ({
+                                  ...prev,
+                                  phone: !prev.phone,
+                                }))
+                              }
+                            >
+                              {editField.phone ? 'Save' : 'Edit'}
+                            </Button>
+                          </InputGroup>
+                        </Form.Group>
+                      </Col>
+                    </Row>
+
+                    {/* Change Password Section */}
                     <h4 className="mt-4">Change Password</h4>
                     <Row className="mb-4">
                       <Col md={6}>
@@ -149,6 +195,7 @@ const AccountSettings = () => {
                             value={formData.oldPassword}
                             onChange={handleChange}
                             placeholder="Enter old password"
+                            disabled={!editField.password}
                           />
                         </Form.Group>
                       </Col>
@@ -160,17 +207,31 @@ const AccountSettings = () => {
                             value={formData.newPassword}
                             onChange={handleChange}
                             placeholder="Enter new password"
+                            disabled={!editField.password}
                           />
                         </Form.Group>
                       </Col>
                     </Row>
+                    <Button
+                      variant="outline-primary"
+                      onClick={() =>
+                        setEditField((prev) => ({
+                          ...prev,
+                          password: !prev.password,
+                        }))
+                      }
+                    >
+                      {editField.password ? 'Save Password' : 'Change Password'}
+                    </Button>
 
-                    <Button variant="outline-primary" className="me-3">
-                      Submit
-                    </Button>
-                    <Button variant="primary" type="submit">
-                      Save
-                    </Button>
+                    <div className="mt-4">
+                      <Button variant="outline-primary" className="me-3">
+                        Submit
+                      </Button>
+                      <Button variant="primary" type="submit">
+                        Save
+                      </Button>
+                    </div>
                   </Form>
                 </>
               )}
@@ -179,7 +240,6 @@ const AccountSettings = () => {
                 <div>
                   <h4>My Listings</h4>
                   <p>Here you can manage your product listings.</p>
-                  {/* Add your listings management UI here */}
                 </div>
               )}
 
@@ -187,7 +247,6 @@ const AccountSettings = () => {
                 <div>
                   <h4>Wishlist</h4>
                   <p>Here you can view and manage your wishlist.</p>
-                  {/* Add your wishlist UI here */}
                 </div>
               )}
             </Col>
