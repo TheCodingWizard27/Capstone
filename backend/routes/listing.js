@@ -24,4 +24,12 @@ router.get("/listings/:id", listingController.getSingleListing);
 
 router.get("/search", listingController.searchListings);
 router.get("/listings/category/:category", getListingsByCategory);
+
+router.put(
+  "/updateListing/:id",
+  verifyAuthToken,
+  upload,
+  listingController.updateListing
+);
+
 module.exports = router;

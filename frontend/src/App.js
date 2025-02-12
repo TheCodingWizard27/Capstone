@@ -19,6 +19,7 @@ import AccountSettings from './pages/accountInfo';
 import ListPage from './pages/itemList'; // Your item list page where category-based listing will happen
 import MessagingPage from './pages/messageList';
 import SearchResults from './components/searchResults';
+import EditListing from './pages/editListing';
 
 function App() {
   const { userLoggedIn } = useAuth(); // Access userLoggedIn from context
@@ -57,6 +58,10 @@ function App() {
             element={userLoggedIn ? <AddListing /> : <Navigate to="/signIn" />}
           />
           <Route
+            path="/editListing/:id"
+            element={userLoggedIn ? <EditListing /> : <Navigate to="/signIn" />}
+          />
+          <Route
             path="/listing/:id"
             element={
               userLoggedIn ? <SingleListing /> : <Navigate to="/signIn" />
@@ -66,13 +71,13 @@ function App() {
             path="/itemList" // Keep this route as it handles item listing
             element={userLoggedIn ? <ListPage /> : <Navigate to="/signIn" />}
           />
-          
+
           {/* Remove CategoryListing route since it's no longer needed */}
           {/* <Route
             path="/category/:categoryName" // Dynamic route for CategoryListing
             element={userLoggedIn ? <CategoryListing /> : <Navigate to="/signIn" />}
           /> */}
-          
+
           <Route
             path="/accountInfo"
             element={
@@ -96,7 +101,6 @@ function App() {
               userLoggedIn ? <MessagingPage /> : <Navigate to="/signIn" />
             }
           />
-          
 
           <Route path="/" element={<SearchResults />} />
           <Route path="/singleListing/:id" element={<SingleListing />} />

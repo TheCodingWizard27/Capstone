@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import NavBar from '../components/navBar';
 import {
   Image,
@@ -12,10 +13,10 @@ import {
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import axios from 'axios';
 import '../style/stylingsingle.css';
-import { useParams} from 'react-router-dom';
 import Card from '../components/itemCard'; // Custom Card component for displaying item
 
 // Main product image section with prev/next functionality
+
 const MainProductSection = ({
   images,
   currentImageIndex,
@@ -71,42 +72,64 @@ const MainProductSection = ({
   );
 };
 
-// Product details section
-const ProductDetailsSection = ({ details }) => (
-  <Col md={12} lg={6} className="d-flex flex-column align-items-start mt-4">
-    <BootstrapCard className="details-card p-3">
-      <h4>{details.title}</h4>
-      <div className="rating mb-2">
-        <span>{details.rating} ★★★★☆</span> |{' '}
-        <span>{details.ratingsCount} Ratings</span>
-      </div>
-      <div className="price mb-2">${details.price}</div>
-      <div>
-        <strong>Brand:</strong> {details.brand}
-      </div>
-      <div>
-        <strong>Condition:</strong> {details.condition}
-      </div>
-      <div>
-        <strong>Color:</strong> {details.color}
-      </div>
-      <div>
-        <strong>Status:</strong> {details.status}
-      </div>
-      <hr />
-      <p>{details.description}</p>
-      <div className="button-group mt-3">
-        <Button variant="primary" className="me-2">
-          Contact Seller
-        </Button>
-        <Button variant="dark" className="me-2">
-          Add to Watchlist
-        </Button>
-        <Button variant="danger">Report Listing</Button>
-      </div>
-    </BootstrapCard>
-  </Col>
-);
+const ProductDetailsSection = ({ details }) => {
+  const navigate = useNavigate();
+
+  return (
+    <Col md={12} lg={6} className="d-flex flex-column align-items-start mt-4">
+      <BootstrapCard className="details-card p-3">
+        <h4>{details.title}</h4>
+        <div className="rating mb-2">
+          <span>{details.rating} ★★★★☆</span> |{' '}
+          <span>{details.ratingsCount} Ratings</span>
+        </div>
+        <div className="price mb-2">${details.price}</div>
+        <div>
+          <strong>Brand:</strong> {details.brand}
+        </div>
+        <div>
+          <strong>Condition:</strong> {details.condition}
+        </div>
+        <div>
+          <strong>Color:</strong> {details.color}
+        </div>
+        <div>
+          <strong>Status:</strong> {details.status}
+        </div>
+        <hr />
+        <p>{details.description}</p>
+        <div className="button-group mt-3">
+          <Button variant="primary" className="me-2">
+            Contact Seller
+          </Button>
+          <Button variant="dark" className="me-2">
+            Add to Watchlist
+          </Button>
+          <Button
+            variant="danger"
+            onClick={() =>
+              navigate(`/editListing/${details.id}`, {
+                state: {
+                  id: details.id,
+                  formData: {
+                    title: details.title,
+                    brand: details.brand,
+                    category: details.category,
+                    price: details.price,
+                    description: details.description,
+                  },
+                  files: details.picUrls.map((url) => ({ preview: url })),
+                },
+              })
+            }
+          >
+            Edit Listing
+          </Button>
+        </div>
+      </BootstrapCard>
+    </Col>
+  );
+};
 
 // Section displaying similar items
 const SimilarItemsSection = ({ items, open, toggleOpen }) => (
@@ -118,11 +141,11 @@ const SimilarItemsSection = ({ items, open, toggleOpen }) => (
           <Col lg={4} md={6} sm={6} key={idx} className="mb-3">
             {/* Use the custom Card component for each similar item */}
             <Card
-           id={item.id}
-           imageUrl={item.picUrls[0]}
-           title={item.title}
-           brand={item.brand}
-           price={item.price}
+              id={item.id}
+              imageUrl={item.picUrls[0]}
+              title={item.title}
+              brand={item.brand}
+              price={item.price}
             />
           </Col>
         ))}
@@ -186,7 +209,7 @@ const SingleListing = () => {
         const response = await axios.get(
           `${process.env.REACT_APP_BACKEND}/api/listings/${id}`
         );
-        console.log(response.data);
+        console.log(listingData);
         setListingData(response.data);
         setSimilarItems(response.data.similarItems);
         setOtherItems(response.data.otherItems);
@@ -209,7 +232,8 @@ const SingleListing = () => {
             currentImageIndex={currentImageIndex}
             setCurrentImageIndex={setCurrentImageIndex}
           />
-          <ProductDetailsSection details={listingData} /> {/* Display product details */}
+          <ProductDetailsSection details={listingData} />
+          {/* Display product details */}
         </Row>
         <br />
         {/* Display Similar Items Section */}

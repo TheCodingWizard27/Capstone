@@ -61,10 +61,15 @@ exports.getListingsByCategory = async (req, res) => {
     const { category } = req.params; // Get the category from URL params
 
     // Fetch listings where the category matches the one passed in the URL
-    const snapshot = await db.collection("listings").where("category", "==", category).get();
+    const snapshot = await db
+      .collection("listings")
+      .where("category", "==", category)
+      .get();
 
     if (snapshot.empty) {
-      return res.status(404).json({ message: `No listings found for the category: ${category}` });
+      return res
+        .status(404)
+        .json({ message: `No listings found for the category: ${category}` });
     }
 
     // Map through the snapshot and format the listings
@@ -76,7 +81,10 @@ exports.getListingsByCategory = async (req, res) => {
     res.status(200).json(listings); // Send the listings as JSON
   } catch (error) {
     console.error("Error fetching listings by category:", error);
-    res.status(500).json({ message: "Error fetching listings by category", error: error.message });
+    res.status(500).json({
+      message: "Error fetching listings by category",
+      error: error.message,
+    });
   }
 };
 
@@ -108,6 +116,11 @@ exports.getSingleListing = async (req, res) => {
       return res.status(404).json({ message: "Listing not found" });
     }
     const listingData = listingDoc.data();
+    console.log(listingData);
+    const listingDataWithId = {
+      ...listingData,
+      id: listingId,
+    };
 
     // Fetch similar items and other items by the seller if needed
     const similarItems = await db
@@ -122,7 +135,7 @@ exports.getSingleListing = async (req, res) => {
       .get();
 
     res.json({
-      ...listingData,
+      ...listingDataWithId,
       similarItems: similarItems.docs.map((doc) => doc.data()),
       otherItems: otherItems.docs.map((doc) => doc.data()),
     });
@@ -144,7 +157,9 @@ exports.getListingsByCategory = async (req, res) => {
       .get();
 
     if (snapshot.empty) {
-      return res.status(404).json({ message: "No listings found in this category" });
+      return res
+        .status(404)
+        .json({ message: "No listings found in this category" });
     }
 
     // Map the results to return the data
@@ -156,7 +171,10 @@ exports.getListingsByCategory = async (req, res) => {
     res.status(200).json(listings); // Send the listings as JSON
   } catch (error) {
     console.error("Error fetching listings by category:", error);
-    res.status(500).send({ message: "Error fetching listings by category", error: error.message });
+    res.status(500).send({
+      message: "Error fetching listings by category",
+      error: error.message,
+    });
   }
 };
 
@@ -191,4 +209,57 @@ exports.searchListings = async (req, res) => {
   }
 };
 
+// Endpoint to update an existing listing
+exports.updateListing = async (req, res) => {
+  try {
+    const listingId = req.params.id;
+    const { title, brand, category, description, price } = req.body;
+    const userId = req.user.user_id;
+    const listingRef = db.collection("listings").doc(listingId);
+    const listingDoc = await listingRef.get();
 
+    if (!listingDoc.exists) {
+      return res.status(404).json({ message: "Listing not found" });
+    }
+    if (listingDoc.data().user !== userId) {
+      return res.status(403).json({ message: "Unauthorized" });
+    }
+
+    let picUrls = listingDoc.data().picUrls || [];
+    if (req.files && req.files.length > 0) {
+      const uploadPromises = req.files.map(async (file) => {
+        const uniqueFileName = `uploads/${userId}/${uuidv4()}_${
+          file.originalname
+        }`;
+        const fileUpload = bucket.file(uniqueFileName);
+        await fileUpload.save(file.buffer, { contentType: file.mimetype });
+        const url = await fileUpload.getSignedUrl({
+          action: "read",
+          expires: "03-01-2500",
+        });
+        return url[0];
+      });
+      const newPicUrls = await Promise.all(uploadPromises);
+      picUrls = [...picUrls, ...newPicUrls];
+    }
+
+    await listingRef.update({
+      title,
+      brand,
+      category,
+      description,
+      price,
+      picUrls,
+      modifiedAt: admin.firestore.FieldValue.serverTimestamp(),
+    });
+
+    res
+      .status(200)
+      .json({ message: "Listing updated successfully", id: listingId });
+  } catch (error) {
+    console.error("Error updating listing:", error);
+    res
+      .status(500)
+      .json({ message: "Error updating listing", error: error.message });
+  }
+};
