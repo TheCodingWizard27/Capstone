@@ -26,7 +26,7 @@ exports.addMessage = async (req, res) => {
       }
 
       //Create a thread first
-      const createdThreadId = createThread(sender, listingId, receiver);
+      const createdThreadId = await createThread(sender, listingId, receiver);
       if (createdThreadId == null) {
         return res
           .status(400)
@@ -34,18 +34,17 @@ exports.addMessage = async (req, res) => {
       }
 
       //Create message
-      const createdMessageId = createMessage(sender, receiver, message);
+      const createdMessageId = await createMessage(sender, receiver, message);
       if (createdMessageId == null) {
         return res
           .status(400)
           .json({ error: "Cannot send the message to the sender" });
       }
 
-      // addMessageToThread(createdThreadId, createdMessageId);
+      addMessageToThread(createdThreadId, createdMessageId);
+      return res.status(200).json({ message: "Posting Message" });
 
       ////////////////////////////Handle for real time communication////////////////
-
-      return res.status(200).json({ message: "Posting Message" });
     }
   } else {
     //If threadId is present in the post request
@@ -67,7 +66,6 @@ exports.addMessage = async (req, res) => {
       const listing_Id = threadData.listing;
       const buyer = threadData.buyer;
       const seller = threadData.seller;
-      const messages = threadData.messages;
 
       const listingRef = db.collection("listings").doc(listing_Id);
       const listingDoc = await listingRef.get();
@@ -78,18 +76,45 @@ exports.addMessage = async (req, res) => {
       } else {
         //Figure out who is sender and who is receiver
         const receiver = sender == buyer ? seller : buyer;
-        const createdMessageId = createMessage(sender, receiver, message);
+        const createdMessageId = await createMessage(sender, receiver, message);
         if (createdMessageId == null) {
           return res
             .status(400)
             .json({ error: "Cannot send the message to the sender" });
         }
         addMessageToThread(threadId, createdMessageId);
+        return res.status(200).json({ message: "Posting Message" });
+        ////////////////////////////Handle for real time communication////////////////
       }
     }
   }
+};
 
-  console.log(threadId, listingId, message);
+exports.getThreadMessages = async (req, res) => {
+  try {
+    const userId = req.user.user_id;
+    const threadRef = db.collection("threads");
+
+    // Query for threads where the buyer or seller is the current user
+    const buyerThreads = await threadRef.where("buyer", "==", userId).get();
+    const sellerThreads = await threadRef.where("seller", "==", userId).get();
+
+    let threads = [];
+
+    buyerThreads.forEach((doc) => {
+      threads.push({ id: doc.id, ...doc.data() });
+    });
+
+    sellerThreads.forEach((doc) => {
+      threads.push(threadData);
+    });
+
+    res.status(200).json({ threads });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: "Error fetching threads", details: error.message });
+  }
 };
 
 //This only happens when a buyer messages the seller first. Not the other way round.
@@ -125,10 +150,22 @@ const createMessage = async (sender, receiver, message) => {
 };
 
 const addMessageToThread = async (threadId, messageId) => {
-  const threadRef = db.collection("listings").doc(threadId);
+  const threadRef = db.collection("threads").doc(threadId);
+  const threadDoc = await threadRef.get();
+
+  if (!threadDoc.exists) {
+    console.error("Thread does not exist:", threadId);
+    return;
+  }
+
+  const threadData = threadDoc.data(); // No need for await
+  const messages = threadData.messages || []; // Ensure it's an array
+
   await threadRef.update({
-    messages: admin.firestore.FieldValue.arrayUnion({ messageId }),
+    messages: [...messages, messageId], // Append new messageId
   });
+
+  console.log("Message added successfully to thread:", threadId);
 };
 
 const linkThreadToUsers = async () => {};

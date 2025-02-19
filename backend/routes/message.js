@@ -5,6 +5,7 @@ const messageController = require("../controllers/messageController");
 
 //Post message
 router.post("/sendMessage", verifyAuthToken, messageController.addMessage);
+router.get("/allThreadMessages",verifyAuthToken,messageController.getThreadMessages)
 
 // // Fetch conversation threads
 // router.get("/getAllThreads", messageController.getAllThreads);

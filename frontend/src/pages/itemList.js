@@ -91,7 +91,7 @@ const ItemList = () => {
                   imageUrl={item.picUrls[0]}
                   title={item.title}
                   brand={item.brand}
-                  price= {item.price}
+                  price={item.price}
                   description={
                     item.description.length > 100
                       ? `${item.description.substring(0, 100)}...`
