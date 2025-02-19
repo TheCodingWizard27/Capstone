@@ -160,3 +160,32 @@
   margin: 2px; /* Reduce the margin to bring the card closer to the edges */
   width: 95%; /* Make the card wider */
 }
+
+.horizontal-scroll {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  padding-bottom: 10px;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: thin;
+  scrollbar-color: #ccc transparent;
+}
+
+.scroll-item {
+  flex: 0 0 auto; /* Prevent shrinking */
+  scroll-snap-align: start;
+}
+
+/* Hide scrollbar for a cleaner look */
+.horizontal-scroll::-webkit-scrollbar {
+  height: 8px;
+}
+
+.horizontal-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.horizontal-scroll::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}

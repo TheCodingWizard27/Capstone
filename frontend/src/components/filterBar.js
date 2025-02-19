@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 
 const FilterBar = ({ onCategoryChange, onSortChange }) => {
-    const [selectedCategory, setSelectedCategory] = useState("Electronics");
+    const [selectedCategory, setSelectedCategory] = useState(" ");
     const [sortOption, setSortOption] = useState("Relevance");
 
-    const categories = ["Electronics", "Books", "Clothing", "Furniture"];
+    const categories = ["Electronics", "Books", "Clothing", "Furniture","Miscellaneous"];
     const sortOptions = ["Relevance", "Price: Low to High", "Price: High to Low", "Newest First"];
 
     const handleCategoryChange = (event) => {

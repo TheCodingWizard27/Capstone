@@ -130,16 +130,13 @@ const ProductDetailsSection = ({ details }) => {
     </Col>
   );
 };
-
-// Section displaying similar items
 const SimilarItemsSection = ({ items, open, toggleOpen }) => (
   <BootstrapCard className="floating-card p-4">
     <h5 className="section-title">Same Category Items</h5>
     <Collapse in={open}>
-      <Row className="additional-container card-grid justify-content-center">
+      <div className="horizontal-scroll">
         {items.map((item, idx) => (
-          <Col lg={4} md={6} sm={6} key={idx} className="mb-3">
-            {/* Use the custom Card component for each similar item */}
+          <div key={idx} className="scroll-item">
             <Card
               id={item.id}
               imageUrl={item.picUrls[0]}
@@ -147,9 +144,9 @@ const SimilarItemsSection = ({ items, open, toggleOpen }) => (
               brand={item.brand}
               price={item.price}
             />
-          </Col>
+          </div>
         ))}
-      </Row>
+      </div>
     </Collapse>
     <Button
       variant="link"
@@ -157,20 +154,18 @@ const SimilarItemsSection = ({ items, open, toggleOpen }) => (
       aria-expanded={open}
       className="collapse-button"
     >
-      {open ? 'Collapse' : 'Expand'} Same Category Items
+      {open ? "Collapse" : "Expand"} Same Category Items
     </Button>
   </BootstrapCard>
 );
 
-// Section displaying other items by the seller
 const OtherItemsSection = ({ items, open, toggleOpen }) => (
   <BootstrapCard className="floating-card p-4">
     <h5 className="section-title">Other Items by the Seller</h5>
     <Collapse in={open}>
-      <Row className="additional-container card-grid justify-content-center">
+      <div className="horizontal-scroll">
         {items.map((item, idx) => (
-          <Col lg={4} md={6} sm={6} key={idx} className="mb-3">
-            {/* Use the custom Card component for each seller's item */}
+          <div key={idx} className="scroll-item">
             <Card
               id={item.id}
               imageUrl={item.picUrls[0]}
@@ -178,9 +173,9 @@ const OtherItemsSection = ({ items, open, toggleOpen }) => (
               brand={item.brand}
               price={item.price}
             />
-          </Col>
+          </div>
         ))}
-      </Row>
+      </div>
     </Collapse>
     <Button
       variant="link"
@@ -188,7 +183,7 @@ const OtherItemsSection = ({ items, open, toggleOpen }) => (
       aria-expanded={open}
       className="collapse-button"
     >
-      {open ? 'Collapse' : 'Expand'} Other Items
+      {open ? "Collapse" : "Expand"} Other Items
     </Button>
   </BootstrapCard>
 );

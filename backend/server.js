@@ -52,7 +52,7 @@ app.get("/api/categoriesInfo", (req, res) => {
       ],
     },
     {
-      name: "Clothes",
+      name: "Clothing",
       photos: [
         "https://firebasestorage.googleapis.com/v0/b/shop-simplify.firebasestorage.app/o/categoryImages%2Fcloth2.jpeg?alt=media&token=4b0c2375-375a-4ee9-9f7a-e4e73d8ffe12",
         "https://firebasestorage.googleapis.com/v0/b/shop-simplify.firebasestorage.app/o/categoryImages%2Fcloth1.jpeg?alt=media&token=a74f7f80-5dce-4300-b084-ba9fd2d6f808",
@@ -81,7 +81,7 @@ app.get("/api/categoriesInfo", (req, res) => {
 });
 
 app.get("/api/categories/list", (req, res) => {
-  const categories = ["Books", "Clothes", "Electronics", "Kitchen", "Miscellaneous"];
+  const categories = ["Books", "Clothing", "Electronics", "Kitchen", "Miscellaneous"];
   res.status(200).send(categories);
 });
 
