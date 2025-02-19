@@ -74,6 +74,10 @@ const MessagingPage = () => {
     };
   }, [currentUser.accessToken]);
 
+  useEffect(()=>{
+    
+  })
+
   // File upload handler
   const handleFileUpload = (event) => {
     const files = event.target.files;
