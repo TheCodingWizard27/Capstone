@@ -34,7 +34,12 @@ exports.addMessage = async (req, res) => {
       }
 
       //Create message
-      const createdMessageId = await createMessage(sender, receiver, message);
+      const createdMessageId = await createMessage(
+        sender,
+        receiver,
+        message,
+        createdThreadId
+      );
       if (createdMessageId == null) {
         return res
           .status(400)
@@ -76,7 +81,12 @@ exports.addMessage = async (req, res) => {
       } else {
         //Figure out who is sender and who is receiver
         const receiver = sender == buyer ? seller : buyer;
-        const createdMessageId = await createMessage(sender, receiver, message);
+        const createdMessageId = await createMessage(
+          sender,
+          receiver,
+          message,
+          threadId
+        );
         if (createdMessageId == null) {
           return res
             .status(400)
@@ -94,22 +104,57 @@ exports.getThreadMessages = async (req, res) => {
   try {
     const userId = req.user.user_id;
     const threadRef = db.collection("threads");
+    const userRef = db.collection("users");
 
     // Query for threads where the buyer or seller is the current user
     const buyerThreads = await threadRef.where("buyer", "==", userId).get();
     const sellerThreads = await threadRef.where("seller", "==", userId).get();
 
-    let threads = [];
+    let threadDocs = [];
 
+    // Combine buyer and seller threads
     buyerThreads.forEach((doc) => {
-      threads.push({ id: doc.id, ...doc.data() });
+      threadDocs.push({
+        threadId: doc.id,
+        seller: doc.data().seller,
+        myRole: "buyer",
+      });
     });
 
     sellerThreads.forEach((doc) => {
-      threads.push(threadData);
+      threadDocs.push({
+        threadId: doc.id,
+        buyer: doc.data().buyer,
+        myRole: "seller",
+      });
     });
 
-    res.status(200).json({ threads });
+    // Fetch user information for each thread
+    const userPromises = threadDocs.map(async (thread) => {
+      let userIdToFetch =
+        thread.myRole === "buyer" ? thread.seller : thread.buyer;
+
+      if (userIdToFetch) {
+        try {
+          const userDoc = await userRef.doc(userIdToFetch).get();
+          return {
+            ...thread,
+            otherParty: userDoc.exists
+              ? userDoc.data().userName
+              : "Unknown User",
+          };
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+          return { ...thread, userName: "Error fetching user" };
+        }
+      }
+      return thread;
+    });
+
+    // Wait for all user data fetches to resolve
+    const resolvedThreads = await Promise.all(userPromises);
+
+    res.status(200).json({ threads: resolvedThreads });
   } catch (error) {
     res
       .status(500)
@@ -134,13 +179,15 @@ const createThread = async (buyerId, listingId, sellerId) => {
 };
 
 //Happens when someone sends message to someone
-const createMessage = async (sender, receiver, message) => {
+const createMessage = async (sender, receiver, message, threadId) => {
   try {
     const createdMessage = await db.collection("messages").add({
+      threadId,
       sender,
       receiver,
       message,
       delivered: 0,
+      createdAt: admin.firestore.FieldValue.serverTimestamp(),
     });
     return createdMessage.id;
   } catch (error) {

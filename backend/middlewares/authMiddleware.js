@@ -2,8 +2,6 @@ const { auth } = require("../firebase/firebase");
 
 const verifyAuthToken = async (req, res, next) => {
   const authHeader = req.headers.authorization;
-  console.log("Received Authorization Header:", authHeader);
-
   const idToken =
     authHeader && authHeader.startsWith("Bearer ")
       ? authHeader.split("Bearer ")[1]
@@ -17,8 +15,6 @@ const verifyAuthToken = async (req, res, next) => {
   try {
     console.log("Verifying token...");
     const decodedToken = await auth.verifyIdToken(idToken);
-    console.log("Decoded Token:", decodedToken);
-
     req.user = decodedToken;
     next();
   } catch (error) {
