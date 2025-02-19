@@ -53,10 +53,10 @@ app.get("/api/categoriesInfo", (req, res) => {
     },
     {
       name: "Clothes",
-      images: [
-        "https://dummyurl.com/clothes1.jpg",
-        "https://dummyurl.com/clothes2.jpg",
-        "https://dummyurl.com/clothes3.jpg",
+      photos: [
+        "https://firebasestorage.googleapis.com/v0/b/shop-simplify.firebasestorage.app/o/categoryImages%2Fcloth2.jpeg?alt=media&token=4b0c2375-375a-4ee9-9f7a-e4e73d8ffe12",
+        "https://firebasestorage.googleapis.com/v0/b/shop-simplify.firebasestorage.app/o/categoryImages%2Fcloth1.jpeg?alt=media&token=a74f7f80-5dce-4300-b084-ba9fd2d6f808",
+        "https://firebasestorage.googleapis.com/v0/b/shop-simplify.firebasestorage.app/o/categoryImages%2Fcloth%202.jpeg?alt=media&token=f0de7d41-63e1-44e0-a744-034231c3c05a",
       ],
     },
     {
@@ -81,7 +81,7 @@ app.get("/api/categoriesInfo", (req, res) => {
 });
 
 app.get("/api/categories/list", (req, res) => {
-  const categories = ["Electronics", "B", "C", "D", "E"];
+  const categories = ["Books", "Clothes", "Electronics", "Kitchen", "Miscellaneous"];
   res.status(200).send(categories);
 });
 
