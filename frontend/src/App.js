@@ -72,12 +72,6 @@ function App() {
             element={userLoggedIn ? <ListPage /> : <Navigate to="/signIn" />}
           />
 
-          {/* Remove CategoryListing route since it's no longer needed */}
-          {/* <Route
-            path="/category/:categoryName" // Dynamic route for CategoryListing
-            element={userLoggedIn ? <CategoryListing /> : <Navigate to="/signIn" />}
-          /> */}
-
           <Route
             path="/accountInfo"
             element={
@@ -85,25 +79,14 @@ function App() {
             }
           />
           <Route
-            path="/singleListing"
-            element={
-              userLoggedIn ? (
-                <SingleListing />
-              ) : (
-                <Navigate to="/singleListing" />
-              )
-            }
-          />
-
-          <Route
             path="/messageList"
             element={
               userLoggedIn ? <MessagingPage /> : <Navigate to="/signIn" />
             }
           />
 
+          {/* Search Results */}
           <Route path="/" element={<SearchResults />} />
-          <Route path="/singleListing/:id" element={<SingleListing />} />
 
           {/* 404 Not Found route */}
           <Route path="*" element={<NotFound />} />
