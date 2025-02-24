@@ -50,6 +50,7 @@ export const getSingleListing = async (id) => {
     const response = await axios.get(
       `${process.env.REACT_APP_BACKEND}/api/listing/${id}`
     );
+    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error('Failed to fetch listing:', error);

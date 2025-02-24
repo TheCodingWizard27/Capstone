@@ -3,7 +3,6 @@ import { Form, InputGroup, ListGroup } from 'react-bootstrap';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-
 const SearchBar = ({ setSearchResults }) => {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);

@@ -44,3 +44,20 @@ export const fetchMessagesList = async (currentUser) => {
     throw error;
   }
 };
+
+export const getMessageByThreadId = async (threadId, currentUser) => {
+  try {
+    const response = await axios.get(
+      `${process.env.REACT_APP_BACKEND}/api/messageByThreadId/${threadId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${currentUser.accessToken}`,
+        },
+      }
+    );
+    return response.data.messages; // Return the response from the backend
+  } catch (error) {
+    console.error('Failed to fetch messages:', error);
+    throw error;
+  }
+};

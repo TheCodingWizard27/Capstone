@@ -111,6 +111,29 @@ exports.addMessage = async (req, res) => {
   }
 };
 
+exports.getMessageByThread = async (req, res) => {
+  try {
+    const threadId = req.params.id;
+    const userId = req.user.user_id;
+    const messageRef = db.collection("messages");
+    const messageDocs = await messageRef
+      .where("threadId", "==", threadId)
+      .get();
+
+    const messages = messageDocs.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+
+    res.status(200).json({ messages });
+  } catch (error) {
+    console.error("Error fetching messages:", error);
+    res
+      .status(500)
+      .json({ error: "Error fetching messages", details: error.message });
+  }
+};
+
 exports.getThreadMessages = async (req, res) => {
   try {
     const userId = req.user.user_id;
