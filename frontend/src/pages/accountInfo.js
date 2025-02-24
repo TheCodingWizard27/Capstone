@@ -9,6 +9,8 @@ import {
   InputGroup,
 } from 'react-bootstrap';
 import NavBar from '../components/navBar';
+import MyListings from '../components/mylistings';
+import Wishlist from '../components/wishlist';
 
 const AccountSettings = () => {
   const [activeSection, setActiveSection] = useState('profile');
@@ -222,6 +224,8 @@ const AccountSettings = () => {
                   </Form>
                 </>
               )}
+              {activeSection === 'listings' && <MyListings />}
+              {activeSection === 'wishlist' && <Wishlist />}
             </Col>
 
             {/* Profile Picture Section */}
