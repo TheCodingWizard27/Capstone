@@ -3,7 +3,6 @@ import { Form, InputGroup, ListGroup } from 'react-bootstrap';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-
 const SearchBar = ({ setSearchResults }) => {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
@@ -71,7 +70,7 @@ const SearchBar = ({ setSearchResults }) => {
               <ListGroup.Item
                 key={item.id}
                 className="search-item"
-                onClick={() => navigate(`/singleListing/${item.id}`)}
+                onClick={() => navigate(`/listing/${item.id}`)}
                 style={{ cursor: 'pointer' }}
               >
                 <div className="d-flex align-items-center">
