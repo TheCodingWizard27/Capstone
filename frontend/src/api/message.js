@@ -27,3 +27,20 @@ export const sendMessage = async (
     throw error;
   }
 };
+
+export const fetchMessagesList = async (currentUser) => {
+  try {
+    const response = await axios.get(
+      `${process.env.REACT_APP_BACKEND}/api/allThreadMessages`,
+      {
+        headers: {
+          Authorization: `Bearer ${currentUser.accessToken}`,
+        },
+      }
+    );
+    return response.data.threads; // Return the response from the backend
+  } catch (error) {
+    console.error('Failed to fetch messages:', error);
+    throw error;
+  }
+};

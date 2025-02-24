@@ -25,12 +25,23 @@ exports.addMessage = async (req, res) => {
           .json({ error: "Cannot send message to your own listing" });
       }
 
-      //Create a thread first
-      const createdThreadId = await createThread(sender, listingId, receiver);
-      if (createdThreadId == null) {
-        return res
-          .status(400)
-          .json({ error: "Cannot send the message to the sender" });
+      //check if thread already exists
+      const threadRef = db.collection("threads");
+      const buyerThreads = await threadRef.where("buyer", "==", sender).get();
+      const sellerThreads = await threadRef.where("seller", "==", sender).get();
+
+      //Create a thread if it does not exist
+      if (buyerThreads.empty && sellerThreads.empty) {
+        threadId = await createThread(sender, listingId, receiver);
+        if (threadId == null) {
+          return res
+            .status(400)
+            .json({ error: "Cannot send the message to the sender" });
+        }
+      } else {
+        threadId = buyerThreads.empty
+          ? sellerThreads.docs[0].id
+          : buyerThreads.docs[0].id;
       }
 
       //Create message
@@ -38,7 +49,7 @@ exports.addMessage = async (req, res) => {
         sender,
         receiver,
         message,
-        createdThreadId
+        threadId
       );
       if (createdMessageId == null) {
         return res
@@ -46,7 +57,7 @@ exports.addMessage = async (req, res) => {
           .json({ error: "Cannot send the message to the sender" });
       }
 
-      addMessageToThread(createdThreadId, createdMessageId);
+      addMessageToThread(threadId, createdMessageId);
       return res.status(200).json({ message: "Posting Message" });
 
       ////////////////////////////Handle for real time communication////////////////

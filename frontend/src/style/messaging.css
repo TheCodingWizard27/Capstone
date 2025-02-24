@@ -1,18 +1,14 @@
-.messaging-container {
-  height: 100vh;
-  background-color: #f8f9fa;
+.message-page-view {
+  height: 90vh;
+  overflow: hidden;
+}
+
+.chat-section{
+  height: 85vh;
 }
 
 .sidebar {
   overflow-y: auto;
-}
-
-.sidebar.open {
-  transform: translateX(0);
-}
-
-.sidebar.closed {
-  transform: translateX(-100%);
 }
 
 .sidebar-item {
@@ -36,18 +32,29 @@
   margin-left: 5px;
 }
 
-.chat-section {
-  display: block;
-}
-
 .message-body {
-  height: 400px;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   padding: 10px;
-  max-height: calc(100vh - 150px);
+  height: 67vh;
+  overflow: scroll;
+}
+
+.input-section {
+  position: absolute;
+  bottom: 50;
+}
+
+.message-body-mobile {
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 10px;
+  height: 100vh;
+  overflow: scroll;
 }
 
 .message {

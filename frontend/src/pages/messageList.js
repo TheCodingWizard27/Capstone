@@ -13,31 +13,12 @@ import {
 import { FaPaperPlane, FaPlus, FaBars, FaPaperclip } from 'react-icons/fa';
 import '../style/messaging.css';
 import { useAuth } from '../contexts/authContext';
-import { sendMessage } from '../api/message'; //Function to make send message api call
+import { sendMessage, fetchMessagesList } from '../api/message'; //Function to make send message api call
 
 const MessagingPage = () => {
   const { currentUser } = useAuth();
-  const [messages, setMessages] = useState({
-    'Mark Appleyard': [
-      {
-        id: 1,
-        sender: 'Mark Appleyard',
-        profilePic: 'https://via.placeholder.com/30',
-        time: '2:31 AM',
-        content: 'get lost fatass. I’ll call you.',
-        type: 'received',
-      },
-      {
-        id: 2,
-        sender: 'You',
-        profilePic: 'https://via.placeholder.com/30',
-        time: '2:45 AM',
-        content: 'Sure, looking forward to it!',
-        type: 'sent',
-      },
-    ],
-  });
-
+  const [receivedMessage, setReceivedMessage] = useState('');
+  const [messages, setMessages] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
   const [newMessage, setNewMessage] = useState('');
   const [uploadedFiles, setUploadedFiles] = useState([]);
@@ -51,11 +32,7 @@ const MessagingPage = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Scroll to bottom of chat when messages update
-  useEffect(() => {
-    messageEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages[selectedUser]]);
-
+  //Websocket connection on current user token change
   useEffect(() => {
     const ws = new WebSocket(
       `ws://localhost:8000?token=${currentUser.accessToken}`
@@ -74,9 +51,17 @@ const MessagingPage = () => {
     };
   }, [currentUser.accessToken]);
 
-  useEffect(()=>{
-    
-  })
+  // Fetch messages list on component mount
+  useEffect(() => {
+    async function fetchData() {
+      let messageList = await fetchMessagesList(currentUser);
+      setMessages([...messageList]);
+    }
+
+    fetchData();
+
+    messageEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [currentUser.accessToken]);
 
   // File upload handler
   const handleFileUpload = (event) => {
@@ -167,171 +152,174 @@ const MessagingPage = () => {
     sendMessage(1, 1, newMessage, currentUser); //APi call to the backend
   };
 
-  const handleSelectUser = (user) => {
-    setSelectedUser(user);
+  const handleSelectUser = (threadId, userName) => {
+    setSelectedUser({ threadId, userName });
   };
 
   const backToSidebar = () => {
     setSelectedUser(null);
   };
 
+  const listThreads = messages.map((item, index) => (
+    <li
+      onClick={() => handleSelectUser(item.threadId, item.otherParty)}
+      key={index}
+    >
+      {item.otherParty}
+    </li>
+  ));
+
   return (
     <div>
       <NavBar />
-      <Container fluid className="vh-100 mt-3 messaging-container">
-        <Row className="h-100">
-          {/* Sidebar */}
-          {(isMobileView && selectedUser === null) || !isMobileView ? (
-            <Col
-              md={4}
-              lg={3}
-              className="sidebar vh-100"
-              style={{ overflowY: 'auto', transition: 'all 0.3s ease-in-out' }}
-            >
-              <Card className="vh-100 p-3">
-                <div className="d-flex justify-content-between align-items-center mb-3">
-                  <h5 className="mb-0">Louie Barletta</h5>
-                  <Button variant="primary" size="sm">
-                    <FaPlus />
-                  </Button>
-                </div>
-                <ul className="list-unstyled">
-                  {Object.keys(messages).map((user) => (
-                    <li
-                      key={user}
-                      className={`sidebar-item ${
-                        user === selectedUser ? 'active' : ''
-                      }`}
-                      onClick={() => handleSelectUser(user)}
-                      style={{ cursor: 'pointer' }}
-                    >
-                      <strong>{user}</strong> <small>10:37 AM</small>
-                      <p className="text-muted mb-0">
-                        {messages[user].length > 0
-                          ? `${
-                              messages[user][messages[user].length - 1].sender
-                            }: ${
-                              messages[user][messages[user].length - 1].content
-                            }`
-                          : 'No messages yet'}
-                      </p>
-                    </li>
-                  ))}
-                </ul>
-              </Card>
-            </Col>
-          ) : null}
+      <Container fluid className="mt-3 messaging-container">
+        {/**Sidebar */}
+        <Row className="message-page-view">
+          <Col
+            md={5}
+            lg={3}
+            sm={selectedUser == null ? 12 : 0}
+            style={{
+              overflowY: 'auto',
+              transition: 'all 0.3s ease-in-out',
+              display: selectedUser != null && isMobileView ? 'none' : 'block', // Ensures it is hidden when needed
+            }}
+          >
+            <Card className="vh-90 p-3">
+              <div className="d-flex justify-content-between align-items-center mb-3">
+                <h5 className="mb-0">Chats</h5>
+              </div>
+              <ul className="list-unstyled">{listThreads}</ul>
+            </Card>
+          </Col>
 
-          {/* Chat Section */}
-          {(!isMobileView || selectedUser !== null) && (
-            <Col md={8} lg={9} className="chat-section vh-100">
-              {selectedUser ? (
-                <Card>
-                  <Card.Header className="d-flex justify-content-between align-items-center">
-                    {isMobileView && selectedUser && (
-                      <Button variant="secondary" onClick={backToSidebar}>
-                        Back
-                      </Button>
-                    )}
-                    <h6 className="mb-0">{selectedUser}</h6>
-                  </Card.Header>
-                  <Card.Body className="vh-100 message-body">
-                    {messages[selectedUser]?.map((message) => (
-                      <div
-                        key={message.id}
-                        className={`message ${
-                          message.type === 'sent' ? 'sent' : 'received'
-                        } d-flex align-items-center`}
-                      >
-                        {message.type === 'received' && (
-                          <Image
-                            src={message.profilePic}
-                            roundedCircle
-                            className="profile-pic me-2"
+          {/** Chat section */}
+          <Col md={7} lg={9} className="chat-section">
+            {selectedUser ? (
+              <Card
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  height: '100%',
+                }}
+              >
+                <Card.Header className="d-flex justify-content-between align-items-center">
+                  <h6 className="mb-0">{selectedUser.userName}</h6>
+                  <Button variant="secondary" onClick={backToSidebar}>
+                    Close
+                  </Button>
+                </Card.Header>
+
+                <Card.Body
+                  style={{
+                    flex: 1,
+                    height: '70%',
+                    overflowY: 'scroll',
+                  }}
+                >
+                  {messages[selectedUser]?.map((message) => (
+                    <div
+                      key={message.id}
+                      className={`message ${
+                        message.type === 'sent' ? 'sent' : 'received'
+                      } d-flex align-items-center`}
+                    >
+                      {message.type === 'received' && (
+                        <Image
+                          src={message.profilePic}
+                          roundedCircle
+                          className="profile-pic me-2"
+                        />
+                      )}
+                      <div className="message-content">
+                        <div className="content">{message.content}</div>
+                        <small className="time">{message.time}</small>
+                      </div>
+                      {message.type === 'sent' && (
+                        <Image
+                          src={message.profilePic}
+                          roundedCircle
+                          className="profile-pic ms-2"
+                        />
+                      )}
+                    </div>
+                  ))}
+                  <div ref={messageEndRef} />
+                </Card.Body>
+
+                <Card.Footer
+                  style={{
+                    position: 'relative',
+                    bottom: 0,
+                    width: '100%',
+                  }}
+                >
+                  <InputGroup>
+                    <Button variant="light">
+                      <Form.Label htmlFor="fileUpload" className="m-0">
+                        <FaPaperclip />
+                      </Form.Label>
+                    </Button>
+                    <Form.Control
+                      type="file"
+                      id="fileUpload"
+                      multiple
+                      style={{ display: 'none' }}
+                      onChange={handleFileUpload}
+                      accept="image/jpeg, image/jpg, image/png, image/gif, video/mp4, video/mov, video/WMV, video/webm, application/pdf"
+                    />
+                    <Form.Control
+                      type="text"
+                      placeholder="Type a message..."
+                      value={newMessage}
+                      onChange={(e) => setNewMessage(e.target.value)}
+                      onKeyPress={(e) => {
+                        if (e.key === 'Enter') handleSendMessage();
+                      }}
+                    />
+                    <Button variant="primary" onClick={handleSendMessage}>
+                      <FaPaperPlane />
+                    </Button>
+                  </InputGroup>
+
+                  <div className="uploaded-files mt-2">
+                    {uploadedFiles.map((file, index) => (
+                      <div key={index} className="uploaded-file">
+                        {file.type.startsWith('image/') && (
+                          <img
+                            src={URL.createObjectURL(file)}
+                            alt="Uploaded"
+                            style={{ maxWidth: '100px', maxHeight: '100px' }}
                           />
                         )}
-                        <div className="message-content">
-                          <div className="content">{message.content}</div>
-                          <small className="time">{message.time}</small>
-                        </div>
-                        {message.type === 'sent' && (
-                          <Image
-                            src={message.profilePic}
-                            roundedCircle
-                            className="profile-pic ms-2"
+                        {file.type.startsWith('video/') && (
+                          <video
+                            src={URL.createObjectURL(file)}
+                            controls
+                            style={{ maxWidth: '200px' }}
                           />
                         )}
+                        {file.type === 'application/pdf' && (
+                          <a
+                            href={URL.createObjectURL(file)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            View PDF
+                          </a>
+                        )}
+                        <small>{file.name}</small>
                       </div>
                     ))}
-                    <div ref={messageEndRef} />
-                  </Card.Body>
-                  <Card.Footer>
-                    <InputGroup>
-                      <Button variant="light">
-                        <Form.Label htmlFor="fileUpload" className="m-0">
-                          <FaPaperclip />
-                        </Form.Label>
-                      </Button>
-                      <Form.Control
-                        type="file"
-                        id="fileUpload"
-                        multiple
-                        style={{ display: 'none' }}
-                        onChange={handleFileUpload}
-                        accept="image/jpeg, image/jpg, image/png, image/gif, video/mp4, video/mov, video/WMV, video/webm, application/pdf"
-                      />
-                      <Form.Control
-                        type="text"
-                        placeholder="Type a message..."
-                        value={newMessage}
-                        onChange={(e) => setNewMessage(e.target.value)}
-                        onKeyPress={(e) => {
-                          if (e.key === 'Enter') handleSendMessage();
-                        }}
-                      />
-                      <Button variant="primary" onClick={handleSendMessage}>
-                        <FaPaperPlane />
-                      </Button>
-                    </InputGroup>
-                    <div className="uploaded-files mt-2">
-                      {uploadedFiles.map((file, index) => (
-                        <div key={index} className="uploaded-file">
-                          {file.type.startsWith('image/') && (
-                            <img
-                              src={URL.createObjectURL(file)}
-                              alt="Uploaded"
-                              style={{ maxWidth: '100px', maxHeight: '100px' }}
-                            />
-                          )}
-                          {file.type.startsWith('video/') && (
-                            <video
-                              src={URL.createObjectURL(file)}
-                              controls
-                              style={{ maxWidth: '200px' }}
-                            />
-                          )}
-                          {file.type === 'application/pdf' && (
-                            <a
-                              href={URL.createObjectURL(file)}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              View PDF
-                            </a>
-                          )}
-                          <small>{file.name}</small>
-                        </div>
-                      ))}
-                    </div>
-                  </Card.Footer>
-                </Card>
-              ) : (
-                <div className="text-center p-5">
-                  <h4>Select a conversation to start chatting</h4>
-                </div>
-              )}
-            </Col>
-          )}
+                  </div>
+                </Card.Footer>
+              </Card>
+            ) : (
+              <div className="text-center p-5">
+                <h4>Select a conversation to start chatting</h4>
+              </div>
+            )}
+          </Col>
         </Row>
       </Container>
     </div>
