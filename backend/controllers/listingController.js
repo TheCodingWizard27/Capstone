@@ -12,7 +12,11 @@ exports.addListing = async (req, res) => {
     let picUrls = [];
 
     // Upload each file to Firebase Storage and get its URL
+<<<<<<< HEAD
     if (req.files && req.files.length > 0) {
+=======
+    if (req.files && req.files.length && picUrls.length > 0) {
+>>>>>>> d6fc220 (Fetch listing)
       const uploadPromises = req.files.map(async (file) => {
         const uniqueFileName = `uploads/${userId}/${uuidv4()}_${file.originalname}`;
         const fileUpload = storage.file(uniqueFileName);
@@ -74,11 +78,29 @@ exports.getSingleListing = async (req, res) => {
   try {
     const listingId = req.params.id;
     const listingRef = db.collection("listings").doc(listingId);
+
     const listingDoc = await listingRef.get();
     
     if (!listingDoc.exists) {
       return res.status(404).json({ message: "Listing not found" });
     }
+<<<<<<< HEAD
+=======
+    const listingData = listingDoc.data();
+    const userRef = db.collection("users").doc(listingData.user);
+    const userDoc = await userRef.get();
+
+    if (!userDoc.exists) {
+      return res.status(400).json({ message: "User does not exise" });
+    }
+    const username = userDoc.data().userName;
+
+    const listingDataWithId = {
+      ...listingData,
+      id: listingId,
+      username: username,
+    };
+>>>>>>> d6fc220 (Fetch listing)
 
     const listingData = listingDoc.data();
     const listingDataWithId = { ...listingData, id: listingId };
@@ -98,8 +120,17 @@ exports.getSingleListing = async (req, res) => {
 
     res.json({
       ...listingDataWithId,
+<<<<<<< HEAD
       similarItems: similarItemsSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })),
       otherItems: otherItemsSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })),
+=======
+      similarItems: similarItems.docs.map((doc) => {
+        doc.data(), doc.id;
+      }),
+      otherItems: otherItems.docs.map((doc) => {
+        doc.data(), doc.id;
+      }),
+>>>>>>> d6fc220 (Fetch listing)
     });
   } catch (error) {
     console.error("Error fetching listing data:", error);

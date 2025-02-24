@@ -13,13 +13,18 @@ import {
 import { FaPaperPlane, FaPlus, FaBars, FaPaperclip } from 'react-icons/fa';
 import '../style/messaging.css';
 import { useAuth } from '../contexts/authContext';
-import { sendMessage, fetchMessagesList } from '../api/message'; //Function to make send message api call
+import {
+  sendMessage,
+  fetchMessagesList,
+  getMessageByThreadId,
+} from '../api/message'; //Function to make send message api call
 
 const MessagingPage = () => {
   const { currentUser } = useAuth();
   const [receivedMessage, setReceivedMessage] = useState('');
   const [messages, setMessages] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
+  const [currentChat, setCurrentChat] = useState([]);
   const [newMessage, setNewMessage] = useState('');
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [isMobileView, setIsMobileView] = useState(window.innerWidth <= 760);
@@ -62,6 +67,19 @@ const MessagingPage = () => {
 
     messageEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [currentUser.accessToken]);
+
+  //Load all messages from thread
+  useEffect(() => {
+    async function fetchData() {
+      let chat = await getMessageByThreadId(selectedUser.threadId, currentUser);
+      setCurrentChat([...chat]);
+    }
+    if (selectedUser != null) {
+      fetchData();
+
+      console.log(currentChat);
+    }
+  }, [selectedUser]);
 
   // File upload handler
   const handleFileUpload = (event) => {
@@ -217,7 +235,7 @@ const MessagingPage = () => {
                     overflowY: 'scroll',
                   }}
                 >
-                  {messages[selectedUser]?.map((message) => (
+                  {currentChat?.map((message) => (
                     <div
                       key={message.id}
                       className={`message ${
@@ -232,7 +250,7 @@ const MessagingPage = () => {
                         />
                       )}
                       <div className="message-content">
-                        <div className="content">{message.content}</div>
+                        <div className="content">{message.message}</div>
                         <small className="time">{message.time}</small>
                       </div>
                       {message.type === 'sent' && (
