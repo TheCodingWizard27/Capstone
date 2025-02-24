@@ -71,7 +71,7 @@ const SearchBar = ({ setSearchResults }) => {
               <ListGroup.Item
                 key={item.id}
                 className="search-item"
-                onClick={() => navigate(`/singleListing/${item.id}`)}
+                onClick={() => navigate(`/listing/${item.id}`)}
                 style={{ cursor: 'pointer' }}
               >
                 <div className="d-flex align-items-center">
