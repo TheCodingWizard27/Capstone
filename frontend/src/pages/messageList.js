@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import NavBar from '../components/navBar';
+import { useNavigate } from 'react-router-dom';
 import {
   Container,
   Row,
@@ -19,16 +20,29 @@ import {
   getMessageByThreadId,
 } from '../api/message'; //Function to make send message api call
 
+import { useSearchParams } from 'react-router-dom';
+
 const MessagingPage = () => {
+  const [searchParams] = useSearchParams();
   const { currentUser } = useAuth();
   const [receivedMessage, setReceivedMessage] = useState('');
   const [messages, setMessages] = useState([]);
-  const [selectedUser, setSelectedUser] = useState(null);
   const [currentChat, setCurrentChat] = useState([]);
   const [newMessage, setNewMessage] = useState('');
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [isMobileView, setIsMobileView] = useState(window.innerWidth <= 760);
   const messageEndRef = useRef(null);
+
+  // Extract query parameters
+  const threadId = searchParams.get('threadId');
+  const userName = searchParams.get('userName');
+
+  const navigate = useNavigate();
+
+  // Initialize selectedUser based on query parameters
+  const [selectedUser, setSelectedUser] = useState(
+    threadId && userName ? { threadId, userName } : null
+  );
 
   // Update mobile view state on resize
   useEffect(() => {
@@ -36,6 +50,15 @@ const MessagingPage = () => {
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  // Update selectedUser if searchParams change
+  useEffect(() => {
+    if (threadId && userName) {
+      setSelectedUser({ threadId, userName });
+    } else {
+      setSelectedUser(null);
+    }
+  }, [threadId, userName]);
 
   //Websocket connection on current user token change
   useEffect(() => {
@@ -64,6 +87,7 @@ const MessagingPage = () => {
     }
 
     fetchData();
+    console.log(messages);
 
     messageEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [currentUser.accessToken]);
@@ -167,15 +191,15 @@ const MessagingPage = () => {
       setNewMessage('');
       setUploadedFiles([]);
     }
-    sendMessage(1, 1, newMessage, currentUser); //APi call to the backend
+    sendMessage(threadId, newMessage, currentUser); //APi call to the backend
   };
 
   const handleSelectUser = (threadId, userName) => {
-    setSelectedUser({ threadId, userName });
+    navigate(`/messageList/?threadId=${threadId}&userName=${userName}`);
   };
 
   const backToSidebar = () => {
-    setSelectedUser(null);
+    navigate('/messageList');
   };
 
   const listThreads = messages.map((item, index) => (

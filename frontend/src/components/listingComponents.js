@@ -1,17 +1,33 @@
 import React from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Image, Button, Card as BootstrapCard, Col, Collapse } from 'react-bootstrap';
+import {
+  Image,
+  Button,
+  Card as BootstrapCard,
+  Col,
+  Collapse,
+} from 'react-bootstrap';
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import Card from './itemCard';
 
+import { useAuth } from '../contexts/authContext';
+
+import { createThread } from '../api/message';
+
 // Main product image section with prev/next functionality
-export const MainProductSection = ({ images, currentImageIndex, setCurrentImageIndex }) => {
+export const MainProductSection = ({
+  images,
+  currentImageIndex,
+  setCurrentImageIndex,
+}) => {
   const handleNextImage = () => {
     setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
   };
 
   const handlePrevImage = () => {
-    setCurrentImageIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length);
+    setCurrentImageIndex(
+      (prevIndex) => (prevIndex - 1 + images.length) % images.length
+    );
   };
 
   const handlePreviewClick = (index) => {
@@ -36,9 +52,16 @@ export const MainProductSection = ({ images, currentImageIndex, setCurrentImageI
               key={index}
               src={image}
               alt={`Preview ${index + 1}`}
-              className={`preview-image mb-2 ${index === currentImageIndex ? 'active' : ''}`}
+              className={`preview-image mb-2 ${
+                index === currentImageIndex ? 'active' : ''
+              }`}
               onClick={() => handlePreviewClick(index)}
-              style={{ height: '100px', width: '15%', minWidth: '100px', objectFit: 'cover' }}
+              style={{
+                height: '100px',
+                width: '15%',
+                minWidth: '100px',
+                objectFit: 'cover',
+              }}
             />
           ))}
         </div>
@@ -51,29 +74,63 @@ export const MainProductSection = ({ images, currentImageIndex, setCurrentImageI
 export const ProductDetailsSection = ({ details }) => {
   const navigate = useNavigate();
 
+  const { currentUser } = useAuth();
+
+  const handleContactSeller = async (listingId, sellerName) => {
+    try {
+      const response = await createThread(listingId, currentUser);
+      console.log(response);
+      navigate(
+        `/messageList?threadId=${response.threadId}&userName=${sellerName}`
+      );
+    } catch (error) {
+      alert(`${error.response.data.error}`);
+    }
+  };
+
   return (
     <Col md={12} lg={6} className="d-flex flex-column align-items-start mt-4">
       <BootstrapCard className="details-card p-3">
         <h4>{details.title}</h4>
         <div className="rating mb-2">
-          <span>{details.rating} ★★★★☆</span> |{' '}
-          <span>{details.ratingsCount} Ratings</span>
+          <span>Seller Name: </span>
+          <span>{details.sellerName}</span>
         </div>
         <div className="price mb-2">${details.price}</div>
-        <div><strong>Brand:</strong> {details.brand}</div>
-        <div><strong>Condition:</strong> {details.condition}</div>
-        <div><strong>Color:</strong> {details.color}</div>
-        <div><strong>Status:</strong> {details.status}</div>
+        <div>
+          <strong>Brand:</strong> {details.brand}
+        </div>
+        <div>
+          <strong>Condition:</strong> {details.condition}
+        </div>
+        <div>
+          <strong>Color:</strong> {details.color}
+        </div>
+        <div>
+          <strong>Status:</strong> {details.status}
+        </div>
         <hr />
         <p>{details.description}</p>
         <div className="button-group mt-3">
-          <Button variant="primary" className="me-2">Contact Seller</Button>
-          <Button variant="dark" className="me-2">Add to Watchlist</Button>
+          <Button
+            variant="primary"
+            className="me-2"
+            onClick={() => handleContactSeller(details.id, details.sellerName)}
+          >
+            Contact Seller
+          </Button>
+          <Button variant="dark" className="me-2">
+            Add to Watchlist
+          </Button>
           <Button
             variant="danger"
             onClick={() =>
               navigate(`/editListing/${details.id}`, {
-                state: { id: details.id, formData: details, files: details.picUrls.map((url) => ({ preview: url })) }
+                state: {
+                  id: details.id,
+                  formData: details,
+                  files: details.picUrls.map((url) => ({ preview: url })),
+                },
               })
             }
           >
@@ -91,7 +148,7 @@ export const ItemSection = ({ title, items, open, toggleOpen }) => (
     <h5 className="section-title">{title}</h5>
     <Collapse in={open}>
       <div className="horizontal-scroll">
-      console.log(item); 
+        console.log(item);
         {items.map((item, idx) => (
           <div key={idx} className="scroll-item" style={{ cursor: 'pointer' }}>
             <Link to={`/listing/${item.id}`} className="text-decoration-none">

@@ -5,10 +5,18 @@ const messageController = require("../controllers/messageController");
 
 //Post message
 router.post("/sendMessage", verifyAuthToken, messageController.addMessage);
-router.get("/allThreadMessages",verifyAuthToken,messageController.getThreadMessages)
+router.get(
+  "/allThreadMessages",
+  verifyAuthToken,
+  messageController.getThreadMessages
+);
 
-router.get("/messageByThreadId/:id", verifyAuthToken, messageController.getMessageByThread);
-
+router.get(
+  "/messageByThreadId/:id",
+  verifyAuthToken,
+  messageController.getMessageByThread
+);
+router.post("/createThread", verifyAuthToken, messageController.createThread);
 
 // // Fetch conversation threads
 // router.get("/getAllThreads", messageController.getAllThreads);

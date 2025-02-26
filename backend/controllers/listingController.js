@@ -93,8 +93,11 @@ exports.getSingleListing = async (req, res) => {
 
     const userRef = db.collection("users").doc(listingData.user);
     const userDoc = await userRef.get();
+    if (!userDoc.exists) {
+      return res.status(404).json({ message: "User not found" });
+    }
     const userData = userDoc.data();
-    listingData.useName = userData.userName;
+    listingData.sellerName = userData.userName;
     const listingDataWithId = { ...listingData, id: listingId };
 
     // Fetch similar items with IDs
