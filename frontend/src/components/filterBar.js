@@ -47,21 +47,21 @@ const FilterBar = ({ onCategoryChange, onSortChange }) => {
             </div>
 
             {/* Sort By Section */}
-            <div style={{ display: 'flex', alignItems: 'center', marginTop: '0' }}>
-                <label htmlFor="sort" style={{ marginRight: '8px', fontWeight: 'bold' }}>Sort By:</label>
-                <select
-                    id="sort"
-                    value={sortOption}
-                    onChange={handleSortChange}
-                    style={{ padding: '5px', fontSize: '14px' }}
-                >
-                    {sortOptions.map((option) => (
-                        <option key={option} value={option}>
-                            {option}
-                        </option>
-                    ))}
-                </select>
-            </div>
+            // <div style={{ display: 'flex', alignItems: 'center', marginTop: '0' }}>
+            //     <label htmlFor="sort" style={{ marginRight: '8px', fontWeight: 'bold' }}>Sort By:</label>
+            //     <select
+            //         id="sort"
+            //         value={sortOption}
+            //         onChange={handleSortChange}
+            //         style={{ padding: '5px', fontSize: '14px' }}
+            //     >
+            //         {sortOptions.map((option) => (
+            //             <option key={option} value={option}>
+            //                 {option}
+            //             </option>
+            //         ))}
+            //     </select>
+            // </div>
             
             <style jsx>{`
                 @media (max-width: 768px) {
