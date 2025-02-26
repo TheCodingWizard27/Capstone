@@ -77,6 +77,20 @@ export const MainProductSection = ({
 export const ProductDetailsSection = ({ details }) => {
   const navigate = useNavigate();
 
+  const { currentUser } = useAuth();
+
+  const handleContactSeller = async (listingId, sellerName) => {
+    try {
+      const response = await createThread(listingId, currentUser);
+      console.log(response);
+      navigate(
+        `/messageList?threadId=${response.threadId}&userName=${sellerName}`
+      );
+    } catch (error) {
+      alert(`${error.response.data.error}`);
+    }
+  };
+
   const [cartCount, setCartCount] = useState(
     JSON.parse(localStorage.getItem('cart'))?.length || 0
   );
@@ -134,7 +148,11 @@ export const ProductDetailsSection = ({ details }) => {
         <hr />
         <p>{details.description}</p>
         <div className="button-group mt-3">
-          <Button variant="primary" className="me-2">
+          <Button
+            variant="primary"
+            className="me-2"
+            onClick={() => handleContactSeller(details.id, details.sellerName)}
+          >
             Contact Seller
           </Button>
           <Button variant="dark" className="me-2" onClick={handleAddToCart}>
