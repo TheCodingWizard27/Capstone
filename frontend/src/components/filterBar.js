@@ -4,8 +4,8 @@ const FilterBar = ({ onCategoryChange, onSortChange }) => {
     const [selectedCategory, setSelectedCategory] = useState(" ");
     const [sortOption, setSortOption] = useState("Relevance");
 
-    const categories = ["Electronics", "Books", "Clothing", "Furniture","Miscellaneous"];
-    const sortOptions = ["Relevance", "Price: Low to High", "Price: High to Low", "Newest First"];
+    const categories = ["Electronics", "Books", "Clothing", "Furniture", "Kitchen", "Miscellaneous"];
+    // const sortOptions = ["Relevance", "Price: Low to High", "Price: High to Low", "Newest First"];
 
     const handleCategoryChange = (event) => {
         const newCategory = event.target.value;
