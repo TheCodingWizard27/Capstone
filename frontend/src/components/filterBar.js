@@ -4,8 +4,8 @@ const FilterBar = ({ onCategoryChange, onSortChange }) => {
     const [selectedCategory, setSelectedCategory] = useState(" ");
     const [sortOption, setSortOption] = useState("Relevance");
 
-    const categories = ["Electronics", "Books", "Clothing", "Furniture","Miscellaneous"];
-    const sortOptions = ["Relevance", "Price: Low to High", "Price: High to Low", "Newest First"];
+    const categories = ["Electronics", "Books", "Clothing", "Furniture", "Kitchen", "Miscellaneous"];
+    // const sortOptions = ["Relevance", "Price: Low to High", "Price: High to Low", "Newest First"];
 
     const handleCategoryChange = (event) => {
         const newCategory = event.target.value;
@@ -47,21 +47,21 @@ const FilterBar = ({ onCategoryChange, onSortChange }) => {
             </div>
 
             {/* Sort By Section */}
-            <div style={{ display: 'flex', alignItems: 'center', marginTop: '0' }}>
-                <label htmlFor="sort" style={{ marginRight: '8px', fontWeight: 'bold' }}>Sort By:</label>
-                <select
-                    id="sort"
-                    value={sortOption}
-                    onChange={handleSortChange}
-                    style={{ padding: '5px', fontSize: '14px' }}
-                >
-                    {sortOptions.map((option) => (
-                        <option key={option} value={option}>
-                            {option}
-                        </option>
-                    ))}
-                </select>
-            </div>
+            // <div style={{ display: 'flex', alignItems: 'center', marginTop: '0' }}>
+            //     <label htmlFor="sort" style={{ marginRight: '8px', fontWeight: 'bold' }}>Sort By:</label>
+            //     <select
+            //         id="sort"
+            //         value={sortOption}
+            //         onChange={handleSortChange}
+            //         style={{ padding: '5px', fontSize: '14px' }}
+            //     >
+            //         {sortOptions.map((option) => (
+            //             <option key={option} value={option}>
+            //                 {option}
+            //             </option>
+            //         ))}
+            //     </select>
+            // </div>
             
             <style jsx>{`
                 @media (max-width: 768px) {

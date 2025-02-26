@@ -7,10 +7,26 @@ import {
   Col,
   Collapse,
 } from 'react-bootstrap';
+import {
+  Image,
+  Button,
+  Card as BootstrapCard,
+  Col,
+  Collapse,
+} from 'react-bootstrap';
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import Card from './itemCard';
 
+import { useAuth } from '../contexts/authContext';
+
+import { createThread } from '../api/message';
+
 // Main product image section with prev/next functionality
+export const MainProductSection = ({
+  images,
+  currentImageIndex,
+  setCurrentImageIndex,
+}) => {
 export const MainProductSection = ({
   images,
   currentImageIndex,
@@ -21,6 +37,9 @@ export const MainProductSection = ({
   };
 
   const handlePrevImage = () => {
+    setCurrentImageIndex(
+      (prevIndex) => (prevIndex - 1 + images.length) % images.length
+    );
     setCurrentImageIndex(
       (prevIndex) => (prevIndex - 1 + images.length) % images.length
     );
@@ -51,7 +70,16 @@ export const MainProductSection = ({
               className={`preview-image mb-2 ${
                 index === currentImageIndex ? 'active' : ''
               }`}
+              className={`preview-image mb-2 ${
+                index === currentImageIndex ? 'active' : ''
+              }`}
               onClick={() => handlePreviewClick(index)}
+              style={{
+                height: '100px',
+                width: '15%',
+                minWidth: '100px',
+                objectFit: 'cover',
+              }}
               style={{
                 height: '100px',
                 width: '15%',
@@ -104,10 +132,22 @@ export const ProductDetailsSection = ({ details }) => {
       <BootstrapCard className="details-card p-3">
         <h4>{details.title}</h4>
         <div className="rating mb-2">
-          <span>{details.rating} ★★★★☆</span> |{' '}
-          <span>{details.ratingsCount} Ratings</span>
+          <span>Seller Name: </span>
+          <span>{details.sellerName}</span>
         </div>
         <div className="price mb-2">${details.price}</div>
+        <div>
+          <strong>Brand:</strong> {details.brand}
+        </div>
+        <div>
+          <strong>Condition:</strong> {details.condition}
+        </div>
+        <div>
+          <strong>Color:</strong> {details.color}
+        </div>
+        <div>
+          <strong>Status:</strong> {details.status}
+        </div>
         <div>
           <strong>Brand:</strong> {details.brand}
         </div>
@@ -133,6 +173,11 @@ export const ProductDetailsSection = ({ details }) => {
             variant="danger"
             onClick={() =>
               navigate(`/editListing/${details.id}`, {
+                state: {
+                  id: details.id,
+                  formData: details,
+                  files: details.picUrls.map((url) => ({ preview: url })),
+                },
                 state: {
                   id: details.id,
                   formData: details,
