@@ -66,6 +66,33 @@ const WhyShop = () => {
           {/* Left Column */}
           <div
             className="col-md-6 p-4"
+            style={{
+              backgroundColor: '#e6f9ec',
+              borderRadius: '10px',
+            }}
+          >
+            <h6 style={{ color: 'green' }}>With ShopSimplify,</h6>
+            <ul className="list-unstyled">
+              <li style={{ color: 'green', marginBottom: '10px' }}>
+                ✔ Sell and buy items locally in one easy platform
+              </li>
+              <li style={{ color: 'green', marginBottom: '10px' }}>
+                ✔ Seamless transaction management
+              </li>
+              <li style={{ color: 'green', marginBottom: '10px' }}>
+                ✔ Direct and secure communication between buyers and sellers
+              </li>
+              <li style={{ color: 'green', marginBottom: '10px' }}>
+                ✔ Integrated secure payments within the app
+              </li>
+              <li style={{ color: 'green', marginBottom: '10px' }}>
+                ✔ Real-time tracking of sales, orders, and transactions
+              </li>
+            </ul>
+          </div>
+          {/* Right Column */}
+          <div
+            className="col-md-6 p-4"
             style={{ backgroundColor: '#f9ecec', borderRadius: '10px' }}
           >
             <h6 style={{ color: 'red' }}>Without ShopSimplify,</h6>
@@ -84,30 +111,6 @@ const WhyShop = () => {
               </li>
               <li style={{ color: 'red', marginBottom: '10px' }}>
                 ✖ No real-time tracking for transactions or orders
-              </li>
-            </ul>
-          </div>
-          {/* Right Column */}
-          <div
-            className="col-md-6 p-4"
-            style={{ backgroundColor: '#e6f9ec', borderRadius: '10px' }}
-          >
-            <h6 style={{ color: 'green' }}>With ShopSimplify,</h6>
-            <ul className="list-unstyled">
-              <li style={{ color: 'green', marginBottom: '10px' }}>
-                ✔ Sell and buy items locally in one easy platform
-              </li>
-              <li style={{ color: 'green', marginBottom: '10px' }}>
-                ✔ Seamless transaction management
-              </li>
-              <li style={{ color: 'green', marginBottom: '10px' }}>
-                ✔ Direct and secure communication between buyers and sellers
-              </li>
-              <li style={{ color: 'green', marginBottom: '10px' }}>
-                ✔ Integrated secure payments within the app
-              </li>
-              <li style={{ color: 'green', marginBottom: '10px' }}>
-                ✔ Real-time tracking of sales, orders, and transactions
               </li>
             </ul>
           </div>

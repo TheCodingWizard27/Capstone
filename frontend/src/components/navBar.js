@@ -1,14 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Navbar, Button, Col, Row, Container } from 'react-bootstrap';
 import SearchBar from './searchBar';
 import { Link } from 'react-router-dom';
-import { FaEnvelope, FaBars, FaTimes, FaHome } from 'react-icons/fa';
+import {
+  FaEnvelope,
+  FaShoppingCart,
+  FaBars,
+  FaTimes,
+  FaHome,
+} from 'react-icons/fa';
 import DropUser from './dropUser';
 import './NavBar.css'; // Importing custom CSS
 
-const NavBar = (/*{ setSearchResults }*/) => {
-  // Accept setSearchResults as a prop
+const NavBar = () => {
   const [showDrawer, setShowDrawer] = useState(false); // Drawer state
+  const [cartCount, setCartCount] = useState(0);
+
+  useEffect(() => {
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    setCartCount(cart.length);
+  }, []);
 
   const toggleDrawer = () => setShowDrawer(!showDrawer); // Toggle drawer state
 
@@ -75,14 +86,30 @@ const NavBar = (/*{ setSearchResults }*/) => {
               >
                 Sell
               </Link>
+
+              {/* Messages Icon */}
               <Link
                 to="/messageList"
-                className="text-white me-3"
+                className="text-white me-3 position-relative"
                 style={{ textDecoration: 'none', fontSize: '1.25rem' }}
               >
                 <FaEnvelope size={25} />
               </Link>
-              <DropUser /> {/* Replace the FaUser icon with DropUser */}
+
+              {/* Shopping Cart Icon */}
+              <Link
+                to="/cart"
+                className="text-white me-3 position-relative"
+                style={{ textDecoration: 'none', fontSize: '1.25rem' }}
+              >
+                <FaShoppingCart size={25} />
+                {cartCount > 0 && (
+                  <span className="cart-badge">{cartCount}</span>
+                )}
+              </Link>
+
+              {/* User Dropdown */}
+              <DropUser />
             </Col>
           </Row>
         </Container>
@@ -119,7 +146,15 @@ const NavBar = (/*{ setSearchResults }*/) => {
           >
             Messages
           </Link>
-          <DropUser /> {/* Replace "Profile" with DropUser component */}
+          <Link
+            to="/cart"
+            className="d-flex align-items-center mb-3 text-light"
+            style={{ textDecoration: 'none', fontSize: '1.25rem' }}
+            onClick={toggleDrawer}
+          >
+            My Cart
+          </Link>
+          <DropUser />
         </div>
       </div>
 

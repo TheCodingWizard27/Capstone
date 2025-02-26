@@ -12,7 +12,7 @@ exports.addListing = async (req, res) => {
     let picUrls = [];
 
     // Upload each file to Firebase Storage and get its URL
-    if (req.files && req.files.length && picUrls.length > 0) {
+    if (req.files && req.files.length) {
       const uploadPromises = req.files.map(async (file) => {
         const uniqueFileName = `uploads/${userId}/${uuidv4()}_${
           file.originalname

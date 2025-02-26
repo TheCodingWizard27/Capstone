@@ -93,7 +93,7 @@ const ItemList = () => {
                   brand={item.brand}
                   price={item.price}
                   description={
-                    item.description.length > 100
+                    item.description > 100
                       ? `${item.description.substring(0, 100)}...`
                       : item.description
                   }

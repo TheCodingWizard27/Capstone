@@ -81,7 +81,14 @@ app.get("/api/categoriesInfo", (req, res) => {
 });
 
 app.get("/api/categories/list", (req, res) => {
-  const categories = ["Books", "Clothing", "Electronics", "Kitchen", "Miscellaneous"];
+  const categories = [
+    "Furniture",
+    "Books",
+    "Electronics",
+    "Clothing",
+    "Kitchen",
+    "Miscellaneous",
+  ];
   res.status(200).send(categories);
 });
 

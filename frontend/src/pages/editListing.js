@@ -5,6 +5,7 @@ import { useAuth } from '../contexts/authContext';
 import { Container, Form, Button, Card, Alert } from 'react-bootstrap';
 import NavBar from '../components/navBar';
 import axios from 'axios';
+import { FaTimes } from 'react-icons/fa'; // Importing FaTimes for the remove button
 
 const EditListing = () => {
   const { id } = useParams();
@@ -25,29 +26,74 @@ const EditListing = () => {
   };
 
   const handleFileChange = (e) => {
-    const selectedFiles = Array.from(e.target.files).map((file) => ({
-      file,
-      preview: URL.createObjectURL(file),
-    }));
-    setFiles((prevFiles) => [...prevFiles, ...selectedFiles]);
-  };
+    setAlert({ show: false, message: '', variant: '' });
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+    const selectedFiles = Array.from(e.target.files);
+    const validExtensions = [
+      'image/jpeg',
+      'image/jpg',
+      'image/png',
+      'image/gif',
+    ];
+    const maxSize = 3 * 1024 * 1024; // 3MB size limit
+    const maxFiles = 5;
 
-    // Retrieve token from context or localStorage
-    const authToken = token || localStorage.getItem('token');
-
-    if (!id) {
+    if (
+      existingImages.length + files.length + selectedFiles.length >
+      maxFiles
+    ) {
       setAlert({
         show: true,
-        message: 'Error: Invalid listing ID.',
+        message: `You can have up to ${maxFiles} images per listing.`,
         variant: 'danger',
       });
       return;
     }
 
-    if (!authToken) {
+    const filteredFiles = selectedFiles
+      .filter((file) => {
+        if (!validExtensions.includes(file.type)) {
+          setAlert({
+            show: true,
+            message: `File "${file.name}" is not a valid image format.`,
+            variant: 'danger',
+          });
+          return false;
+        }
+        if (file.size > maxSize) {
+          setAlert({
+            show: true,
+            message: `File "${file.name}" exceeds the 3MB size limit.`,
+            variant: 'danger',
+          });
+          return false;
+        }
+        return true;
+      })
+      .map((file) => ({
+        file,
+        preview: URL.createObjectURL(file), // ✅ Ensure preview URL is created
+      }));
+
+    setFiles((prevFiles) => [...prevFiles, ...filteredFiles]);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // Ensure total images do not exceed 5
+    if (existingImages.length + files.length > 5) {
+      setAlert({
+        show: true,
+        message: 'You can have up to 5 images per listing.',
+        variant: 'danger',
+      });
+      return;
+    }
+
+    const authToken = token || localStorage.getItem('token');
+
+    if (!id || !authToken) {
       setAlert({
         show: true,
         message: 'Authentication error. Please log in again.',
@@ -74,8 +120,6 @@ const EditListing = () => {
         }
       });
 
-      console.log('Submitting token:', authToken);
-
       const response = await axios.put(
         `${process.env.REACT_APP_BACKEND}/api/updateListing/${id}`,
         formDataObj,
@@ -99,6 +143,17 @@ const EditListing = () => {
         show: true,
         message: 'Error updating listing.',
         variant: 'danger',
+      });
+    }
+  };
+
+  const removeFile = (index, isExisting = false) => {
+    if (isExisting) {
+      setExistingImages((prev) => prev.filter((_, i) => i !== index));
+    } else {
+      setFiles((prevFiles) => {
+        URL.revokeObjectURL(prevFiles[index].preview);
+        return prevFiles.filter((_, i) => i !== index);
       });
     }
   };
@@ -132,7 +187,28 @@ const EditListing = () => {
               <h5>Existing Images</h5>
               <div className="d-flex flex-wrap">
                 {existingImages.map((file, index) => (
-                  <Card key={index} className="m-2" style={{ width: '120px' }}>
+                  <Card
+                    key={index}
+                    className="m-2"
+                    style={{ width: '120px', position: 'relative' }}
+                  >
+                    <Button
+                      variant="danger"
+                      size="sm"
+                      className="position-absolute top-0 start-100 translate-middle"
+                      onClick={() => removeFile(index, true)}
+                      style={{
+                        borderRadius: '50%',
+                        width: '20px',
+                        height: '20px',
+                        padding: 0,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                    >
+                      <FaTimes size={12} />
+                    </Button>
                     <Card.Img variant="top" src={file.preview} alt="Listing" />
                   </Card>
                 ))}
@@ -141,6 +217,39 @@ const EditListing = () => {
             <Form.Group className="mb-3">
               <h5>Upload New Images</h5>
               <Form.Control type="file" multiple onChange={handleFileChange} />
+              {/* Display previews of newly uploaded images */}
+              <div className="d-flex flex-wrap mt-2">
+                {files.map((fileObj, index) => (
+                  <Card
+                    key={index}
+                    className="m-2"
+                    style={{ width: '120px', position: 'relative' }}
+                  >
+                    <Button
+                      variant="danger"
+                      size="sm"
+                      className="position-absolute top-0 start-100 translate-middle"
+                      onClick={() => removeFile(index, false)}
+                      style={{
+                        borderRadius: '50%',
+                        width: '20px',
+                        height: '20px',
+                        padding: 0,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                    >
+                      <FaTimes size={12} />
+                    </Button>
+                    <Card.Img
+                      variant="top"
+                      src={fileObj.preview}
+                      alt="Newly Uploaded"
+                    />
+                  </Card>
+                ))}
+              </div>
             </Form.Group>
             <Button variant="primary" type="submit">
               Save Changes

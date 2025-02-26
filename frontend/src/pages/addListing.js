@@ -57,33 +57,46 @@ const AddListing = () => {
       'image/gif',
     ];
     const maxSize = 3 * 1024 * 1024;
+    const maxFiles = 5;
 
-    const filteredFiles = selectedFiles.filter((file) => {
-      if (!validExtensions.includes(file.type)) {
+    // Prevent exceeding max files limit (consider existing files too)
+    setFiles((prevFiles) => {
+      if (prevFiles.length + selectedFiles.length > maxFiles) {
         setAlert({
           show: true,
-          message: File`"${file.name}" is not a valid image format.`,
+          message: `You can only upload up to ${maxFiles} images.`,
           variant: 'danger',
         });
-        return false;
+        return prevFiles;
       }
-      if (file.size > maxSize) {
-        setAlert({
-          show: true,
-          message: File`"${file.name}" exceeds the 3MB size limit.`,
-          variant: 'danger',
-        });
-        return false;
-      }
-      return true;
+
+      const filteredFiles = selectedFiles.filter((file) => {
+        if (!validExtensions.includes(file.type)) {
+          setAlert({
+            show: true,
+            message: `"${file.name}" is not a valid image format.`,
+            variant: 'danger',
+          });
+          return false;
+        }
+        if (file.size > maxSize) {
+          setAlert({
+            show: true,
+            message: `"${file.name}" exceeds the 3MB size limit.`,
+            variant: 'danger',
+          });
+          return false;
+        }
+        return true;
+      });
+
+      const filePreviews = filteredFiles.map((file) => ({
+        file,
+        preview: URL.createObjectURL(file),
+      }));
+
+      return [...prevFiles, ...filePreviews];
     });
-
-    const filePreviews = filteredFiles.map((file) => ({
-      file,
-      preview: URL.createObjectURL(file),
-    }));
-
-    setFiles((prevFiles) => [...prevFiles, ...filePreviews]);
   };
 
   // Handle file removal

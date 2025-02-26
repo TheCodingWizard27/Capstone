@@ -16,10 +16,12 @@ import Home from './pages/home';
 import ForgotPassword from './pages/forgotPassword';
 import SingleListing from './pages/singleListing';
 import AccountSettings from './pages/accountInfo';
-import ListPage from './pages/itemList'; // Your item list page where category-based listing will happen
+import ListPage from './pages/itemList';
 import MessagingPage from './pages/messageList';
 import SearchResults from './components/searchResults';
 import EditListing from './pages/editListing';
+import TransactionPage from './pages/transaction';
+import Cart from './pages/cart';
 
 function App() {
   const { userLoggedIn } = useAuth(); // Access userLoggedIn from context
@@ -77,6 +79,16 @@ function App() {
             element={
               userLoggedIn ? <AccountSettings /> : <Navigate to="/signIn" />
             }
+          />
+          <Route
+            path="/transaction"
+            element={
+              userLoggedIn ? <TransactionPage /> : <Navigate to="/signIn" />
+            }
+          />
+          <Route
+            path="/cart"
+            element={userLoggedIn ? <Cart /> : <Navigate to="/signIn" />}
           />
           <Route
             path="/messageList"

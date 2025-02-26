@@ -51,7 +51,11 @@ const SearchBar = ({ setSearchResults }) => {
   }, []);
 
   return (
-    <div className="position-relative w-100" ref={searchRef}>
+    <div
+      className="position-relative"
+      ref={searchRef}
+      style={{ width: '100%' }}
+    >
       {/* Search Input */}
       <InputGroup>
         <Form.Control
