@@ -193,6 +193,7 @@ export const ItemSection = ({ title, items, open, toggleOpen }) => (
                 title={item.title}
                 brand={item.brand}
                 price={item.price}
+                onClick={() => window.location.reload()}
               />
             </Link>
           </div>
