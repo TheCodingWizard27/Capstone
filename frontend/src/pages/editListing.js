@@ -72,7 +72,7 @@ const EditListing = () => {
       })
       .map((file) => ({
         file,
-        preview: URL.createObjectURL(file), // ✅ Ensure preview URL is created
+        preview: URL.createObjectURL(file),
       }));
 
     setFiles((prevFiles) => [...prevFiles, ...filteredFiles]);
