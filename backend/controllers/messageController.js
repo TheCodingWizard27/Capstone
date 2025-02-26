@@ -99,17 +99,15 @@ exports.addMessage = async (req, res) => {
     // Add message to thread
     await addMessageToThread(threadId, createdMessageId);
 
-    return res
-      .status(200)
-      .json({
-        messageInfo: {
-          id: createdMessageId,
-          threadId: threadId,
-          sender: sender,
-          receiver: receiver,
-          message: message,
-        },
-      });
+    return res.status(200).json({
+      messageInfo: {
+        id: createdMessageId,
+        threadId: threadId,
+        sender: sender,
+        receiver: receiver,
+        message: message,
+      },
+    });
   } catch (error) {
     console.error("Error in addMessage:", error);
     return res.status(500).json({ error: "Internal server error" });
@@ -119,16 +117,25 @@ exports.addMessage = async (req, res) => {
 exports.getMessageByThread = async (req, res) => {
   try {
     const threadId = req.params.id;
-    const userId = req.user.user_id;
     const messageRef = db.collection("messages");
-    const messageDocs = await messageRef
-      .where("threadId", "==", threadId)
-      .get();
 
-    const messages = messageDocs.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
+    // Fetch messages for the given threadId
+    const messageDocs = await messageRef.where("threadId", "==", threadId).get();
+
+    // Map and sort messages based on createdAt timestamp
+    const messages = messageDocs.docs
+      .map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }))
+      .sort((a, b) => {
+        if (a.createdAt._seconds !== b.createdAt._seconds) {
+          return a.createdAt._seconds - b.createdAt._seconds;
+        }
+        return a.createdAt._nanoseconds - b.createdAt._nanoseconds;
+      });
+
+    console.log(messages);
 
     res.status(200).json({ messages });
   } catch (error) {
@@ -138,6 +145,7 @@ exports.getMessageByThread = async (req, res) => {
       .json({ error: "Error fetching messages", details: error.message });
   }
 };
+
 
 exports.getThreadMessages = async (req, res) => {
   try {
