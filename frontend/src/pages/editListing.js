@@ -92,7 +92,7 @@ const EditListing = () => {
         message: 'Listing updated successfully!',
         variant: 'success',
       });
-      setTimeout(() => navigate(`/singleListing/${id}`), 3000);
+      setTimeout(() => navigate(`/listing/${id}`), 3000);
     } catch (error) {
       console.error('Error updating listing:', error);
       setAlert({
