@@ -119,9 +119,9 @@ const AddListing = () => {
     });
     const { id, value } = e.target;
 
-    if (id === 'price' && !/^\d*$/.test(value)) {
-      return; // Ignore non-numeric input
-    }
+    // if (id === 'price' && !/^\d*$/.test(value)) {
+    //   return; // Ignore non-numeric input
+    // }
 
     setFormData((prevData) => ({ ...prevData, [id]: value }));
     setErrors((prevErrors) => ({ ...prevErrors, [id]: '' })); // Clear error if any
@@ -300,7 +300,7 @@ const AddListing = () => {
                   </Form.Label>
                   <Form.Control
                     size="md"
-                    type="text"
+                    type="number"
                     placeholder="Price"
                     value={formData.price}
                     onChange={handleInputChange}
