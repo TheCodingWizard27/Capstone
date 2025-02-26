@@ -99,7 +99,17 @@ exports.addMessage = async (req, res) => {
     // Add message to thread
     await addMessageToThread(threadId, createdMessageId);
 
-    return res.status(200).json({ message: "Message posted successfully" });
+    return res
+      .status(200)
+      .json({
+        messageInfo: {
+          id: createdMessageId,
+          threadId: threadId,
+          sender: sender,
+          receiver: receiver,
+          message: message,
+        },
+      });
   } catch (error) {
     console.error("Error in addMessage:", error);
     return res.status(500).json({ error: "Internal server error" });

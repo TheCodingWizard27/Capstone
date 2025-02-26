@@ -171,27 +171,15 @@ const MessagingPage = () => {
     setUploadedFiles((prev) => [...prev, ...newUploadedFiles]);
   };
 
-  const handleSendMessage = () => {
+  const handleSendMessage = async () => {
     if (newMessage.trim() || uploadedFiles.length > 0) {
-      setMessages((prevMessages) => ({
-        ...prevMessages,
-        [selectedUser]: [
-          ...prevMessages[selectedUser],
-          {
-            id: Date.now(),
-            sender: 'You',
-            profilePic: 'https://via.placeholder.com/30',
-            time: 'Just now',
-            content: newMessage,
-            type: 'sent',
-            files: uploadedFiles,
-          },
-        ],
-      }));
       setNewMessage('');
       setUploadedFiles([]);
     }
-    sendMessage(threadId, newMessage, currentUser); //APi call to the backend
+
+    const response = await sendMessage(threadId, newMessage, currentUser); //APi call to the backend
+    setCurrentChat((prevMessages) => [...prevMessages, response.messageInfo]);
+    console.log(currentChat)
   };
 
   const handleSelectUser = (threadId, userName) => {
