@@ -47,3 +47,31 @@ const AccountSettings = () => {
    setShowSuccess(true);
    setTimeout(() => setShowSuccess(false), 3000);
  };
+
+ const handleImageChange = (e) => {
+   const file = e.target.files[0];
+   if (file) {
+     const reader = new FileReader();
+     reader.onloadend = () => {
+       setProfilePic(reader.result);
+     };
+     reader.readAsDataURL(file);
+   }
+ };
+
+
+ const handleEditToggle = (field) => {
+   setEditField((prev) => {
+     const newState = { ...prev, [field]: !prev[field] };
+
+
+     // If we're saving, simulate a successful save
+     if (prev[field] && !newState[field]) {
+       setShowSuccess(true);
+       setTimeout(() => setShowSuccess(false), 3000);
+     }
+
+
+     return newState;
+   });
+ };
