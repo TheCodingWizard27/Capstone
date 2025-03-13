@@ -110,16 +110,9 @@ const HeroSection = () => {
               <div className="d-flex justify-content-center gap-3 mt-4">
                 <Link to="/home">
                   <Button size="lg" className="px-4 py-2 fw-semibold">
-                    <i className="bi bi-shop me-2"></i> Explore Listings
+                    <i className="bi bi-shop me-2"></i> Get Started
                   </Button>
                 </Link>
-                <Button
-                  variant="outline-light"
-                  size="lg"
-                  className="px-4 py-2 fw-semibold"
-                >
-                  <i className="bi bi-info-circle me-2"></i> Learn More
-                </Button>
               </div>
             </Col>
           </Row>
@@ -447,8 +440,7 @@ const CallToAction = () => {
                 size="lg"
                 className="px-4 py-2 fw-semibold text-primary"
               >
-                <i className="bi bi-arrow-right-circle me-2"></i> Get Started
-                Now
+                <i className="bi bi-arrow-right-circle me-2"></i> Join Now
               </Button>
             </Link>
           </Col>
