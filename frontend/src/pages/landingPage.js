@@ -36,7 +36,7 @@ const LandingPage = () => {
       });
     };
   }, []);
-  
+
   return (
     <div className="landing-page">
       <NavigationBar />
@@ -83,6 +83,69 @@ const LandingPage = () => {
           transform: translateX(5px);
         }
       `}</style>
+    </div>
+  );
+};
+
+const HeroSection = () => {
+  return (
+    <div className="hero-section position-relative overflow-hidden">
+      <div
+        className="hero-overlay position-absolute top-0 start-0 w-100 h-100 d-flex flex-column justify-content-center align-items-center text-white p-4"
+        style={{ backgroundColor: 'rgba(0, 0, 0, 0.6)', zIndex: 1 }}
+      >
+        <Container>
+          <Row className="justify-content-center">
+            <Col md={10} lg={8} className="text-center">
+              <h1 className="display-3 fw-bold text-center mb-3 text-white">
+                Simplify your Shopping,{' '}
+                <span className="text-primary">Amplify your Life</span>
+              </h1>
+              <p className="lead text-center mb-4 fs-4 text-light">
+                Your one-stop platform for local buying and selling with secure
+                transactions and real-time tracking. Whether you're looking to
+                declutter your home or find the perfect item, we've got you
+                covered with the best prices.
+              </p>
+              <div className="d-flex justify-content-center gap-3 mt-4">
+                <Link to="/home">
+                  <Button size="lg" className="px-4 py-2 fw-semibold">
+                    <i className="bi bi-shop me-2"></i> Explore Listings
+                  </Button>
+                </Link>
+                <Button
+                  variant="outline-light"
+                  size="lg"
+                  className="px-4 py-2 fw-semibold"
+                >
+                  <i className="bi bi-info-circle me-2"></i> Learn More
+                </Button>
+              </div>
+            </Col>
+          </Row>
+        </Container>
+      </div>
+      <Image
+        src={`${process.env.PUBLIC_URL}/images/landingPage.jpg`}
+        alt="ShopSimplify"
+        fluid
+        className="w-100"
+        style={{
+          height: '90vh',
+          objectFit: 'cover',
+          objectPosition: 'center',
+          filter: 'brightness(0.8)',
+        }}
+      />
+      <div className="section-divider">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 1440 100"
+          fill="#ffffff"
+        >
+          <path d="M0,64L80,69.3C160,75,320,85,480,80C640,75,800,53,960,48C1120,43,1280,53,1360,58.7L1440,64L1440,100L1360,100C1280,100,1120,100,960,100C800,100,640,100,480,100C320,100,160,100,80,100L0,100Z"></path>
+        </svg>
+      </div>
     </div>
   );
 };
