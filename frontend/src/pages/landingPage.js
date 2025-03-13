@@ -263,3 +263,37 @@ const WhyShop = () => {
     </Container>
   );
 };
+
+
+
+const Features = () => {
+ const features = [
+   {
+     icon: 'bi-search',
+     title: 'Smart Search',
+     description:
+       'Find exactly what you need with our intelligent search filters and location-based results',
+     color: '#6610f2',
+   },
+   {
+     icon: 'bi-chat-dots',
+     title: 'Secure Messaging',
+     description:
+       'Communicate directly with buyers and sellers through our encrypted messaging system',
+     color: '#0dcaf0',
+   },
+   {
+     icon: 'bi-wallet2',
+     title: 'Easy Payments',
+     description:
+       'Multiple payment options with secure transaction processing and escrow protection',
+     color: '#fd7e14',
+   },
+   {
+     icon: 'bi-star',
+     title: 'Ratings & Reviews',
+     description:
+       'Build trust with verified ratings and reviews from real users',
+     color: '#ffc107',
+   },
+ ];
