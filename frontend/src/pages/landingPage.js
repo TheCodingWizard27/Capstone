@@ -267,33 +267,282 @@ const WhyShop = () => {
 
 
 const Features = () => {
- const features = [
-   {
-     icon: 'bi-search',
-     title: 'Smart Search',
-     description:
-       'Find exactly what you need with our intelligent search filters and location-based results',
-     color: '#6610f2',
-   },
-   {
-     icon: 'bi-chat-dots',
-     title: 'Secure Messaging',
-     description:
-       'Communicate directly with buyers and sellers through our encrypted messaging system',
-     color: '#0dcaf0',
-   },
-   {
-     icon: 'bi-wallet2',
-     title: 'Easy Payments',
-     description:
-       'Multiple payment options with secure transaction processing and escrow protection',
-     color: '#fd7e14',
-   },
-   {
-     icon: 'bi-star',
-     title: 'Ratings & Reviews',
-     description:
-       'Build trust with verified ratings and reviews from real users',
-     color: '#ffc107',
-   },
- ];
+  const features = [
+    {
+      icon: 'bi-search',
+      title: 'Smart Search',
+      description:
+        'Find exactly what you need with our intelligent search filters and location-based results',
+      color: '#6610f2',
+    },
+    {
+      icon: 'bi-chat-dots',
+      title: 'Secure Messaging',
+      description:
+        'Communicate directly with buyers and sellers through our encrypted messaging system',
+      color: '#0dcaf0',
+    },
+    {
+      icon: 'bi-wallet2',
+      title: 'Easy Payments',
+      description:
+        'Multiple payment options with secure transaction processing and escrow protection',
+      color: '#fd7e14',
+    },
+    {
+      icon: 'bi-star',
+      title: 'Ratings & Reviews',
+      description:
+        'Build trust with verified ratings and reviews from real users',
+      color: '#ffc107',
+    },
+  ];
+
+  return (
+    <Container fluid className="py-5 bg-white" id="features">
+      <Container>
+        <Row className="justify-content-center mb-5">
+          <Col md={8} className="text-center animate-on-scroll">
+            <Badge bg="primary" className="mb-3">
+              FEATURES
+            </Badge>
+            <h2 className="fw-bold mb-3">Explore Our Features</h2>
+            <p className="text-muted">
+              Discover all the powerful tools and features that make
+              ShopSimplify the best platform for local buying and selling
+            </p>
+          </Col>
+        </Row>
+        <Row className="g-4">
+          {features.map((feature, index) => (
+            <Col
+              md={6}
+              lg={3}
+              key={index}
+              className="animate-on-scroll"
+              style={{ transitionDelay: `${index * 100}ms` }}
+            >
+              <Card className="h-100 border-0 shadow-sm hover-card text-center">
+                <Card.Body className="p-4">
+                  <div
+                    className="rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center"
+                    style={{
+                      width: '70px',
+                      height: '70px',
+                      backgroundColor: `${feature.color}20`,
+                    }}
+                  >
+                    <i
+                      className={`bi ${feature.icon}`}
+                      style={{ fontSize: '1.75rem', color: feature.color }}
+                    ></i>
+                  </div>
+                  <h4 className="card-title mb-2">{feature.title}</h4>
+                  <p className="text-muted">{feature.description}</p>
+                </Card.Body>
+              </Card>
+            </Col>
+          ))}
+        </Row>
+      </Container>
+    </Container>
+  );
+};
+
+const AboutUS = () => {
+  const teamMembers = [
+    {
+      name: 'Aavash Neupane',
+      role: 'Full-Stack Developer',
+    },
+    {
+      name: 'Raunak Upreti',
+      role: 'Full-Stack Developer',
+    },
+    {
+      name: 'Siddhartha Pudasini',
+      role: 'Lead Developer',
+    },
+    {
+      name: 'Kushal Panthi',
+      role: 'Full Stack Developer',
+    },
+  ];
+
+  return (
+    <Container fluid className="py-5 bg-light" id="team">
+      <Container>
+        <Row className="justify-content-center mb-5">
+          <Col md={8} className="text-center animate-on-scroll">
+            <Badge bg="primary" className="mb-3">
+              OUR TEAM
+            </Badge>
+            <h2 className="fw-bold mb-3">Meet The Team Behind ShopSimplify</h2>
+            <p className="text-muted">
+              Dedicated professionals working to make your shopping experience
+              better
+            </p>
+          </Col>
+        </Row>
+        <Row className="g-4">
+          {teamMembers.map((member, index) => (
+            <Col
+              key={index}
+              xs={12}
+              sm={6}
+              md={3}
+              className="animate-on-scroll"
+              style={{ transitionDelay: `${index * 100}ms` }}
+            >
+              <Card className="border-0 shadow-sm hover-card h-100 text-center">
+                <Card.Body className="p-4">
+                  <div className="position-relative mb-4">
+                    <div
+                      className="rounded-circle bg-primary bg-opacity-10 mx-auto mb-3 d-flex align-items-center justify-content-center"
+                      style={{ width: '100px', height: '100px' }}
+                    >
+                      <i
+                        className="bi bi-person"
+                        style={{ fontSize: '2.5rem', color: '#0d6efd' }}
+                      ></i>
+                    </div>
+                    <div className="position-absolute bottom-0 end-0 translate-middle-y">
+                      <Badge pill bg="primary" className="p-2">
+                        <i className="bi bi-linkedin"></i>
+                      </Badge>
+                    </div>
+                  </div>
+                  <h5 className="card-title mb-1">{member.name}</h5>
+                  <p className="text-primary fw-semibold mb-2">{member.role}</p>
+                  <p className="text-muted small mb-0">{member.bio}</p>
+                </Card.Body>
+              </Card>
+            </Col>
+          ))}
+        </Row>
+      </Container>
+    </Container>
+  );
+};
+
+const CallToAction = () => {
+  return (
+    <Container fluid className="py-5 bg-primary text-white" id="get-started">
+      <Container>
+        <Row className="justify-content-center align-items-center">
+          <Col md={7} className="text-center text-md-start animate-on-scroll">
+            <h2 className="fw-bold mb-3">Ready to Start Shopping Smarter?</h2>
+            <p className="lead mb-0">
+              Join today to transform your shopping experience with
+              ShopSimplify.
+            </p>
+          </Col>
+          <Col
+            md={5}
+            className="text-center text-md-end mt-4 mt-md-0 animate-on-scroll"
+          >
+            <Link to="/home">
+              <Button
+                variant="light"
+                size="lg"
+                className="px-4 py-2 fw-semibold text-primary"
+              >
+                <i className="bi bi-arrow-right-circle me-2"></i> Get Started
+                Now
+              </Button>
+            </Link>
+          </Col>
+        </Row>
+      </Container>
+    </Container>
+  );
+};
+
+const Footer = () => {
+  const sections = [
+    { id: 'about', name: 'About', icon: 'bi-info-circle' },
+    { id: 'why', name: 'Why Choose Us', icon: 'bi-check-circle' },
+    { id: 'features', name: 'Features', icon: 'bi-stars' },
+    { id: 'team', name: 'Our Team', icon: 'bi-people' },
+    { id: 'get-started', name: 'Get Started', icon: 'bi-arrow-right-circle' },
+  ];
+
+  return (
+    <footer className="bg-dark text-white py-5">
+      <Container>
+        <Row className="g-4">
+          <Col lg={4}>
+            <div className="d-flex align-items-center mb-3">
+              <i className="bi bi-shop fs-2 me-2 text-primary"></i>
+              <h3 className="mb-0">ShopSimplify</h3>
+            </div>
+            <p className="mb-3 text-light">
+              Simplify your Shopping, Amplify your Life.
+            </p>
+          </Col>
+          <Col md={4} lg={3}>
+            <h5 className="mb-3 border-start border-primary border-4 ps-3">
+              Navigation
+            </h5>
+            <ul className="list-unstyled">
+              {sections.map((section, index) => (
+                <li key={index} className="mb-2">
+                  <a
+                    href={`#${section.id}`}
+                    className="text-decoration-none text-light d-flex align-items-center hover-link"
+                  >
+                    <i className={`bi ${section.icon} me-2 text-primary`}></i>
+                    {section.name}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </Col>
+          <Col md={4} lg={3}>
+            <h5 className="mb-3 border-start border-primary border-4 ps-3">
+              Contact Us
+            </h5>
+            <ul className="list-unstyled">
+              <li className="mb-2 d-flex">
+                <i className="bi bi-geo-alt text-primary me-2 mt-1"></i>
+                <span>
+                  Denton, TX
+                  <br />
+                  USA, 76201
+                </span>
+              </li>
+              <li className="mb-2 d-flex">
+                <i className="bi bi-envelope text-primary me-2 mt-1"></i>
+                <span>info@shopsimplify.com</span>
+              </li>
+              <li className="mb-2 d-flex">
+                <i className="bi bi-telephone text-primary me-2 mt-1"></i>
+                <span>(123) 456-7890</span>
+              </li>
+            </ul>
+          </Col>
+        </Row>
+        <hr className="my-4 bg-secondary" />
+        <Row>
+          <Col className="text-center">
+            <p className="mb-0 text-light">
+              © {new Date().getFullYear()} ShopSimplify. All rights reserved.
+            </p>
+          </Col>
+        </Row>
+      </Container>
+
+      <style jsx>{`
+        .hover-link {
+          transition: transform 0.2s ease, color 0.2s ease;
+        }
+        .hover-link:hover {
+          transform: translateX(5px);
+          color: var(--bs-primary) !important;
+        }
+      `}</style>
+    </footer>
+  );
+};
+
+export default LandingPage;
