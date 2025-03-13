@@ -149,3 +149,117 @@ const HeroSection = () => {
     </div>
   );
 };
+
+const WhyShop = () => {
+  return (
+    <Container fluid className="py-5 bg-light" id="why">
+      <Container>
+        <Row className="justify-content-center mb-5">
+          <Col md={8} className="text-center animate-on-scroll">
+            <Badge bg="primary" className="mb-3">
+              WHY CHOOSE US
+            </Badge>
+            <h2 className="fw-bold">Why should you use ShopSimplify?</h2>
+            <p className="text-muted">
+              See how ShopSimplify transforms your buying and selling experience
+            </p>
+          </Col>
+        </Row>
+        <Row className="g-4 animate-on-scroll">
+          <Col md={6}>
+            <Card
+              className="h-100 border-0 shadow-sm hover-card"
+              style={{
+                backgroundColor: '#e6f9ec',
+                borderRadius: '12px',
+                overflow: 'hidden',
+              }}
+            >
+              <Card.Body className="p-4">
+                <div className="d-flex align-items-center mb-4">
+                  <div className="rounded-circle bg-success bg-opacity-25 p-3 me-3">
+                    <i
+                      className="bi bi-check-circle"
+                      style={{ fontSize: '1.5rem', color: '#198754' }}
+                    ></i>
+                  </div>
+                  <h4 className="card-title mb-0" style={{ color: '#198754' }}>
+                    With ShopSimplify
+                  </h4>
+                </div>
+                <ul className="list-unstyled">
+                  {[
+                    'Sell and buy items locally in one easy platform',
+                    'Seamless transaction management',
+                    'Direct and secure communication between buyers and sellers',
+                    'Integrated secure payments within the app',
+                    'Real-time tracking of sales, orders, and transactions',
+                  ].map((item, index) => (
+                    <li
+                      key={index}
+                      className="mb-3 d-flex align-items-start p-2 hover-list-item"
+                    >
+                      <span className="me-3 text-success">
+                        <i
+                          className="bi bi-check-circle-fill"
+                          style={{ fontSize: '1.25rem' }}
+                        ></i>
+                      </span>
+                      <span style={{ color: '#198754' }}>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </Card.Body>
+            </Card>
+          </Col>
+          <Col md={6}>
+            <Card
+              className="h-100 border-0 shadow-sm hover-card"
+              style={{
+                backgroundColor: '#f9ecec',
+                borderRadius: '12px',
+                overflow: 'hidden',
+              }}
+            >
+              <Card.Body className="p-4">
+                <div className="d-flex align-items-center mb-4">
+                  <div className="rounded-circle bg-danger bg-opacity-25 p-3 me-3">
+                    <i
+                      className="bi bi-x-circle"
+                      style={{ fontSize: '1.5rem', color: '#dc3545' }}
+                    ></i>
+                  </div>
+                  <h4 className="card-title mb-0" style={{ color: '#dc3545' }}>
+                    Without ShopSimplify
+                  </h4>
+                </div>
+                <ul className="list-unstyled">
+                  {[
+                    'Limited options to sell or buy locally',
+                    'No easy way to manage transactions',
+                    'Communication with buyers/sellers is cumbersome',
+                    'Lack of a unified platform for secure payments',
+                    'No real-time tracking for transactions or orders',
+                  ].map((item, index) => (
+                    <li
+                      key={index}
+                      className="mb-3 d-flex align-items-start p-2 hover-list-item"
+                    >
+                      <span className="me-3 text-danger">
+                        <i
+                          className="bi bi-x-circle-fill"
+                          style={{ fontSize: '1.25rem' }}
+                        ></i>
+                      </span>
+                      <span style={{ color: '#dc3545' }}>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+      </Container>
+    </Container>
+  );
+};
