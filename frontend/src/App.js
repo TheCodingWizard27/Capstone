@@ -6,6 +6,8 @@ import {
   Navigate,
 } from 'react-router-dom';
 import { useAuth } from './contexts/authContext'; // Import the useAuth hook
+import { AuthProvider } from './contexts/authContext';
+import { CartProvider } from './contexts/CartContext';
 
 import LandingPage from './pages/landingPage';
 import SignIn from './pages/signIn';
@@ -28,82 +30,94 @@ function App() {
 
   return (
     <div className="App">
-      <Router>
-        <Routes>
-          {/* Authentication routes */}
-          <Route
-            path="/signIn"
-            element={!userLoggedIn ? <SignIn /> : <Navigate to="/home" />}
-          />
-          <Route
-            path="/register"
-            element={!userLoggedIn ? <Register /> : <Navigate to="/home" />}
-          />
-          <Route
-            path="/forgotPassword"
-            element={
-              !userLoggedIn ? <ForgotPassword /> : <Navigate to="/home" />
-            }
-          />
-          <Route
-            path="/"
-            element={!userLoggedIn ? <LandingPage /> : <Navigate to="/home" />}
-          />
+      <AuthProvider>
+        <CartProvider>
+          <Router>
+            <Routes>
+              {/* Authentication routes */}
+              <Route
+                path="/signIn"
+                element={!userLoggedIn ? <SignIn /> : <Navigate to="/home" />}
+              />
+              <Route
+                path="/register"
+                element={!userLoggedIn ? <Register /> : <Navigate to="/home" />}
+              />
+              <Route
+                path="/forgotPassword"
+                element={
+                  !userLoggedIn ? <ForgotPassword /> : <Navigate to="/home" />
+                }
+              />
+              <Route
+                path="/"
+                element={
+                  !userLoggedIn ? <LandingPage /> : <Navigate to="/home" />
+                }
+              />
 
-          {/* Protected routes */}
-          <Route
-            path="/home"
-            element={userLoggedIn ? <Home /> : <Navigate to="/signIn" />}
-          />
-          <Route
-            path="/addListing"
-            element={userLoggedIn ? <AddListing /> : <Navigate to="/signIn" />}
-          />
-          <Route
-            path="/editListing/:id"
-            element={userLoggedIn ? <EditListing /> : <Navigate to="/signIn" />}
-          />
-          <Route
-            path="/listing/:id"
-            element={
-              userLoggedIn ? <SingleListing /> : <Navigate to="/signIn" />
-            }
-          />
-          <Route
-            path="/itemList" // Keep this route as it handles item listing
-            element={userLoggedIn ? <ListPage /> : <Navigate to="/signIn" />}
-          />
+              {/* Protected routes */}
+              <Route
+                path="/home"
+                element={userLoggedIn ? <Home /> : <Navigate to="/signIn" />}
+              />
+              <Route
+                path="/addListing"
+                element={
+                  userLoggedIn ? <AddListing /> : <Navigate to="/signIn" />
+                }
+              />
+              <Route
+                path="/editListing/:id"
+                element={
+                  userLoggedIn ? <EditListing /> : <Navigate to="/signIn" />
+                }
+              />
+              <Route
+                path="/listing/:id"
+                element={
+                  userLoggedIn ? <SingleListing /> : <Navigate to="/signIn" />
+                }
+              />
+              <Route
+                path="/itemList" // Keep this route as it handles item listing
+                element={
+                  userLoggedIn ? <ListPage /> : <Navigate to="/signIn" />
+                }
+              />
 
-          <Route
-            path="/accountInfo"
-            element={
-              userLoggedIn ? <AccountSettings /> : <Navigate to="/signIn" />
-            }
-          />
-          <Route
-            path="/transaction"
-            element={
-              userLoggedIn ? <TransactionPage /> : <Navigate to="/signIn" />
-            }
-          />
-          <Route
-            path="/cart"
-            element={userLoggedIn ? <Cart /> : <Navigate to="/signIn" />}
-          />
-          <Route
-            path="/messageList"
-            element={
-              userLoggedIn ? <MessagingPage /> : <Navigate to="/signIn" />
-            }
-          />
+              <Route
+                path="/accountInfo"
+                element={
+                  userLoggedIn ? <AccountSettings /> : <Navigate to="/signIn" />
+                }
+              />
+              <Route
+                path="/transaction"
+                element={
+                  userLoggedIn ? <TransactionPage /> : <Navigate to="/signIn" />
+                }
+              />
+              <Route
+                path="/cart"
+                element={userLoggedIn ? <Cart /> : <Navigate to="/signIn" />}
+              />
+              <Route
+                path="/messageList"
+                element={
+                  userLoggedIn ? <MessagingPage /> : <Navigate to="/signIn" />
+                }
+              />
 
-          {/* Search Results */}
-          <Route path="/" element={<SearchResults />} />
+              {/* Search Results */}
+              <Route path="/" element={<SearchResults />} />
 
-          {/* 404 Not Found route */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </Router>
+              {/* 404 Not Found route */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Router>
+        </CartProvider>
+      </AuthProvider>
     </div>
   );
 }

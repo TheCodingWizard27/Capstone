@@ -1,27 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {
-  Container,
-  Row,
-  Col,
-  Button,
-  Card,
-  Image,
-  Form,
-} from 'react-bootstrap';
+import { Container, Row, Col, Button, Card, Image } from 'react-bootstrap';
 import NavBar from '../components/navBar';
 import { useAuth } from '../contexts/authContext';
 import { createThread } from '../api/message';
-import { useLocation } from 'react-router-dom';
+import { useCart } from '../contexts/CartContext'; // Import the custom hook
 
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
   const navigate = useNavigate();
-
-  const location = useLocation();
-  const setCartCount = location.state?.setCartCount;
-
   const { currentUser } = useAuth();
+  const { setCartCount } = useCart(); // Access setCartCount from context
 
   const handleContactSeller = async (listingId, sellerName) => {
     try {
@@ -41,33 +30,31 @@ const Cart = () => {
       const storedCart =
         JSON.parse(localStorage.getItem(`cart_${userId}`)) || [];
       setCartItems(storedCart);
+      const totalCount = storedCart.reduce(
+        (total, item) => total + item.quantity,
+        0
+      );
+      setCartCount(totalCount); // Update cart count on load
     }
-  }, [currentUser]);
+  }, [currentUser, setCartCount]);
 
   const handleRemoveItem = (id) => {
-    const userId = currentUser?.uid;
-    if (!userId) return;
-
-    // Remove item from the cartItems array
     const updatedCart = cartItems.filter((item) => item.id !== id);
     setCartItems(updatedCart);
-
-    // Update localStorage for the specific user
-    localStorage.setItem(`cart_${userId}`, JSON.stringify(updatedCart));
-
-    // Update cart count
     const totalCount = updatedCart.reduce(
       (total, item) => total + item.quantity,
       0
     );
-    setCartCount(totalCount);
+    setCartCount(totalCount); // Update cart count after item removal
 
-    // Trigger storage event to sync across sessions
-    window.dispatchEvent(new Event('storage'));
+    const userId = currentUser?.uid;
+    if (userId) {
+      localStorage.setItem(`cart_${userId}`, JSON.stringify(updatedCart));
+    }
   };
 
   const handleCheckout = () => {
-    navigate('/checkout'); // Navigate to checkout page
+    navigate('/checkout');
   };
 
   const calculateSubtotal = () => {
@@ -82,67 +69,61 @@ const Cart = () => {
 
   return (
     <>
-      <div>
-        {/* Add the Navbar component */}
-        <NavBar />
-        <h2 className="mt-4 ms-5">Your Shopping Cart</h2>
-        <div className="ms-5">
-          <Row>
-            {cartItems.map((item) => (
-              <Col key={item.id} md={10} className="mb-3">
-                <Card className="p-3 d-flex flex-row align-items-center">
-                  <Image
-                    src={item.imageUrl}
-                    alt={item.title}
-                    width={100}
-                    height={100}
-                    className="me-3"
-                  />
-                  <div style={{ flex: 1 }}>
-                    <h5>{item.title}</h5>
-                    <p>
-                      <strong>Brand:</strong> {item.brand}
-                    </p>
-                    <p>
-                      <strong>Category:</strong> {item.category}
-                    </p>
-                    <p>
-                      <strong>Price:</strong> ${item.price}
-                    </p>
-                  </div>
-                  <div>
-                    <Button
-                      variant="danger"
-                      onClick={() => handleRemoveItem(item.id)}
-                    >
-                      Remove
-                    </Button>
-                    <p></p>
-                    <Button
-                      variant="primary"
-                      className="me-2"
-                      onClick={() =>
-                        handleContactSeller(item.id, item.sellerName)
-                      }
-                    >
-                      Contact Seller
-                    </Button>
-                  </div>
-                </Card>
-              </Col>
-            ))}
-          </Row>
-        </div>
-        <h4 className="mt-3 ms-5">Subtotal: ${calculateSubtotal()}</h4>
-        <Button
-          variant="success"
-          className="mt-3 ms-5"
-          onClick={handleCheckout}
-        >
-          Proceed to Checkout
-        </Button>
+      <NavBar />
+      <h2 className="mt-4 ms-5">Your Shopping Cart</h2>
+      <div className="ms-5">
+        <Row>
+          {cartItems.map((item) => (
+            <Col key={item.id} md={10} className="mb-3">
+              <Card className="p-3 d-flex flex-row align-items-center">
+                <Image
+                  src={item.imageUrl}
+                  alt={item.title}
+                  width={100}
+                  height={100}
+                  className="me-3"
+                />
+                <div style={{ flex: 1 }}>
+                  <h5>{item.title}</h5>
+                  <p>
+                    <strong>Brand:</strong> {item.brand}
+                  </p>
+                  <p>
+                    <strong>Category:</strong> {item.category}
+                  </p>
+                  <p>
+                    <strong>Price:</strong> ${item.price}
+                  </p>
+                </div>
+                <div>
+                  <Button
+                    variant="danger"
+                    onClick={() => handleRemoveItem(item.id)}
+                  >
+                    Remove
+                  </Button>
+                  <p></p>
+                  <Button
+                    variant="primary"
+                    className="me-2"
+                    onClick={() =>
+                      handleContactSeller(item.id, item.sellerName)
+                    }
+                  >
+                    Contact Seller
+                  </Button>
+                </div>
+              </Card>
+            </Col>
+          ))}
+        </Row>
       </div>
+      <h4 className="mt-3 ms-5">Subtotal: ${calculateSubtotal()}</h4>
+      <Button variant="success" className="mt-3 ms-5" onClick={handleCheckout}>
+        Proceed to Checkout
+      </Button>
     </>
   );
 };
+
 export default Cart;
