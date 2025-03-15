@@ -12,7 +12,6 @@ import Card from './itemCard';
 
 import { useAuth } from '../contexts/authContext';
 
-
 import { createThread } from '../api/message';
 
 // Main product image section with prev/next functionality
@@ -99,7 +98,7 @@ export const ProductDetailsSection = ({ details }) => {
   const handleAddToCart = () => {
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
     const existingItem = cart.find((item) => item.id === details.id);
-    
+
     if (existingItem) {
       existingItem.quantity += 1; // Increase quantity if item already in cart
     } else {
