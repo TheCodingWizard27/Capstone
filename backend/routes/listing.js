@@ -25,11 +25,18 @@ router.get("/listings/:id", listingController.getSingleListing);
 router.get("/search", listingController.searchListings);
 router.get("/listings/category/:category", getListingsByCategory);
 
+//fetchiing by my listings
+router.get("/my-listings/:userId", listingController.getMyListings);
+
+
+
 router.put(
   "/updateListing/:id",
   verifyAuthToken,
   upload,
   listingController.updateListing
 );
+router.delete("/listings/:id", verifyAuthToken, listingController.deleteListing);
 
+router.put("/listings/:id/status", verifyAuthToken, listingController.updateListingStatus);
 module.exports = router;
