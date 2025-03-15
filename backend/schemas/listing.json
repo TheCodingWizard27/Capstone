@@ -2,5 +2,6 @@
   "title": { "required": true },
   "category": { "required": true },
   "price": { "required": true },
-  "description": { "required": true, "maxWords": 250 }
+  "description": { "required": true, "maxWords": 250 },
+  "status": { "required": false, "default": "active" }
 }
