@@ -11,15 +11,35 @@ import {
 } from 'react-icons/fa';
 import DropUser from './dropUser';
 import './NavBar.css'; // Importing custom CSS
+import { useAuth } from '../contexts/authContext';
 
 const NavBar = () => {
   const [showDrawer, setShowDrawer] = useState(false); // Drawer state
   const [cartCount, setCartCount] = useState(0);
+  const { currentUser } = useAuth;
 
   useEffect(() => {
-    const cart = JSON.parse(localStorage.getItem('cart')) || [];
-    setCartCount(cart.length);
-  }, []);
+    const updateCartCount = () => {
+      const userId = currentUser?.uid;
+      if (userId) {
+        const cart = JSON.parse(localStorage.getItem(`cart_${userId}`)) || [];
+        const totalCount = cart.reduce(
+          (total, item) => total + item.quantity,
+          0
+        );
+        setCartCount(totalCount);
+      } else {
+        setCartCount(0);
+      }
+    };
+
+    updateCartCount(); // Initial load
+
+    // Listen for storage updates (including when an item is removed)
+    window.addEventListener('storage', updateCartCount);
+
+    return () => window.removeEventListener('storage', updateCartCount);
+  }, [currentUser]);
 
   const toggleDrawer = () => setShowDrawer(!showDrawer); // Toggle drawer state
 
@@ -148,6 +168,7 @@ const NavBar = () => {
           </Link>
           <Link
             to="/cart"
+            state={{ setCartCount }}
             className="d-flex align-items-center mb-3 text-light"
             style={{ textDecoration: 'none', fontSize: '1.25rem' }}
             onClick={toggleDrawer}

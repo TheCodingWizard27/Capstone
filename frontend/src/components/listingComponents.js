@@ -96,11 +96,18 @@ export const ProductDetailsSection = ({ details }) => {
   );
 
   const handleAddToCart = () => {
-    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    if (!currentUser) {
+      alert('Please log in to add items to your cart.');
+      return;
+    }
+
+    const userId = currentUser.uid;
+    let cart = JSON.parse(localStorage.getItem(`cart_${userId}`)) || [];
+
     const existingItem = cart.find((item) => item.id === details.id);
 
     if (existingItem) {
-      existingItem.quantity += 1; // Increase quantity if item already in cart
+      existingItem.quantity += 1;
     } else {
       cart.push({
         id: details.id,
@@ -108,15 +115,14 @@ export const ProductDetailsSection = ({ details }) => {
         brand: details.brand,
         category: details.category,
         price: details.price,
-        imageUrl: details.picUrls[0], // First image as thumbnail
+        imageUrl: details.picUrls[0],
         quantity: 1,
       });
     }
 
-    localStorage.setItem('cart', JSON.stringify(cart));
-    setCartCount(cart.length); // Update cart count
-
-    // Show confirmation toast (optional)
+    localStorage.setItem(`cart_${userId}`, JSON.stringify(cart));
+    window.dispatchEvent(new Event('storage'));
+    setCartCount(cart.reduce((total, item) => total + item.quantity, 0));
     alert(`${details.title} added to cart!`);
   };
 
