@@ -140,9 +140,6 @@ export const ProductDetailsSection = ({ details }) => {
           <strong>Condition:</strong> {details.condition}
         </div>
         <div>
-          <strong>Color:</strong> {details.color}
-        </div>
-        <div>
           <strong>Status:</strong> {details.status}
         </div>
         <hr />
