@@ -16,7 +16,7 @@ import { useAuth } from '../contexts/authContext';
 const NavBar = () => {
   const [showDrawer, setShowDrawer] = useState(false); // Drawer state
   const [cartCount, setCartCount] = useState(0);
-  const { currentUser } = useAuth;
+  const { currentUser } = useAuth();
 
   useEffect(() => {
     const updateCartCount = () => {
@@ -28,8 +28,6 @@ const NavBar = () => {
           0
         );
         setCartCount(totalCount);
-      } else {
-        setCartCount(0);
       }
     };
 

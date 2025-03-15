@@ -48,22 +48,21 @@ const Cart = () => {
     const userId = currentUser?.uid;
     if (!userId) return;
 
+    // Remove item from the cartItems array
     const updatedCart = cartItems.filter((item) => item.id !== id);
     setCartItems(updatedCart);
 
-    // Update localStorage after removal
+    // Update localStorage for the specific user
     localStorage.setItem(`cart_${userId}`, JSON.stringify(updatedCart));
 
-    // ✅ Update the cart count using the passed prop
-    if (setCartCount) {
-      const totalCount = updatedCart.reduce(
-        (total, item) => total + item.quantity,
-        0
-      );
-      setCartCount(totalCount);
-    }
+    // Update cart count
+    const totalCount = updatedCart.reduce(
+      (total, item) => total + item.quantity,
+      0
+    );
+    setCartCount(totalCount);
 
-    // 🔥 Trigger storage event to sync navbar
+    // Trigger storage event to sync across sessions
     window.dispatchEvent(new Event('storage'));
   };
 
@@ -146,5 +145,4 @@ const Cart = () => {
     </>
   );
 };
-
 export default Cart;
