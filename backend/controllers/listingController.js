@@ -66,6 +66,7 @@ exports.getListings = async (req, res) => {
     const listings = snapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
+      status: data.status || "active", // Set default status if not present
     }));
 
     res.status(200).json(listings);
@@ -74,6 +75,22 @@ exports.getListings = async (req, res) => {
     res
       .status(500)
       .send({ message: "Error fetching listings", error: error.message });
+  }
+};
+// Endpoint to get listings for a specific user
+exports.getMyListings = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    if (!userId) {
+      return res.status(400).json({ message: "User ID is required" });
+    }
+
+    const snapshot = await db.collection("listings").where("user", "==", userId).get();
+    const listings = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+
+    res.status(200).json(listings);
+  } catch (error) {
+    res.status(500).json({ message: "Failed to fetch listings" });
   }
 };
 
@@ -244,5 +261,106 @@ exports.updateListing = async (req, res) => {
     res
       .status(500)
       .json({ message: "Error updating listing", error: error.message });
+  }
+};
+
+// Endpoint to delete a listing
+exports.deleteListing = async (req, res) => {
+  try {
+    const listingId = req.params.id;
+    const userId = req.user.user_id; // From auth middleware
+    
+    // Get the listing document
+    const listingRef = db.collection("listings").doc(listingId);
+    const listingDoc = await listingRef.get();
+    
+    // Check if listing exists
+    if (!listingDoc.exists) {
+      return res.status(404).json({ message: "Listing not found" });
+    }
+    
+    const listingData = listingDoc.data();
+    
+    // Check if user is authorized to delete this listing
+    if (listingData.user !== userId) {
+      return res.status(403).json({ message: "Unauthorized: You can only delete your own listings" });
+    }
+    
+    // Delete images from Firebase Storage if they exist
+    if (listingData.picUrls && listingData.picUrls.length > 0) {
+      try {
+        const deletePromises = listingData.picUrls.map(async (url) => {
+          // Extract the file path from the URL
+          // URLs typically look like: https://storage.googleapis.com/[bucket]/[filepath]?token=...
+          const urlObj = new URL(url);
+          const pathWithoutBucket = urlObj.pathname.split('/').slice(2).join('/');
+          
+          // Delete the file
+          const file = bucket.file(decodeURIComponent(pathWithoutBucket));
+          await file.delete().catch(err => {
+            console.warn(`Failed to delete file ${pathWithoutBucket}:`, err);
+            // Continue even if file deletion fails
+          });
+        });
+        
+        await Promise.all(deletePromises);
+      } catch (error) {
+        console.error("Error deleting files from storage:", error);
+        // Continue with listing deletion even if file deletion fails
+      }
+    }
+    
+    // Delete the listing document from Firestore
+    await listingRef.delete();
+    
+    res.status(200).json({ message: "Listing deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting listing:", error);
+    res.status(500).json({ message: "Error deleting listing", error: error.message });
+  }
+};
+
+
+// Endpoint to update a listing's status
+exports.updateListingStatus = async (req, res) => {
+  try {
+    const listingId = req.params.id;
+    const { status } = req.body;
+    const userId = req.user.user_id;
+    
+    // Validate status
+    if (!status || (status !== "active" && status !== "inactive")) {
+      return res.status(400).json({ message: "Invalid status. Must be 'active' or 'inactive'." });
+    }
+    
+    const listingRef = db.collection("listings").doc(listingId);
+    const listingDoc = await listingRef.get();
+
+    // Check if listing exists
+    if (!listingDoc.exists) {
+      return res.status(404).json({ message: "Listing not found" });
+    }
+
+    // Check if user is authorized to update this listing
+    if (listingDoc.data().user !== userId) {
+      return res.status(403).json({ message: "Unauthorized: You can only update your own listings" });
+    }
+
+    // Update only the status field
+    await listingRef.update({
+      status: status,
+      modifiedAt: admin.firestore.FieldValue.serverTimestamp(),
+    });
+
+    res.status(200).json({ 
+      message: `Listing status updated to ${status} successfully`, 
+      id: listingId 
+    });
+  } catch (error) {
+    console.error("Error updating listing status:", error);
+    res.status(500).json({ 
+      message: "Error updating listing status", 
+      error: error.message 
+    });
   }
 };
