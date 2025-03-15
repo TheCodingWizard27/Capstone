@@ -6,6 +6,7 @@ import axios from 'axios';
 import '../style/stylingsingle.css';
 import { MainProductSection, ProductDetailsSection, ItemSection } from '../components/listingComponents';
 
+
 const SingleListing = () => {
   const { id } = useParams();
   const [listingData, setListingData] = useState(null);

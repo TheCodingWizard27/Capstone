@@ -10,10 +10,26 @@ import {
   Form,
 } from 'react-bootstrap';
 import NavBar from '../components/navBar';
+import { useAuth } from '../contexts/authContext';
+import { createThread } from '../api/message';
 
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
   const navigate = useNavigate();
+  
+    const { currentUser } = useAuth();
+  
+    const handleContactSeller = async (listingId, sellerName) => {
+      try {
+        const response = await createThread(listingId, currentUser);
+        console.log(response);
+        navigate(
+          `/messageList?threadId=${response.threadId}&userName=${sellerName}`
+        );
+      } catch (error) {
+        alert(`${error.response.data.error}`);
+      }
+    };
 
   useEffect(() => {
     const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
@@ -70,12 +86,22 @@ const Cart = () => {
                       <strong>Price:</strong> ${item.price}
                     </p>
                   </div>
+                  <div>
                   <Button
                     variant="danger"
                     onClick={() => handleRemoveItem(item.id)}
                   >
                     Remove
                   </Button>
+                  
+                   <Button
+                              variant="primary"
+                              className="me-2"
+                              onClick={() => handleContactSeller(item.id, item.sellerName)}
+                            >
+                              Contact Seller
+                            </Button>
+                            </div>
                 </Card>
               </Col>
             ))}
