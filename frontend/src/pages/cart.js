@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom'; // Import Link here
 import { Container, Row, Col, Button, Card, Image } from 'react-bootstrap';
 import NavBar from '../components/navBar';
 import { useAuth } from '../contexts/authContext';
 import { createThread } from '../api/message';
-import { useCart } from '../contexts/CartContext'; // Import the custom hook
+import { useCart } from '../contexts/CartContext';
 
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
   const navigate = useNavigate();
   const { currentUser } = useAuth();
-  const { setCartCount } = useCart(); // Access setCartCount from context
+  const { setCartCount } = useCart();
 
   const handleContactSeller = async (listingId, sellerName) => {
     try {
@@ -84,7 +84,13 @@ const Cart = () => {
                   className="me-3"
                 />
                 <div style={{ flex: 1 }}>
-                  <h5>{item.title}</h5>
+                  {/* Wrap the title in a Link to navigate to the single listing page */}
+                  <Link
+                    to={`/listing/${item.id}`}
+                    className="text-decoration-none"
+                  >
+                    <h5>{item.title}</h5>
+                  </Link>
                   <p>
                     <strong>Brand:</strong> {item.brand}
                   </p>

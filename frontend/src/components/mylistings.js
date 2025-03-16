@@ -14,7 +14,7 @@ import {
 } from 'react-bootstrap';
 import axios from 'axios';
 import { useAuth } from '../contexts/authContext';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 const MyListings = () => {
   const [listings, setListings] = useState([]);
@@ -244,25 +244,27 @@ const MyListings = () => {
                 {/* Image Section */}
                 <Col xs={4} md={3} className="p-3">
                   <div className="position-relative">
-                    <Card.Img
-                      src={
-                        item.picUrls && item.picUrls.length > 0
-                          ? item.picUrls[0]
-                          : 'https://via.placeholder.com/100'
-                      }
-                      alt={item.title}
-                      className="img-fluid rounded"
-                      style={{ height: '120px', objectFit: 'cover' }}
-                    />
-                    {/* Only show the "Sold" badge when status is inactive */}
-                    {item.status === 'inactive' && (
-                      <Badge
-                        bg="secondary"
-                        className="position-absolute top-0 start-0 m-2"
-                      >
-                        Sold
-                      </Badge>
-                    )}
+                    <Link to={`/listing/${item.id}`}>
+                      <Card.Img
+                        src={
+                          item.picUrls && item.picUrls.length > 0
+                            ? item.picUrls[0]
+                            : 'https://via.placeholder.com/100'
+                        }
+                        alt={item.title}
+                        className="img-fluid rounded"
+                        style={{ height: '120px', objectFit: 'cover' }}
+                      />
+                      {/* Only show the "Sold" badge when status is inactive */}
+                      {item.status === 'inactive' && (
+                        <Badge
+                          bg="secondary"
+                          className="position-absolute top-0 start-0 m-2"
+                        >
+                          Sold
+                        </Badge>
+                      )}
+                    </Link>
                   </div>
                 </Col>
 
@@ -272,7 +274,12 @@ const MyListings = () => {
                     <div className="d-flex justify-content-between align-items-start mb-2">
                       <div>
                         <Card.Title className="text-primary fw-bold mb-1 listing-title">
-                          {item.title ? item.title.toUpperCase() : 'UNTITLED'}
+                          <Link
+                            to={`/listing/${item.id}`}
+                            className="text-decoration-none"
+                          >
+                            {item.title ? item.title.toUpperCase() : 'UNTITLED'}
+                          </Link>
                         </Card.Title>
                         <Card.Text className="mb-0 listing-price fs-5">
                           <strong>${item.price}</strong>
