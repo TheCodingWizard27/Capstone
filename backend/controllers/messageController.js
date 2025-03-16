@@ -19,11 +19,10 @@ exports.createThread = async (req, res) => {
 
     const listingData = listingDoc.data();
     const seller = listingData.user;
+    const productName = listingData.productName || "Unknown Product";  // Ensure productName is defined
 
     if (seller === buyer) {
-      return res
-        .status(400)
-        .json({ error: "Cannot send a message to your own listing" });
+      return res.status(400).json({ error: "Cannot send a message to your own listing" });
     }
 
     // Check if a thread already exists between the buyer and the listing
@@ -31,7 +30,7 @@ exports.createThread = async (req, res) => {
       .collection("threads")
       .where("buyer", "==", buyer)
       .where("listing", "==", listingId)
-      .limit(1) // Optimize by limiting results to 1
+      .limit(1)
       .get();
 
     if (!existingThreadQuery.empty) {
@@ -43,8 +42,9 @@ exports.createThread = async (req, res) => {
       buyer,
       listing: listingId,
       seller,
+      productName,  // Add productName to thread
       messages: [],
-      createdAt: new Date(), // Add timestamp for sorting and tracking
+      createdAt: new Date(),
     });
 
     return res.status(201).json({ threadId: threadRef.id });
@@ -59,53 +59,37 @@ exports.addMessage = async (req, res) => {
     const { threadId, message } = req.body;
     const sender = req.user.uid;
 
-    // Fetch the thread document properly
     const threadRef = db.collection("threads").doc(threadId);
-    const threadDoc = await threadRef.get(); // ✅ Await here
+    const threadDoc = await threadRef.get();
+
     if (!threadDoc.exists) {
       return res.status(400).json({ error: "Thread does not exist" });
     }
 
-    const threadData = threadDoc.data(); // ✅ Now, this works
-
-    const listing_Id = threadData.listing;
+    const threadData = threadDoc.data();
+    const listingId = threadData.listing;
     const buyer = threadData.buyer;
     const seller = threadData.seller;
+    const productName = threadData.productName; // Get productName from thread
 
-    // Fetch the listing document
-    const listingRef = db.collection("listings").doc(listing_Id);
-    const listingDoc = await listingRef.get();
-
-    if (!listingDoc.exists) {
-      return res.status(400).json({ error: "Listing does not exist" });
-    }
-
-    // Determine the receiver
     const receiver = sender === buyer ? seller : buyer;
 
-    // Create message
-    const createdMessageId = await createMessage(
-      sender,
-      receiver,
-      message,
-      threadId
-    );
+    const createdMessageId = await createMessage(sender, receiver, message, threadId, productName);
+
     if (!createdMessageId) {
-      return res
-        .status(400)
-        .json({ error: "Cannot send the message to the sender" });
+      return res.status(400).json({ error: "Cannot send the message to the sender" });
     }
 
-    // Add message to thread
     await addMessageToThread(threadId, createdMessageId);
 
     return res.status(200).json({
       messageInfo: {
         id: createdMessageId,
-        threadId: threadId,
-        sender: sender,
-        receiver: receiver,
-        message: message,
+        threadId,
+        sender,
+        receiver,
+        message,
+        productName,
       },
     });
   } catch (error) {
@@ -118,11 +102,18 @@ exports.getMessageByThread = async (req, res) => {
   try {
     const threadId = req.params.id;
     const messageRef = db.collection("messages");
+    const threadRef = db.collection("threads").doc(threadId);
+    const threadDoc = await threadRef.get();
 
-    // Fetch messages for the given threadId
+    if (!threadDoc.exists) {
+      return res.status(404).json({ error: "Thread not found" });
+    }
+
+    const threadData = threadDoc.data();
+    const productName = threadData.productName; // Get productName from thread
+
     const messageDocs = await messageRef.where("threadId", "==", threadId).get();
 
-    // Map and sort messages based on createdAt timestamp
     const messages = messageDocs.docs
       .map((doc) => ({
         id: doc.id,
@@ -135,35 +126,34 @@ exports.getMessageByThread = async (req, res) => {
         return a.createdAt._nanoseconds - b.createdAt._nanoseconds;
       });
 
-    console.log(messages);
+    const messagesWithProductName = messages.map((message) => ({
+      ...message,
+      productName,  // Include productName in the response
+    }));
 
-    res.status(200).json({ messages });
+    res.status(200).json({ messages: messagesWithProductName });
   } catch (error) {
     console.error("Error fetching messages:", error);
-    res
-      .status(500)
-      .json({ error: "Error fetching messages", details: error.message });
+    res.status(500).json({ error: "Error fetching messages", details: error.message });
   }
 };
 
-
 exports.getThreadMessages = async (req, res) => {
   try {
-    const userId = req.user.user_id;
+    const userId = req.user.uid;
     const threadRef = db.collection("threads");
     const userRef = db.collection("users");
 
-    // Query for threads where the buyer or seller is the current user
     const buyerThreads = await threadRef.where("buyer", "==", userId).get();
     const sellerThreads = await threadRef.where("seller", "==", userId).get();
 
     let threadDocs = [];
 
-    // Combine buyer and seller threads
     buyerThreads.forEach((doc) => {
       threadDocs.push({
         threadId: doc.id,
         seller: doc.data().seller,
+        productName: doc.data().productName,
         myRole: "buyer",
       });
     });
@@ -172,23 +162,20 @@ exports.getThreadMessages = async (req, res) => {
       threadDocs.push({
         threadId: doc.id,
         buyer: doc.data().buyer,
+        productName: doc.data().productName,
         myRole: "seller",
       });
     });
 
-    // Fetch user information for each thread
     const userPromises = threadDocs.map(async (thread) => {
-      let userIdToFetch =
-        thread.myRole === "buyer" ? thread.seller : thread.buyer;
+      let userIdToFetch = thread.myRole === "buyer" ? thread.seller : thread.buyer;
 
       if (userIdToFetch) {
         try {
           const userDoc = await userRef.doc(userIdToFetch).get();
           return {
             ...thread,
-            otherParty: userDoc.exists
-              ? userDoc.data().userName
-              : "Unknown User",
+            otherParty: userDoc.exists ? userDoc.data().userName : "Unknown User",
           };
         } catch (error) {
           console.error("Error fetching user data:", error);
@@ -198,34 +185,35 @@ exports.getThreadMessages = async (req, res) => {
       return thread;
     });
 
-    // Wait for all user data fetches to resolve
     const resolvedThreads = await Promise.all(userPromises);
 
     res.status(200).json({ threads: resolvedThreads });
   } catch (error) {
-    res
-      .status(500)
-      .json({ error: "Error fetching threads", details: error.message });
+    res.status(500).json({ error: "Error fetching threads", details: error.message });
   }
 };
 
-//Happens when someone sends message to someone
-const createMessage = async (sender, receiver, message, threadId) => {
+const createMessage = async (sender, receiver, message, threadId, productName) => {
   try {
+    // Ensure productName is defined before passing it to Firestore
+    const validProductName = productName || "Unknown Product";
+
     const createdMessage = await db.collection("messages").add({
       threadId,
       sender,
       receiver,
       message,
+      productName: validProductName,  // Use valid productName
       delivered: 0,
       createdAt: admin.firestore.FieldValue.serverTimestamp(),
     });
     return createdMessage.id;
   } catch (error) {
-    console.log(`=====Error occured===== ${error}`);
+    console.log(`=====Error occurred===== ${error}`);
     return null;
   }
 };
+
 
 const addMessageToThread = async (threadId, messageId) => {
   const threadRef = db.collection("threads").doc(threadId);
@@ -236,19 +224,12 @@ const addMessageToThread = async (threadId, messageId) => {
     return;
   }
 
-  const threadData = threadDoc.data(); // No need for await
-  const messages = threadData.messages || []; // Ensure it's an array
+  const threadData = threadDoc.data();
+  const messages = threadData.messages || [];
 
   await threadRef.update({
-    messages: [...messages, messageId], // Append new messageId
+    messages: [...messages, messageId],
   });
 
   console.log("Message added successfully to thread:", threadId);
 };
-
-const linkThreadToUsers = async () => {};
-
-const notifySocket = async () => {};
-
-//post processing after saving message in database
-//Send data to websocket handler
