@@ -80,8 +80,8 @@ const Cart = () => {
                   <Image
                     src={item.imageUrl}
                     alt={item.title}
-                    width={100}
-                    height={100}
+                    width={80}
+                    height={80}
                     className="me-3"
                   />
                 </Link>
@@ -121,7 +121,7 @@ const Cart = () => {
                       handleContactSeller(item.id, item.sellerName)
                     }
                   >
-                    Contact Seller
+                    Contact
                   </Button>
                 </div>
               </Card>
