@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import {
   Image,
@@ -9,10 +9,7 @@ import {
 } from 'react-bootstrap';
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import Card from './itemCard';
-
 import { useAuth } from '../contexts/authContext';
-
-
 import { createThread } from '../api/message';
 
 // Main product image section with prev/next functionality
@@ -26,9 +23,6 @@ export const MainProductSection = ({
   };
 
   const handlePrevImage = () => {
-    setCurrentImageIndex(
-      (prevIndex) => (prevIndex - 1 + images.length) % images.length
-    );
     setCurrentImageIndex(
       (prevIndex) => (prevIndex - 1 + images.length) % images.length
     );
@@ -77,7 +71,6 @@ export const MainProductSection = ({
 // Product details section
 export const ProductDetailsSection = ({ details }) => {
   const navigate = useNavigate();
-
   const { currentUser } = useAuth();
 
   const handleContactSeller = async (listingId, sellerName, productName) => {
@@ -101,32 +94,89 @@ export const ProductDetailsSection = ({ details }) => {
   };
   
 
-  const [cartCount, setCartCount] = useState(
-    JSON.parse(localStorage.getItem('cart'))?.length || 0
-  );
+  const [cartCount, setCartCount] = useState(0);
+
+  useEffect(() => {
+    const userId = currentUser?.uid;
+    if (userId) {
+      const cart = JSON.parse(localStorage.getItem(`cart_${userId}`)) || [];
+      const updatedCartCount = cart.reduce(
+        (total, item) => total + item.quantity,
+        0
+      );
+      setCartCount(updatedCartCount);
+    }
+
+    const handleStorageChange = () => {
+      const userId = currentUser?.uid;
+      if (userId) {
+        const updatedCart =
+          JSON.parse(localStorage.getItem(`cart_${userId}`)) || [];
+        setCartCount(
+          updatedCart.reduce((total, item) => total + item.quantity, 0)
+        );
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, [currentUser]); // Depend on currentUser to reset cart count when user logs in/out
 
   const handleAddToCart = () => {
-    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    if (!currentUser) {
+      alert('Please log in to add items to your cart.');
+      return;
+    }
+
+    if (details.user === currentUser.uid) {
+      alert("You can't add your own listing to the cart.");
+      return;
+    }
+
+    const userId = currentUser.uid;
+    let cart = JSON.parse(localStorage.getItem(`cart_${userId}`)) || [];
+
+    // Check if the item is already in the cart
     const existingItem = cart.find((item) => item.id === details.id);
-    
+
     if (existingItem) {
-      existingItem.quantity += 1; // Increase quantity if item already in cart
+      alert('This item is already in your cart.');
+      return; // Do not add the item again if it's already in the cart
     } else {
+      // If the item is not in the cart, add it
       cart.push({
         id: details.id,
         title: details.title,
         brand: details.brand,
         category: details.category,
         price: details.price,
-        imageUrl: details.picUrls[0], // First image as thumbnail
-        quantity: 1,
+        description:
+          details.description.length > 100
+            ? details.description.slice(0, 100) + '...'
+            : details.description,
+        imageUrl: details.picUrls[0],
+        quantity: 1, // Item is added with a quantity of 1
       });
     }
 
-    localStorage.setItem('cart', JSON.stringify(cart));
-    setCartCount(cart.length); // Update cart count
+    // Update the cart in local storage
+    localStorage.setItem(`cart_${userId}`, JSON.stringify(cart));
 
-    // Show confirmation toast (optional)
+    // Recalculate the cart count
+    const updatedCartCount = cart.reduce(
+      (total, item) => total + item.quantity,
+      0
+    );
+
+    // Update the cart count state immediately
+    setCartCount(updatedCartCount);
+
+    // Trigger a storage event to notify other parts of the app (like navigation bar, etc.)
+    window.dispatchEvent(new Event('storage'));
+
     alert(`${details.title} added to cart!`);
   };
 
