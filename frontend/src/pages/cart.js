@@ -76,13 +76,15 @@ const Cart = () => {
           {cartItems.map((item) => (
             <Col key={item.id} md={10} className="mb-3">
               <Card className="p-3 d-flex flex-row align-items-center">
-                <Image
-                  src={item.imageUrl}
-                  alt={item.title}
-                  width={100}
-                  height={100}
-                  className="me-3"
-                />
+                <Link to={`/listing/${item.id}`}>
+                  <Image
+                    src={item.imageUrl}
+                    alt={item.title}
+                    width={100}
+                    height={100}
+                    className="me-3"
+                  />
+                </Link>
                 <div style={{ flex: 1 }}>
                   {/* Wrap the title in a Link to navigate to the single listing page */}
                   <Link
@@ -91,15 +93,18 @@ const Cart = () => {
                   >
                     <h5>{item.title}</h5>
                   </Link>
-                  <p>
-                    <strong>Brand:</strong> {item.brand}
-                  </p>
-                  <p>
-                    <strong>Category:</strong> {item.category}
-                  </p>
-                  <p>
+                  <div>
                     <strong>Price:</strong> ${item.price}
-                  </p>
+                  </div>
+                  <div>
+                    <strong>Brand:</strong> {item.brand}
+                  </div>
+                  <div>
+                    <strong>Category:</strong> {item.category}
+                  </div>
+                  <div>
+                    <strong>Description:</strong> {item.description}
+                  </div>
                 </div>
                 <div>
                   <Button

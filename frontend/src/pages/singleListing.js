@@ -4,8 +4,11 @@ import NavBar from '../components/navBar';
 import { Container, Row } from 'react-bootstrap';
 import axios from 'axios';
 import '../style/stylingsingle.css';
-import { MainProductSection, ProductDetailsSection, ItemSection } from '../components/listingComponents';
-
+import {
+  MainProductSection,
+  ProductDetailsSection,
+  ItemSection,
+} from '../components/listingComponents';
 
 const SingleListing = () => {
   const { id } = useParams();
@@ -19,7 +22,9 @@ const SingleListing = () => {
   useEffect(() => {
     const fetchListingData = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_BACKEND}/api/listings/${id}`);
+        const response = await axios.get(
+          `${process.env.REACT_APP_BACKEND}/api/listings/${id}`
+        );
         setListingData(response.data);
         setSimilarItems(response.data.similarItems);
         setOtherItems(response.data.otherItems);

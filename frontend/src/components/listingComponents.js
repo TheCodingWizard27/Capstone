@@ -144,6 +144,10 @@ export const ProductDetailsSection = ({ details }) => {
         brand: details.brand,
         category: details.category,
         price: details.price,
+        description:
+          details.description.length > 100
+            ? details.description.slice(0, 100) + '...'
+            : details.description,
         imageUrl: details.picUrls[0],
         quantity: 1, // Item is added with a quantity of 1
       });
