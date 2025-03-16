@@ -73,17 +73,26 @@ export const ProductDetailsSection = ({ details }) => {
   const navigate = useNavigate();
   const { currentUser } = useAuth();
 
-  const handleContactSeller = async (listingId, sellerName) => {
+  const handleContactSeller = async (listingId, sellerName, productName) => {
     try {
-      const response = await createThread(listingId, currentUser);
+      // Pass listingId and currentUser (buyer) when creating a thread
+      const response = await createThread(listingId, currentUser); // Ensure createThread returns the threadId in response
       console.log(response);
-      navigate(
-        `/messageList?threadId=${response.threadId}&userName=${sellerName}`
-      );
+      
+      // Check if the response contains the threadId
+      if (response && response.threadId) {
+        navigate(
+          `/messageList?threadId=${response.threadId}&userName=${sellerName}&itemName=${productName}`
+        );
+      } else {
+        throw new Error('Failed to create thread');
+      }
     } catch (error) {
-      alert(`${error.response.data.error}`);
+      console.error(error);
+      alert(`${error.response?.data?.error || 'An error occurred'}`);
     }
   };
+  
 
   const [cartCount, setCartCount] = useState(0);
 
@@ -199,7 +208,7 @@ export const ProductDetailsSection = ({ details }) => {
           <Button
             variant="primary"
             className="me-2"
-            onClick={() => handleContactSeller(details.id, details.sellerName)}
+            onClick={() => handleContactSeller(details.id, details.sellerName, details.title)}
           >
             Contact Seller
           </Button>

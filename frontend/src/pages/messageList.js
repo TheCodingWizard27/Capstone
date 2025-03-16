@@ -1,347 +1,288 @@
-import React, { useState, useRef, useEffect } from 'react';
-import NavBar from '../components/navBar';
-import { useNavigate } from 'react-router-dom';
-import {
-  Container,
-  Row,
-  Col,
-  Card,
-  Button,
-  Form,
-  InputGroup,
-  Image,
-} from 'react-bootstrap';
-import { FaPaperPlane, FaPlus, FaBars, FaPaperclip } from 'react-icons/fa';
-import '../style/messaging.css';
-import { useAuth } from '../contexts/authContext';
-import {
-  sendMessage,
-  fetchMessagesList,
-  getMessageByThreadId,
-} from '../api/message'; //Function to make send message api call
 
-import { useSearchParams } from 'react-router-dom';
+import { useState, useRef, useEffect } from "react"
+import NavBar from "../components/navBar"
+import { useNavigate } from "react-router-dom"
+import { Container, Row, Col, Card, Button, Form, InputGroup } from "react-bootstrap"
+import { FaRocket } from "react-icons/fa"
+import "../style/messaging.css"
+import { useAuth } from "../contexts/authContext"
+import { sendMessage, fetchMessagesList, getMessageByThreadId } from "../api/message"
+import { useSearchParams } from "react-router-dom"
 
 const MessagingPage = () => {
-  const [searchParams] = useSearchParams();
-  const { currentUser } = useAuth();
-  const [receivedMessage, setReceivedMessage] = useState('');
-  const [messages, setMessages] = useState([]);
-  const [currentChat, setCurrentChat] = useState([]);
-  const [newMessage, setNewMessage] = useState('');
-  const [uploadedFiles, setUploadedFiles] = useState([]);
-  const [isMobileView, setIsMobileView] = useState(window.innerWidth <= 760);
-  const messageEndRef = useRef(null);
+  const [searchParams] = useSearchParams()
+  const { currentUser } = useAuth()
+  const [messages, setMessages] = useState([])
+  const [currentChat, setCurrentChat] = useState([])
+  const [newMessage, setNewMessage] = useState("")
+  const [isMobileView, setIsMobileView] = useState(window.innerWidth <= 760)
+  const messageEndRef = useRef(null)
+  const messageContainerRef = useRef(null)
+  const [selectedThreadId, setSelectedThreadId] = useState(null)
+  const [isScrolledToBottom, setIsScrolledToBottom] = useState(true)
 
-  // Extract query parameters
-  const threadId = searchParams.get('threadId');
-  const userName = searchParams.get('userName');
+  const threadId = searchParams.get("threadId")
+  const userName = searchParams.get("userName")
+  const itemName = searchParams.get("itemName")
 
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
-  // Initialize selectedUser based on query parameters
-  const [selectedUser, setSelectedUser] = useState(
-    threadId && userName ? { threadId, userName } : null
-  );
+  const [selectedUser, setSelectedUser] = useState(threadId && userName ? { threadId, userName, itemName } : null)
 
-  // Update mobile view state on resize
+  // Handle window resize
   useEffect(() => {
-    const handleResize = () => setIsMobileView(window.innerWidth <= 760);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+    const handleResize = () => setIsMobileView(window.innerWidth <= 760)
+    window.addEventListener("resize", handleResize)
+    return () => window.removeEventListener("resize", handleResize)
+  }, [])
 
-  // Update selectedUser if searchParams change
+  // Update selected user when URL params change
   useEffect(() => {
+    const threadId = searchParams.get("threadId")
+    const userName = searchParams.get("userName")
+    const itemName = searchParams.get("itemName")
+
     if (threadId && userName) {
-      setSelectedUser({ threadId, userName });
+      setSelectedUser({ threadId, userName, itemName })
+      setSelectedThreadId(threadId)
     } else {
-      setSelectedUser(null);
+      setSelectedUser(null)
+      setSelectedThreadId(null)
     }
-  }, [threadId, userName]);
+  }, [searchParams])
 
-  //Websocket connection on current user token change
+  // Function to scroll to bottom
+  const scrollToBottom = (behavior = "auto") => {
+    if (messageContainerRef.current) {
+      messageContainerRef.current.scrollTop = messageContainerRef.current.scrollHeight
+    }
+  }
+
+  // WebSocket for real-time messaging
   useEffect(() => {
-    const ws = new WebSocket(
-      `ws://localhost:8000?token=${currentUser.accessToken}`
-    );
-    ws.onopen = () => {
-      console.log('Connected to the WebSocket server');
-      ws.send('Hello from the client!');
-    };
+    if (!currentUser?.accessToken) return
+
+    const ws = new WebSocket(`ws://localhost:8000?token=${currentUser.accessToken}`)
 
     ws.onmessage = (event) => {
-      console.log('Message from server:', event.data);
-    };
+      const msg = JSON.parse(event.data)
+      if (selectedUser && msg.threadId === selectedUser.threadId) {
+        setCurrentChat((prev) => [...prev, { ...msg, type: msg.senderId === currentUser.id ? "sent" : "received" }])
 
-    ws.onclose = () => {
-      console.log('Disconnected from the server');
-    };
-  }, [currentUser.accessToken]);
-
-  // Fetch messages list on component mount
-  useEffect(() => {
-    async function fetchData() {
-      let messageList = await fetchMessagesList(currentUser);
-      setMessages([...messageList]);
-    }
-
-    fetchData();
-    console.log(messages);
-
-    messageEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [currentUser.accessToken]);
-
-  //Load all messages from thread
-  useEffect(() => {
-    async function fetchData() {
-      let chat = await getMessageByThreadId(selectedUser.threadId, currentUser);
-      setCurrentChat([...chat]);
-    }
-    if (selectedUser != null) {
-      fetchData();
-
-      console.log(currentChat);
-    }
-  }, [selectedUser]);
-
-  // File upload handler
-  const handleFileUpload = (event) => {
-    const files = event.target.files;
-    const validImageTypes = [
-      'image/jpeg',
-      'image/jpg',
-      'image/png',
-      'image/gif',
-    ];
-    const validVideoTypes = [
-      'video/mp4',
-      'video/mov',
-      'video/WMV',
-      'video/webm',
-    ];
-    const validOtherTypes = ['application/pdf'];
-    const maxImageSize = 3 * 1024 * 1024; // 3MB
-    const maxVideoSize = 20 * 1024 * 1024; // 20MB
-    const maxOtherSize = 5 * 1024 * 1024; // 5MB
-    const newUploadedFiles = [];
-
-    for (let i = 0; i < files.length; i++) {
-      const file = files[i];
-      const fileType = file.type;
-
-      if (validImageTypes.includes(fileType) && file.size <= maxImageSize) {
-        if (
-          newUploadedFiles.filter((f) => validImageTypes.includes(f.type))
-            .length < 5
-        ) {
-          newUploadedFiles.push(file);
-        } else {
-          alert('You can only upload up to 5 images at a time.');
+        // If we're already at the bottom, scroll to show new message
+        if (isScrolledToBottom) {
+          setTimeout(scrollToBottom, 100)
         }
-      } else if (
-        validVideoTypes.includes(fileType) &&
-        file.size <= maxVideoSize
-      ) {
-        if (!newUploadedFiles.some((f) => validVideoTypes.includes(f.type))) {
-          newUploadedFiles.push(file);
-        } else {
-          alert('You can only upload 1 video at a time.');
-        }
-      } else if (
-        validOtherTypes.includes(fileType) &&
-        file.size <= maxOtherSize
-      ) {
-        if (!newUploadedFiles.some((f) => validOtherTypes.includes(f.type))) {
-          newUploadedFiles.push(file);
-        } else {
-          alert('You can only upload 1 document at a time.');
-        }
-      } else if (file.size <= maxOtherSize) {
-        if (!newUploadedFiles.some((f) => f.name === file.name)) {
-          newUploadedFiles.push(file);
-        } else {
-          alert('You can only upload 1 non-media file at a time.');
-        }
-      } else {
-        alert('Invalid file type or size.');
       }
+
+      // Update thread list
+      setMessages((prev) => {
+        const updated = [...prev]
+        const idx = updated.findIndex((m) => m.threadId === msg.threadId)
+        if (idx !== -1) updated[idx] = { ...updated[idx], lastMessage: msg.message }
+        return updated
+      })
     }
 
-    setUploadedFiles((prev) => [...prev, ...newUploadedFiles]);
-  };
+    return () => ws.readyState <= 1 && ws.close()
+  }, [currentUser?.accessToken, selectedUser, isScrolledToBottom])
 
+  // Fetch message threads
+  useEffect(() => {
+    if (!currentUser) return
+    fetchMessagesList(currentUser)
+      .then((messageList) => setMessages(messageList))
+      .catch((err) => console.error("Error fetching messages:", err))
+  }, [currentUser])
+
+  // Fetch messages for selected thread
+  useEffect(() => {
+    if (!selectedUser || !currentUser) return
+
+    getMessageByThreadId(selectedUser.threadId, currentUser, { limit: 20, offset: 0 })
+      .then((chat) => {
+        const formattedChat = chat.map((msg) => ({
+          ...msg,
+          type: msg.senderId === currentUser.id ? "sent" : "received",
+        }))
+        setCurrentChat(formattedChat)
+
+        // Scroll to bottom after loading messages
+        setTimeout(scrollToBottom, 100)
+        setIsScrolledToBottom(true)
+      })
+      .catch((err) => console.error("Error fetching thread messages:", err))
+  }, [selectedUser, currentUser])
+
+  // Check if scrolled to bottom
+  const handleScroll = () => {
+    if (!messageContainerRef.current) return
+
+    const container = messageContainerRef.current
+    const isAtBottom = Math.abs(container.scrollHeight - container.scrollTop - container.clientHeight) < 50
+
+    setIsScrolledToBottom(isAtBottom)
+
+    // Load more messages when scrolled to top
+    if (container.scrollTop === 0 && selectedUser && currentChat.length > 0) {
+      loadOlderMessages()
+    }
+  }
+
+  // Load older messages
+  const loadOlderMessages = async () => {
+    if (!selectedUser || !currentUser || currentChat.length === 0) return
+
+    try {
+      const oldestMessageId = currentChat[0]?.id
+      const moreMessages = await getMessageByThreadId(selectedUser.threadId, currentUser, {
+        before: oldestMessageId,
+        limit: 20,
+      })
+
+      if (moreMessages?.length > 0) {
+        const formattedMessages = moreMessages.map((msg) => ({
+          ...msg,
+          type: msg.senderId === currentUser.id ? "sent" : "received",
+        }))
+
+        // Save current scroll height and position
+        const container = messageContainerRef.current
+        const scrollHeight = container.scrollHeight
+        const scrollTop = container.scrollTop
+
+        // Update messages
+        setCurrentChat((prev) => [...formattedMessages, ...prev])
+
+        // Maintain scroll position after new messages are loaded
+        setTimeout(() => {
+          if (messageContainerRef.current) {
+            messageContainerRef.current.scrollTop = messageContainerRef.current.scrollHeight - scrollHeight + scrollTop
+          }
+        }, 50)
+      }
+    } catch (error) {
+      console.error("Error loading more messages:", error)
+    }
+  }
+
+  // Send message function
   const handleSendMessage = async () => {
-    if (newMessage.trim() || uploadedFiles.length > 0) {
-      setNewMessage('');
-      setUploadedFiles([]);
+    if (!newMessage.trim() || !selectedUser) return
+
+    const tempId = Date.now()
+    const newMsg = {
+      id: tempId,
+      senderId: currentUser.id,
+      message: newMessage,
+      type: "sent",
+      threadId: selectedUser.threadId,
     }
 
-    const response = await sendMessage(threadId, newMessage, currentUser); //APi call to the backend
-    setCurrentChat((prevMessages) => [...prevMessages, response.messageInfo]);
-    console.log(currentChat)
-  };
+    // Clear input field immediately
+    const messageToSend = newMessage
+    setNewMessage("")
 
-  const handleSelectUser = (threadId, userName) => {
-    navigate(`/messageList/?threadId=${threadId}&userName=${userName}`);
-  };
+    // Add message to chat
+    setCurrentChat((prev) => [...prev, newMsg])
 
-  const backToSidebar = () => {
-    navigate('/messageList');
-  };
+    // Scroll to bottom immediately after sending
+    setTimeout(scrollToBottom, 50)
+    setIsScrolledToBottom(true)
+
+    try {
+      const response = await sendMessage(threadId, messageToSend, currentUser)
+      if (response?.messageInfo) {
+        setCurrentChat((prev) =>
+          prev.map((msg) => (msg.id === tempId ? { ...response.messageInfo, type: "sent" } : msg)),
+        )
+      }
+    } catch (error) {
+      console.error("Send error:", error)
+    }
+  }
+
+  const handleSelectUser = (threadId, userName, itemName) => {
+    setSelectedUser({ threadId, userName, itemName })
+    setSelectedThreadId(threadId)
+    navigate(`/messageList/?threadId=${threadId}&userName=${userName}&itemName=${encodeURIComponent(itemName || "")}`)
+  }
+
+  const backToSidebar = () => navigate("/messageList")
 
   const listThreads = messages.map((item, index) => (
     <li
-      onClick={() => handleSelectUser(item.threadId, item.otherParty)}
       key={index}
+      onClick={() => handleSelectUser(item.threadId, item.otherParty, item.title)}
+      className={`list-thread ${selectedThreadId === item.threadId ? "selected" : ""}`}
     >
-      {item.otherParty}
+      <div className="thread-user">{item.otherParty}</div>
+      <div className="thread-item">{item.title}</div>
     </li>
-  ));
+  ))
 
   return (
     <div>
       <NavBar />
       <Container fluid className="mt-3 messaging-container">
-        {/**Sidebar */}
         <Row className="message-page-view">
           <Col
             md={5}
             lg={3}
             sm={selectedUser == null ? 12 : 0}
+            className="threads-column"
             style={{
-              overflowY: 'auto',
-              transition: 'all 0.3s ease-in-out',
-              display: selectedUser != null && isMobileView ? 'none' : 'block', // Ensures it is hidden when needed
+              display: selectedUser != null && isMobileView ? "none" : "block",
             }}
           >
-            <Card className="vh-90 p-3">
-              <div className="d-flex justify-content-between align-items-center mb-3">
-                <h5 className="mb-0">Chats</h5>
-              </div>
+            <Card.Header className="threads-header">
+              <h5 className="mb-0">Chats</h5>
               <ul className="list-unstyled">{listThreads}</ul>
-            </Card>
+            </Card.Header>
           </Col>
 
-          {/** Chat section */}
           <Col md={7} lg={9} className="chat-section">
             {selectedUser ? (
-              <Card
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  height: '100%',
-                }}
-              >
-                <Card.Header className="d-flex justify-content-between align-items-center">
-                  <h6 className="mb-0">{selectedUser.userName}</h6>
+              <Card className="chat-card">
+                <Card.Header className="chat-header">
+                  <h6 className="mb-0">
+                    {selectedUser.userName}{" "}
+                    {selectedUser.itemName && (
+                      <>
+                        || <span className="text-muted">{selectedUser.itemName}</span>
+                      </>
+                    )}
+                  </h6>
                   <Button variant="secondary" onClick={backToSidebar}>
                     Close
                   </Button>
                 </Card.Header>
 
-                <Card.Body
-                  style={{
-                    flex: 1,
-                    height: '70%',
-                    overflowY: 'scroll',
-                  }}
-                >
+                <Card.Body ref={messageContainerRef} className="message-container" onScroll={handleScroll}>
                   {currentChat?.map((message) => (
-                    <div
-                      key={message.id}
-                      className={`message ${
-                        message.type === 'sent' ? 'sent' : 'received'
-                      } d-flex align-items-center`}
-                    >
-                      {message.type === 'received' && (
-                        <Image
-                          src={message.profilePic}
-                          roundedCircle
-                          className="profile-pic me-2"
-                        />
-                      )}
+                    <div key={message.id} className={`message ${message.type}`}>
                       <div className="message-content">
                         <div className="content">{message.message}</div>
-                        <small className="time">{message.time}</small>
                       </div>
-                      {message.type === 'sent' && (
-                        <Image
-                          src={message.profilePic}
-                          roundedCircle
-                          className="profile-pic ms-2"
-                        />
-                      )}
                     </div>
                   ))}
-                  <div ref={messageEndRef} />
                 </Card.Body>
 
-                <Card.Footer
-                  style={{
-                    position: 'relative',
-                    bottom: 0,
-                    width: '100%',
-                  }}
-                >
+                <Card.Footer className="chat-footer">
                   <InputGroup>
-                    <Button variant="light">
-                      <Form.Label htmlFor="fileUpload" className="m-0">
-                        <FaPaperclip />
-                      </Form.Label>
-                    </Button>
-                    <Form.Control
-                      type="file"
-                      id="fileUpload"
-                      multiple
-                      style={{ display: 'none' }}
-                      onChange={handleFileUpload}
-                      accept="image/jpeg, image/jpg, image/png, image/gif, video/mp4, video/mov, video/WMV, video/webm, application/pdf"
-                    />
                     <Form.Control
                       type="text"
                       placeholder="Type a message..."
                       value={newMessage}
                       onChange={(e) => setNewMessage(e.target.value)}
                       onKeyPress={(e) => {
-                        if (e.key === 'Enter') handleSendMessage();
+                        if (e.key === "Enter") handleSendMessage()
                       }}
                     />
                     <Button variant="primary" onClick={handleSendMessage}>
-                      <FaPaperPlane />
+                      <FaRocket />
                     </Button>
                   </InputGroup>
-
-                  <div className="uploaded-files mt-2">
-                    {uploadedFiles.map((file, index) => (
-                      <div key={index} className="uploaded-file">
-                        {file.type.startsWith('image/') && (
-                          <img
-                            src={URL.createObjectURL(file)}
-                            alt="Uploaded"
-                            style={{ maxWidth: '100px', maxHeight: '100px' }}
-                          />
-                        )}
-                        {file.type.startsWith('video/') && (
-                          <video
-                            src={URL.createObjectURL(file)}
-                            controls
-                            style={{ maxWidth: '200px' }}
-                          />
-                        )}
-                        {file.type === 'application/pdf' && (
-                          <a
-                            href={URL.createObjectURL(file)}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            View PDF
-                          </a>
-                        )}
-                        <small>{file.name}</small>
-                      </div>
-                    ))}
-                  </div>
                 </Card.Footer>
               </Card>
             ) : (
@@ -353,7 +294,8 @@ const MessagingPage = () => {
         </Row>
       </Container>
     </div>
-  );
-};
+  )
+}
 
-export default MessagingPage;
+export default MessagingPage
+
