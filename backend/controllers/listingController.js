@@ -290,11 +290,9 @@ exports.deleteListing = async (req, res) => {
 
     // Check if user is authorized to delete this listing
     if (listingData.user !== userId) {
-      return res
-        .status(403)
-        .json({
-          message: "Unauthorized: You can only delete your own listings",
-        });
+      return res.status(403).json({
+        message: "Unauthorized: You can only delete your own listings",
+      });
     }
 
     // Delete images from Firebase Storage if they exist
@@ -360,11 +358,9 @@ exports.updateListingStatus = async (req, res) => {
 
     // Check if user is authorized to update this listing
     if (listingDoc.data().user !== userId) {
-      return res
-        .status(403)
-        .json({
-          message: "Unauthorized: You can only update your own listings",
-        });
+      return res.status(403).json({
+        message: "Unauthorized: You can only update your own listings",
+      });
     }
 
     // Update only the status field

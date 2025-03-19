@@ -6,7 +6,7 @@ const userRoutes = require("./routes/user");
 const listingRoutes = require("./routes/listing");
 const messageRoutes = require("./routes/message");
 
-const setupWebSocket = require("./messageHandler");
+const { setupWebSocket } = require("./messageHandler");
 
 const app = express();
 const PORT = 8000;

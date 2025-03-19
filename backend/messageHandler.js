@@ -81,9 +81,10 @@ class ClientHandler {
   }
 }
 
+const clientHandler = new ClientHandler();
+
 const setupWebSocket = (server) => {
   const wss = new WebSocket.Server({ server });
-  const clientHandler = new ClientHandler();
 
   // Handle WebSocket connections
   wss.on("connection", (ws, req) => {
@@ -109,4 +110,4 @@ const setupWebSocket = (server) => {
   });
 };
 
-module.exports = setupWebSocket;
+module.exports = { setupWebSocket, ClientHandler };
