@@ -1,4 +1,4 @@
-"use client"
+
 
 import { useState, useRef, useEffect } from "react"
 import NavBar from "../components/navBar"
@@ -17,7 +17,7 @@ const MessagingPage = () => {
   const [currentChat, setCurrentChat] = useState([])
   const [newMessage, setNewMessage] = useState("")
   const [isMobileView, setIsMobileView] = useState(window.innerWidth <= 760)
-  const messageEndRef = useRef(null)
+
   const messageContainerRef = useRef(null)
   const [selectedThreadId, setSelectedThreadId] = useState(null)
   const [isScrolledToBottom, setIsScrolledToBottom] = useState(true)
@@ -91,7 +91,7 @@ const MessagingPage = () => {
       })
     }
 
-    return () => ws.readyState <= 1 && ws.close()
+    return () => ws.readyState <= 1 && ws.close() // Close WebSocket connection
   }, [currentUser?.accessToken, selectedUser, isScrolledToBottom])
 
   // Fetch message threads
@@ -119,7 +119,7 @@ const MessagingPage = () => {
 
         const formattedChat = chat.map((msg) => ({
           ...msg,
-          type: msg.sender == currentUser.uid ? "sent" : "received",
+          type: msg.sender === currentUser.uid ? "sent" : "received",
         }))
         setCurrentChat(formattedChat)
 
@@ -222,6 +222,7 @@ const MessagingPage = () => {
     setSelectedUser({ threadId, userName, itemName })
     setSelectedThreadId(threadId)
     navigate(`/messageList/?threadId=${threadId}&userName=${userName}&itemName=${encodeURIComponent(itemName || "")}`)
+
   }
 
   const backToSidebar = () => navigate("/messageList")
@@ -234,7 +235,9 @@ const MessagingPage = () => {
     >
       <div className="thread-user">{item.otherParty}</div>
       <div className="thread-item">{item.productName}</div>
+
     </li>
+
   ))
 
   return (
@@ -254,6 +257,7 @@ const MessagingPage = () => {
             <Card.Header className="threads-header">
               <h5 className="mb-0">Chats</h5>
               <ul className="list-unstyled">{listThreads}</ul>
+
             </Card.Header>
           </Col>
 
@@ -261,13 +265,13 @@ const MessagingPage = () => {
             {selectedUser ? (
               <Card className="chat-card">
                 <Card.Header className="chat-header">
-                  <h6 className="mb-0"> Seller Name:{" "} 
-                  <span style={{ fontWeight: 'bold' }}>
-  {selectedUser.userName}{" "}
-</span>
+                  <h6 className="mb-0"> Seller Name:{" "}
+                    <span style={{ fontWeight: 'bold' }}>
+                      {selectedUser.userName}{" "}
+                    </span>
                     {selectedUser.itemName && (
                       <>
-                        <hr/>  <span >{selectedUser.itemName}</span>
+                        <hr />  <span >{selectedUser.itemName}</span>
                       </>
                     )}
                   </h6>

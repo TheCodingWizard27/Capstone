@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom'; // Import Link here
-import { Container, Row, Col, Button, Card, Image } from 'react-bootstrap';
+import { Row, Col, Button, Card, Image } from 'react-bootstrap';
 import NavBar from '../components/navBar';
 import { useAuth } from '../contexts/authContext';
 import { createThread } from '../api/message';
@@ -125,7 +125,7 @@ const Cart = () => {
                     variant="primary"
                     className="me-2"
                     onClick={() =>
-                      handleContactSeller(item.user, item.sellerName, item.title)
+                      handleContactSeller(item.id, item.user, item.title)
                     }
                   >
                     Contact

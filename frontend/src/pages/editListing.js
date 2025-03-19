@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
-import { updateListing } from '../api/listing';
 import { useAuth } from '../contexts/authContext';
 import { Container, Form, Button, Card, Alert } from 'react-bootstrap';
 import NavBar from '../components/navBar';
@@ -10,7 +9,7 @@ import { FaTimes } from 'react-icons/fa'; // Importing FaTimes for the remove bu
 const EditListing = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { user, token } = useAuth();
+  const { token } = useAuth();
   const location = useLocation();
 
   const [formData, setFormData] = useState(location.state?.formData || {});
@@ -120,7 +119,7 @@ const EditListing = () => {
         }
       });
 
-      const response = await axios.put(
+       await axios.put(
         `${process.env.REACT_APP_BACKEND}/api/updateListing/${id}`,
         formDataObj,
         {

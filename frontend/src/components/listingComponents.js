@@ -1,4 +1,4 @@
-"use client"
+
 
 import { useState, useEffect } from "react"
 import { useNavigate, Link } from "react-router-dom"
@@ -80,7 +80,7 @@ export const ProductDetailsSection = ({ details }) => {
     }
   }
 
-  const [cartCount, setCartCount] = useState(0)
+  const [, setCartCount] = useState(0)
 
   useEffect(() => {
     const userId = currentUser?.uid
@@ -121,12 +121,13 @@ export const ProductDetailsSection = ({ details }) => {
 
     // Check if the item is already in the cart
     const existingItem = cart.find((item) => item.id === details.id)
-
+    details.user = details.sellerName
     if (existingItem) {
       alert("This item is already in your cart.")
       return // Do not add the item again if it's already in the cart
     } else {
       // If the item is not in the cart, add it
+
       cart.push({
         id: details.id,
         title: details.title,
@@ -136,6 +137,7 @@ export const ProductDetailsSection = ({ details }) => {
         description: details.description.length > 100 ? details.description.slice(0, 100) + "..." : details.description,
         imageUrl: details.picUrls[0],
         quantity: 1, // Item is added with a quantity of 1
+        user: details.user,
       })
     }
 
