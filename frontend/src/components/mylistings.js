@@ -1,4 +1,3 @@
-'use client';
 
 import { useState, useEffect } from 'react';
 import {
@@ -11,6 +10,7 @@ import {
   Dropdown,
   Spinner,
   Alert,
+  Image,
 } from 'react-bootstrap';
 import axios from 'axios';
 import { useAuth } from '../contexts/authContext';
@@ -208,10 +208,14 @@ const MyListings = () => {
   }
 
   return (
-    <Container>
-      <div className="d-flex justify-content-between align-items-center mb-4">
+    <Container className="py-4">
+      <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-3">
         <h4 className="mb-0">My Listings</h4>
-        <Button variant="primary" size="sm" onClick={handleAddNew}>
+        <Button
+          variant="primary"
+          onClick={handleAddNew}
+          className="w-100 w-md-auto"
+        >
           <i className="bi bi-plus-lg me-1"></i> Add New Listing
         </Button>
       </div>
@@ -239,38 +243,39 @@ const MyListings = () => {
       <Row className="g-3">
         {listings.map((item) => (
           <Col xs={12} key={item.id}>
-            <Card className="shadow-sm border-0 listing-item hover-effect">
-              <Row className="g-0 align-items-center">
+            <Card className="shadow-sm border-0 listing-item hover-effect h-100">
+              <Row className="g-0">
                 {/* Image Section */}
-                <Col xs={4} md={3} className="p-3">
-                  <div className="position-relative">
-                    <Link to={`/listing/${item.id}`}>
-                      <Card.Img
-                        src={
-                          item.picUrls && item.picUrls.length > 0
-                            ? item.picUrls[0]
-                            : 'https://via.placeholder.com/100'
-                        }
-                        alt={item.title}
-                        className="img-fluid rounded"
-                        style={{ height: '120px', objectFit: 'cover' }}
-                      />
-                      {/* Only show the "Sold" badge when status is inactive */}
-                      {item.status === 'inactive' && (
-                        <Badge
-                          bg="secondary"
-                          className="position-absolute top-0 start-0 m-2"
-                        >
-                          Sold
-                        </Badge>
-                      )}
+                <Col xs={12} md={3} className="p-3">
+                  <div className="position-relative h-100">
+                    <Link to={`/listing/${item.id}`} className="d-block h-100">
+                      <div className="listing-image-container">
+                        <Image
+                          src={
+                            item.picUrls && item.picUrls.length > 0
+                              ? item.picUrls[0]
+                              : 'https://via.placeholder.com/100'
+                          }
+                          alt={item.title}
+                          className="img-fluid rounded w-100 h-100 object-fit-cover"
+                        />
+                        {/* Only show the "Sold" badge when status is inactive */}
+                        {item.status === 'inactive' && (
+                          <Badge
+                            bg="secondary"
+                            className="position-absolute top-0 start-0 m-2"
+                          >
+                            Sold
+                          </Badge>
+                        )}
+                      </div>
                     </Link>
                   </div>
                 </Col>
 
                 {/* Content Section */}
-                <Col xs={8} md={9}>
-                  <Card.Body className="p-3">
+                <Col xs={12} md={9}>
+                  <Card.Body className="p-3 d-flex flex-column h-100">
                     <div className="d-flex justify-content-between align-items-start mb-2">
                       <div>
                         <Card.Title className="text-primary fw-bold mb-1 listing-title">
@@ -330,19 +335,20 @@ const MyListings = () => {
                       {item.description || 'No description available'}
                     </Card.Text>
 
-                    <div className="d-flex justify-content-between align-items-center mt-3">
-                      <div className="d-flex gap-3 text-muted small">
+                    <div className="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mt-auto pt-3">
+                      <div className="d-flex gap-3 text-muted small mb-3 mb-md-0">
                         {item.category && (
                           <span>
                             <i className="bi bi-tag me-1"></i> {item.category}
                           </span>
                         )}
                       </div>
-                      <div className="d-flex gap-2">
+                      <div className="d-flex flex-wrap gap-2 w-100 w-md-auto">
                         <Button
                           variant="outline-primary"
                           size="sm"
                           onClick={() => handleEdit(item)}
+                          className="flex-fill flex-md-grow-0"
                         >
                           <i className="bi bi-pencil me-1"></i> Edit
                         </Button>
@@ -356,6 +362,7 @@ const MyListings = () => {
                               handleStatusUpdate(item.id, 'inactive')
                             }
                             disabled={statusLoading === item.id}
+                            className="flex-fill flex-md-grow-0"
                           >
                             {statusLoading === item.id ? (
                               <>
@@ -384,6 +391,7 @@ const MyListings = () => {
                               handleStatusUpdate(item.id, 'active')
                             }
                             disabled={statusLoading === item.id}
+                            className="flex-fill flex-md-grow-0"
                           >
                             {statusLoading === item.id ? (
                               <>
@@ -411,6 +419,7 @@ const MyListings = () => {
                           size="sm"
                           onClick={() => handleDelete(item.id)}
                           disabled={deleteLoading === item.id}
+                          className="flex-fill flex-md-grow-0"
                         >
                           {deleteLoading === item.id ? (
                             <>
@@ -440,13 +449,39 @@ const MyListings = () => {
         ))}
       </Row>
 
-      <style jsx>{`
+      <style jsx="true">{`
         .hover-effect {
           transition: transform 0.2s, box-shadow 0.2s;
         }
         .hover-effect:hover {
           transform: translateY(-2px);
           box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+        }
+        .listing-image-container {
+          height: 200px;
+          width: 100%;
+          position: relative;
+          overflow: hidden;
+        }
+        @media (min-width: 768px) {
+          .listing-image-container {
+            height: 150px;
+          }
+          .w-md-auto {
+            width: auto !important;
+          }
+          .flex-md-grow-0 {
+            flex: 0 0 auto !important;
+          }
+        }
+        .object-fit-cover {
+          object-fit: cover;
+        }
+        .listing-description {
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
         }
       `}</style>
     </Container>

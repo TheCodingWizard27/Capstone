@@ -1,225 +1,274 @@
-
-import { useState, useRef, useEffect } from "react"
-import NavBar from "../components/navBar"
-import { useNavigate } from "react-router-dom"
-import { Container, Row, Col, Card, Button, Form, InputGroup } from "react-bootstrap"
-import { FaRocket } from "react-icons/fa"
-import "../style/messaging.css"
-import { useAuth } from "../contexts/authContext"
-import { sendMessage, fetchMessagesList, getMessageByThreadId } from "../api/message"
-import { useSearchParams } from "react-router-dom"
+import { useState, useRef, useEffect } from 'react';
+import NavBar from '../components/navBar';
+import { useNavigate } from 'react-router-dom';
+import {
+  Container,
+  Row,
+  Col,
+  Card,
+  Button,
+  Form,
+  InputGroup,
+} from 'react-bootstrap';
+import { FaRocket } from 'react-icons/fa';
+import '../style/messaging.css';
+import { useAuth } from '../contexts/authContext';
+import {
+  sendMessage,
+  fetchMessagesList,
+  getMessageByThreadId,
+} from '../api/message';
+import { useSearchParams } from 'react-router-dom';
 
 const MessagingPage = () => {
-  const [searchParams] = useSearchParams()
-  const { currentUser } = useAuth()
-  const [messages, setMessages] = useState([])
-  const [currentChat, setCurrentChat] = useState([])
-  const [newMessage, setNewMessage] = useState("")
-  const [isMobileView, setIsMobileView] = useState(window.innerWidth <= 760)
-  const messageEndRef = useRef(null)
-  const messageContainerRef = useRef(null)
-  const [selectedThreadId, setSelectedThreadId] = useState(null)
-  const [isScrolledToBottom, setIsScrolledToBottom] = useState(true)
+  const [searchParams] = useSearchParams();
+  const { currentUser } = useAuth();
+  const [messages, setMessages] = useState([]);
+  const [currentChat, setCurrentChat] = useState([]);
+  const [newMessage, setNewMessage] = useState('');
+  const [isMobileView, setIsMobileView] = useState(window.innerWidth <= 760);
+  const messageEndRef = useRef(null);
+  const messageContainerRef = useRef(null);
+  const [selectedThreadId, setSelectedThreadId] = useState(null);
+  const [isScrolledToBottom, setIsScrolledToBottom] = useState(true);
 
-  const threadId = searchParams.get("threadId")
-  const userName = searchParams.get("userName")
-  const itemName = searchParams.get("itemName")
+  const threadId = searchParams.get('threadId');
+  const userName = searchParams.get('userName');
+  const itemName = searchParams.get('itemName');
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  const [selectedUser, setSelectedUser] = useState(threadId && userName ? { threadId, userName, itemName } : null)
+  const [selectedUser, setSelectedUser] = useState(
+    threadId && userName ? { threadId, userName, itemName } : null
+  );
 
   // Handle window resize
   useEffect(() => {
-    const handleResize = () => setIsMobileView(window.innerWidth <= 760)
-    window.addEventListener("resize", handleResize)
-    return () => window.removeEventListener("resize", handleResize)
-  }, [])
+    const handleResize = () => setIsMobileView(window.innerWidth <= 760);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // Update selected user when URL params change
   useEffect(() => {
-    const threadId = searchParams.get("threadId")
-    const userName = searchParams.get("userName")
-    const itemName = searchParams.get("itemName")
+    const threadId = searchParams.get('threadId');
+    const userName = searchParams.get('userName');
+    const itemName = searchParams.get('itemName');
 
     if (threadId && userName) {
-      setSelectedUser({ threadId, userName, itemName })
-      setSelectedThreadId(threadId)
+      setSelectedUser({ threadId, userName, itemName });
+      setSelectedThreadId(threadId);
     } else {
-      setSelectedUser(null)
-      setSelectedThreadId(null)
+      setSelectedUser(null);
+      setSelectedThreadId(null);
     }
-  }, [searchParams])
+  }, [searchParams]);
 
   // Function to scroll to bottom
-  const scrollToBottom = (behavior = "auto") => {
+  const scrollToBottom = (behavior = 'auto') => {
     if (messageContainerRef.current) {
-      messageContainerRef.current.scrollTop = messageContainerRef.current.scrollHeight
+      messageContainerRef.current.scrollTop =
+        messageContainerRef.current.scrollHeight;
     }
-  }
+  };
 
   // WebSocket for real-time messaging
   useEffect(() => {
-    if (!currentUser?.accessToken) return
+    if (!currentUser?.accessToken) return;
 
-    const ws = new WebSocket(`ws://localhost:8000?token=${currentUser.accessToken}`)
+    const ws = new WebSocket(
+      `ws://localhost:8000?token=${currentUser.accessToken}`
+    );
 
     ws.onmessage = (event) => {
-      const msg = JSON.parse(event.data)
+      const msg = JSON.parse(event.data);
       if (selectedUser && msg.threadId === selectedUser.threadId) {
-        setCurrentChat((prev) => [...prev, { ...msg, type: msg.senderId === currentUser.id ? "sent" : "received" }])
+        setCurrentChat((prev) => [
+          ...prev,
+          {
+            ...msg,
+            type: msg.senderId === currentUser.id ? 'sent' : 'received',
+          },
+        ]);
 
         // If we're already at the bottom, scroll to show new message
         if (isScrolledToBottom) {
-          setTimeout(scrollToBottom, 100)
+          setTimeout(scrollToBottom, 100);
         }
       }
 
       // Update thread list
       setMessages((prev) => {
-        const updated = [...prev]
-        const idx = updated.findIndex((m) => m.threadId === msg.threadId)
-        if (idx !== -1) updated[idx] = { ...updated[idx], lastMessage: msg.message }
-        return updated
-      })
-    }
+        const updated = [...prev];
+        const idx = updated.findIndex((m) => m.threadId === msg.threadId);
+        if (idx !== -1)
+          updated[idx] = { ...updated[idx], lastMessage: msg.message };
+        return updated;
+      });
+    };
 
-    return () => ws.readyState <= 1 && ws.close()
-  }, [currentUser?.accessToken, selectedUser, isScrolledToBottom])
+    return () => ws.readyState <= 1 && ws.close();
+  }, [currentUser?.accessToken, selectedUser, isScrolledToBottom]);
 
   // Fetch message threads
   useEffect(() => {
-    if (!currentUser) return
+    if (!currentUser) return;
     fetchMessagesList(currentUser)
       .then((messageList) => setMessages(messageList))
-      .catch((err) => console.error("Error fetching messages:", err))
-  }, [currentUser])
+      .catch((err) => console.error('Error fetching messages:', err));
+  }, [currentUser]);
 
   // Fetch messages for selected thread
   useEffect(() => {
-    if (!selectedUser || !currentUser) return
+    if (!selectedUser || !currentUser) return;
 
-    getMessageByThreadId(selectedUser.threadId, currentUser, { limit: 20, offset: 0 })
+    getMessageByThreadId(selectedUser.threadId, currentUser, {
+      limit: 20,
+      offset: 0,
+    })
       .then((chat) => {
+        console.log(chat);
+        console.log(currentUser);
+
         const formattedChat = chat.map((msg) => ({
           ...msg,
-          type: msg.senderId === currentUser.id ? "sent" : "received",
-        }))
-        setCurrentChat(formattedChat)
+          type: msg.sender == currentUser.uid ? 'sent' : 'received',
+        }));
+        setCurrentChat(formattedChat);
 
         // Scroll to bottom after loading messages
-        setTimeout(scrollToBottom, 100)
-        setIsScrolledToBottom(true)
+        setTimeout(scrollToBottom, 100);
+        setIsScrolledToBottom(true);
       })
-      .catch((err) => console.error("Error fetching thread messages:", err))
-  }, [selectedUser, currentUser])
+      .catch((err) => console.error('Error fetching thread messages:', err));
+  }, [selectedUser, currentUser]);
 
   // Check if scrolled to bottom
   const handleScroll = () => {
-    if (!messageContainerRef.current) return
+    if (!messageContainerRef.current) return;
 
-    const container = messageContainerRef.current
-    const isAtBottom = Math.abs(container.scrollHeight - container.scrollTop - container.clientHeight) < 50
+    const container = messageContainerRef.current;
+    const isAtBottom =
+      Math.abs(
+        container.scrollHeight - container.scrollTop - container.clientHeight
+      ) < 50;
 
-    setIsScrolledToBottom(isAtBottom)
+    setIsScrolledToBottom(isAtBottom);
 
     // Load more messages when scrolled to top
     if (container.scrollTop === 0 && selectedUser && currentChat.length > 0) {
-      loadOlderMessages()
+      loadOlderMessages();
     }
-  }
+  };
 
   // Load older messages
   const loadOlderMessages = async () => {
-    if (!selectedUser || !currentUser || currentChat.length === 0) return
+    if (!selectedUser || !currentUser || currentChat.length === 0) return;
 
     try {
-      const oldestMessageId = currentChat[0]?.id
-      const moreMessages = await getMessageByThreadId(selectedUser.threadId, currentUser, {
-        before: oldestMessageId,
-        limit: 20,
-      })
+      const oldestMessageId = currentChat[0]?.id;
+      const moreMessages = await getMessageByThreadId(
+        selectedUser.threadId,
+        currentUser,
+        {
+          before: oldestMessageId,
+          limit: 20,
+        }
+      );
 
       if (moreMessages?.length > 0) {
         const formattedMessages = moreMessages.map((msg) => ({
           ...msg,
-          type: msg.senderId === currentUser.id ? "sent" : "received",
-        }))
+          type: msg.sender === currentUser.uid ? 'sent' : 'received',
+        }));
 
         // Save current scroll height and position
-        const container = messageContainerRef.current
-        const scrollHeight = container.scrollHeight
-        const scrollTop = container.scrollTop
+        const container = messageContainerRef.current;
+        const scrollHeight = container.scrollHeight;
+        const scrollTop = container.scrollTop;
 
         // Update messages
-        setCurrentChat((prev) => [...formattedMessages, ...prev])
+        setCurrentChat((prev) => [...formattedMessages, ...prev]);
 
         // Maintain scroll position after new messages are loaded
         setTimeout(() => {
           if (messageContainerRef.current) {
-            messageContainerRef.current.scrollTop = messageContainerRef.current.scrollHeight - scrollHeight + scrollTop
+            messageContainerRef.current.scrollTop =
+              messageContainerRef.current.scrollHeight -
+              scrollHeight +
+              scrollTop;
           }
-        }, 50)
+        }, 50);
       }
     } catch (error) {
-      console.error("Error loading more messages:", error)
+      console.error('Error loading more messages:', error);
     }
-  }
+  };
 
   // Send message function
   const handleSendMessage = async () => {
-    if (!newMessage.trim() || !selectedUser) return
+    if (!newMessage.trim() || !selectedUser) return;
 
-    const tempId = Date.now()
+    const tempId = Date.now();
     const newMsg = {
       id: tempId,
       senderId: currentUser.id,
       message: newMessage,
-      type: "sent",
+      type: 'sent',
       threadId: selectedUser.threadId,
-    }
+    };
 
     // Clear input field immediately
-    const messageToSend = newMessage
-    setNewMessage("")
+    const messageToSend = newMessage;
+    setNewMessage('');
 
     // Add message to chat
-    setCurrentChat((prev) => [...prev, newMsg])
+    setCurrentChat((prev) => [...prev, newMsg]);
 
     // Scroll to bottom immediately after sending
-    setTimeout(scrollToBottom, 50)
-    setIsScrolledToBottom(true)
+    setTimeout(scrollToBottom, 50);
+    setIsScrolledToBottom(true);
 
     try {
-      const response = await sendMessage(threadId, messageToSend, currentUser)
+      const response = await sendMessage(threadId, messageToSend, currentUser);
       if (response?.messageInfo) {
         setCurrentChat((prev) =>
-          prev.map((msg) => (msg.id === tempId ? { ...response.messageInfo, type: "sent" } : msg)),
-        )
+          prev.map((msg) =>
+            msg.id === tempId ? { ...response.messageInfo, type: 'sent' } : msg
+          )
+        );
       }
     } catch (error) {
-      console.error("Send error:", error)
+      console.error('Send error:', error);
     }
-  }
+  };
 
   const handleSelectUser = (threadId, userName, itemName) => {
-    setSelectedUser({ threadId, userName, itemName })
-    setSelectedThreadId(threadId)
-    navigate(`/messageList/?threadId=${threadId}&userName=${userName}&itemName=${encodeURIComponent(itemName || "")}`)
-  }
+    setSelectedUser({ threadId, userName, itemName });
+    setSelectedThreadId(threadId);
+    navigate(
+      `/messageList/?threadId=${threadId}&userName=${userName}&itemName=${encodeURIComponent(
+        itemName || ''
+      )}`
+    );
+  };
 
-  const backToSidebar = () => navigate("/messageList")
+  const backToSidebar = () => navigate('/messageList');
 
   const listThreads = messages.map((item, index) => (
     <li
       key={index}
-      onClick={() => handleSelectUser(item.threadId, item.otherParty, item.title)}
-      className={`list-thread ${selectedThreadId === item.threadId ? "selected" : ""}`}
+      onClick={() =>
+        handleSelectUser(item.threadId, item.otherParty, item.title)
+      }
+      className={`list-thread ${
+        selectedThreadId === item.threadId ? 'selected' : ''
+      }`}
     >
       <div className="thread-user">{item.otherParty}</div>
       <div className="thread-item">{item.title}</div>
     </li>
-  ))
+  ));
 
   return (
     <div>
@@ -232,7 +281,7 @@ const MessagingPage = () => {
             sm={selectedUser == null ? 12 : 0}
             className="threads-column"
             style={{
-              display: selectedUser != null && isMobileView ? "none" : "block",
+              display: selectedUser != null && isMobileView ? 'none' : 'block',
             }}
           >
             <Card.Header className="threads-header">
@@ -246,10 +295,13 @@ const MessagingPage = () => {
               <Card className="chat-card">
                 <Card.Header className="chat-header">
                   <h6 className="mb-0">
-                    {selectedUser.userName}{" "}
+                    {selectedUser.userName}{' '}
                     {selectedUser.itemName && (
                       <>
-                        || <span className="text-muted">{selectedUser.itemName}</span>
+                        ||{' '}
+                        <span className="text-muted">
+                          {selectedUser.itemName}
+                        </span>
                       </>
                     )}
                   </h6>
@@ -258,7 +310,11 @@ const MessagingPage = () => {
                   </Button>
                 </Card.Header>
 
-                <Card.Body ref={messageContainerRef} className="message-container" onScroll={handleScroll}>
+                <Card.Body
+                  ref={messageContainerRef}
+                  className="message-container"
+                  onScroll={handleScroll}
+                >
                   {currentChat?.map((message) => (
                     <div key={message.id} className={`message ${message.type}`}>
                       <div className="message-content">
@@ -276,7 +332,7 @@ const MessagingPage = () => {
                       value={newMessage}
                       onChange={(e) => setNewMessage(e.target.value)}
                       onKeyPress={(e) => {
-                        if (e.key === "Enter") handleSendMessage()
+                        if (e.key === 'Enter') handleSendMessage();
                       }}
                     />
                     <Button variant="primary" onClick={handleSendMessage}>
@@ -294,8 +350,7 @@ const MessagingPage = () => {
         </Row>
       </Container>
     </div>
-  )
-}
+  );
+};
 
-export default MessagingPage
-
+export default MessagingPage;
