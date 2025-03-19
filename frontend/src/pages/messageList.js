@@ -261,11 +261,13 @@ const MessagingPage = () => {
             {selectedUser ? (
               <Card className="chat-card">
                 <Card.Header className="chat-header">
-                  <h6 className="mb-0">
-                    {selectedUser.userName}{" "}
+                  <h6 className="mb-0"> Seller Name:{" "} 
+                  <span style={{ fontWeight: 'bold' }}>
+  {selectedUser.userName}{" "}
+</span>
                     {selectedUser.itemName && (
                       <>
-                        || <span className="text-muted">{selectedUser.itemName}</span>
+                        <hr/>  <span >{selectedUser.itemName}</span>
                       </>
                     )}
                   </h6>
