@@ -82,12 +82,13 @@ const MessagingPage = () => {
 
     ws.onmessage = (event) => {
       const msg = JSON.parse(event.data);
+      console.log(msg);
       if (selectedUser && msg.threadId === selectedUser.threadId) {
         setCurrentChat((prev) => [
           ...prev,
           {
             ...msg,
-            type: msg.senderId === currentUser.id ? 'sent' : 'received',
+            type: msg.senderId === currentUser.uid ? 'sent' : 'received',
           },
         ]);
 
