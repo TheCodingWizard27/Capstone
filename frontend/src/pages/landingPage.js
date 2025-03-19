@@ -347,18 +347,22 @@ const AboutUS = () => {
     {
       name: 'Aavash Neupane',
       role: 'Full-Stack Developer',
+      image: '/images/aavash.jpeg',
     },
     {
       name: 'Raunak Upreti',
       role: 'Full-Stack Developer',
+      image: '/images/raunak.jpeg',
     },
     {
       name: 'Siddhartha Pudasini',
       role: 'Lead Developer',
+      image: '/images/siddhartha.jpeg',
     },
     {
       name: 'Kushal Panthi',
       role: 'Full Stack Developer',
+      image: '/images/kushal.jpeg',
     },
   ];
 
