@@ -12,17 +12,24 @@ const Cart = () => {
   const { currentUser } = useAuth();
   const { setCartCount } = useCart();
 
-  const handleContactSeller = async (listingId, sellerName) => {
+  const handleContactSeller = async (listingId, sellerName, productName) => {
     try {
-      const response = await createThread(listingId, currentUser);
-      console.log(response);
-      navigate(
-        `/messageList?threadId=${response.threadId}&userName=${sellerName}`
-      );
+      // Pass listingId, currentUser (buyer), and productName when creating a thread
+      console.log("Creating thread with product name:", productName)
+      const response = await createThread(listingId, currentUser, productName)
+      console.log("Thread creation response:", response)
+
+      // Check if the response contains the threadId
+      if (response && response.threadId) {
+        navigate(`/messageList?threadId=${response.threadId}&userName=${sellerName}&itemName=${productName}`)
+      } else {
+        throw new Error("Failed to create thread")
+      }
     } catch (error) {
-      alert(`${error.response.data.error}`);
+      console.error("Error creating thread:", error)
+      alert(`${error.response?.data?.error || "An error occurred"}`)
     }
-  };
+  }
 
   useEffect(() => {
     if (currentUser) {
@@ -118,7 +125,7 @@ const Cart = () => {
                     variant="primary"
                     className="me-2"
                     onClick={() =>
-                      handleContactSeller(item.id, item.sellerName)
+                      handleContactSeller(item.user, item.sellerName, item.title)
                     }
                   >
                     Contact
