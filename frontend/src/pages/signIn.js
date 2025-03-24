@@ -62,6 +62,7 @@ const SignIn = () => {
     <Container
       fluid
       className="vh-100 d-flex align-items-center justify-content-center"
+      style={{ backgroundColor: '#005d8d' }}
     >
       <Row className="w-100 justify-content-center">
         <Col xs={12} sm={10} md={8} lg={6} xl={5}>
