@@ -170,12 +170,11 @@ const WhyShop = () => {
             >
               <Card.Body className="p-4">
                 <div className="d-flex align-items-center mb-4">
-                  <div className="rounded-circle bg-success bg-opacity-25 p-3 me-3">
-                    <i
-                      className="bi bi-check-circle"
-                      style={{ fontSize: '1.5rem', color: '#198754' }}
-                    ></i>
-                  </div>
+                    <img
+                      src="/images/check-mark.png"
+                      alt="Check"
+                      style={{ width: '24px', height: '24px' }}
+                    />
                   <h4 className="card-title mb-0" style={{ color: '#198754' }}>
                     With ShopSimplify
                   </h4>
@@ -192,12 +191,12 @@ const WhyShop = () => {
                       key={index}
                       className="mb-3 d-flex align-items-start p-2 hover-list-item"
                     >
-                      <span className="me-3 text-success">
-                        <i
-                          className="bi bi-check-circle-fill"
-                          style={{ fontSize: '1.25rem' }}
-                        ></i>
-                      </span>
+                      <img
+                        src="/images/check-mark.png"
+                        alt="Checkmark"
+                        style={{ width: '20px', height: '20px' }}
+                        className="me-3 mt-1"
+                      />
                       <span style={{ color: '#198754' }}>{item}</span>
                     </li>
                   ))}
@@ -216,12 +215,11 @@ const WhyShop = () => {
             >
               <Card.Body className="p-4">
                 <div className="d-flex align-items-center mb-4">
-                  <div className="rounded-circle bg-danger bg-opacity-25 p-3 me-3">
-                    <i
-                      className="bi bi-x-circle"
-                      style={{ fontSize: '1.5rem', color: '#dc3545' }}
-                    ></i>
-                  </div>
+                    <img
+                      src="/images/cross-mark.png"
+                      alt="Cross"
+                      style={{ width: '24px', height: '24px' }}
+                    />
                   <h4 className="card-title mb-0" style={{ color: '#dc3545' }}>
                     Without ShopSimplify
                   </h4>
@@ -238,12 +236,12 @@ const WhyShop = () => {
                       key={index}
                       className="mb-3 d-flex align-items-start p-2 hover-list-item"
                     >
-                      <span className="me-3 text-danger">
-                        <i
-                          className="bi bi-x-circle-fill"
-                          style={{ fontSize: '1.25rem' }}
-                        ></i>
-                      </span>
+                      <img
+                        src="/images/cross-mark.png"
+                        alt="Cross"
+                        style={{ width: '20px', height: '20px' }}
+                        className="me-3 mt-1"
+                      />
                       <span style={{ color: '#dc3545' }}>{item}</span>
                     </li>
                   ))}
@@ -256,6 +254,7 @@ const WhyShop = () => {
     </Container>
   );
 };
+
 
 
 
@@ -404,9 +403,6 @@ const AboutUS = () => {
                       }}
                     />
                     <div className="position-absolute bottom-0 end-0 translate-middle-y">
-                      <Badge pill bg="primary" className="p-2">
-                        <i className="bi bi-linkedin"></i>
-                      </Badge>
                     </div>
                   </div>
                   <h5 className="card-title mb-1">{member.name}</h5>
