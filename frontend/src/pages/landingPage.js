@@ -394,15 +394,16 @@ const AboutUS = () => {
               <Card className="border-0 shadow-sm hover-card h-100 text-center">
                 <Card.Body className="p-4">
                   <div className="position-relative mb-4">
-                    <div
-                      className="rounded-circle bg-primary bg-opacity-10 mx-auto mb-3 d-flex align-items-center justify-content-center"
-                      style={{ width: '100px', height: '100px' }}
-                    >
-                      <i
-                        className="bi bi-person"
-                        style={{ fontSize: '2.5rem', color: '#0d6efd' }}
-                      ></i>
-                    </div>
+                    <img
+                      src={member.image}
+                      alt={member.name}
+                      className="rounded-circle mb-3"
+                      style={{
+                        width: '100px',
+                        height: '100px',
+                        objectFit: 'cover',
+                      }}
+                    />
                     <div className="position-absolute bottom-0 end-0 translate-middle-y">
                       <Badge pill bg="primary" className="p-2">
                         <i className="bi bi-linkedin"></i>
