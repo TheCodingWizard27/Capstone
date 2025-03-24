@@ -1,5 +1,3 @@
-'use client';
-
 import { useState, useRef, useEffect } from 'react';
 import { Form, InputGroup, ListGroup } from 'react-bootstrap';
 import axios from 'axios';
