@@ -1,7 +1,10 @@
-import React, { useState, useRef, useEffect } from 'react';
+'use client';
+
+import { useState, useRef, useEffect } from 'react';
 import { Form, InputGroup, ListGroup } from 'react-bootstrap';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { Search } from 'react-bootstrap-icons';
 
 const SearchBar = ({ setSearchResults }) => {
   const [query, setQuery] = useState('');
@@ -57,50 +60,87 @@ const SearchBar = ({ setSearchResults }) => {
       style={{ width: '100%' }}
     >
       {/* Search Input */}
-      <InputGroup>
+      <InputGroup className="shadow-sm">
+        <InputGroup.Text className="bg-white border-end-0">
+          <Search />
+        </InputGroup.Text>
         <Form.Control
           type="text"
           placeholder="Search items..."
           value={query}
           onChange={handleSearch}
+          className="border-start-0 py-2"
+          style={{ boxShadow: 'none' }}
         />
       </InputGroup>
 
       {/* Search Results Dropdown */}
       {showDropdown && (
-        <ListGroup className="search-dropdown">
+        <ListGroup
+          className="search-dropdown position-absolute w-100 mt-1 shadow-lg"
+          style={{
+            zIndex: 1000,
+            maxHeight: '400px',
+            overflowY: 'auto',
+            borderRadius: '0.375rem',
+          }}
+        >
           {results.length > 0 ? (
             results.map((item) => (
               <ListGroup.Item
                 key={item.id}
-                className="search-item"
+                className="search-item border-0 border-bottom"
                 onClick={() => navigate(`/listing/${item.id}`)}
-                style={{ cursor: 'pointer' }}
+                style={{
+                  cursor: 'pointer',
+                  transition: 'background-color 0.2s ease',
+                }}
+                action
               >
-                <div className="d-flex align-items-center">
+                <div className="d-flex align-items-center py-1">
                   {item.images && item.images[0] && (
-                    <img
-                      src={item.images[0].url} // Show first image
-                      alt="Preview"
+                    <div
+                      className="me-3"
                       style={{
-                        width: '50px',
-                        height: '50px',
-                        objectFit: 'cover',
-                        marginRight: '10px',
+                        width: '60px',
+                        height: '60px',
+                        borderRadius: '8px',
+                        overflow: 'hidden',
+                        flexShrink: 0,
                       }}
-                    />
+                    >
+                      <img
+                        src={item.images[0].url || '/placeholder.svg'}
+                        alt={item.name}
+                        style={{
+                          width: '100%',
+                          height: '100%',
+                          objectFit: 'cover',
+                        }}
+                      />
+                    </div>
                   )}
-                  <div>
-                    <strong>{item.name}</strong>
-                    <p className="mb-0 text-muted">{item.title}</p>
-                    <p className="mb-0 text-muted">${item.price}</p>
+                  <div className="flex-grow-1">
+                    <h6
+                      className="mb-0 text-truncate"
+                      style={{ maxWidth: '250px' }}
+                    >
+                      {item.name}
+                    </h6>
+                    <p className="mb-0 text-muted small text-truncate">
+                      {item.title}
+                    </p>
+                    <p className="mb-0 fw-bold mt-1">${item.price}</p>
                   </div>
                 </div>
               </ListGroup.Item>
             ))
           ) : (
-            <ListGroup.Item className="search-item text-center text-muted">
-              Item Not Found
+            <ListGroup.Item className="search-item text-center py-3 border-0">
+              <div className="d-flex flex-column align-items-center text-muted">
+                <Search size={24} className="mb-2 opacity-50" />
+                <p className="mb-0">No items found</p>
+              </div>
             </ListGroup.Item>
           )}
         </ListGroup>
