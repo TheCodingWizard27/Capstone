@@ -58,11 +58,11 @@ const LandingNavbar = () => {
                 Explore Features
               </Nav.Link>
               <Nav.Link
-                href="#updates"
+                href="#team"
                 className="text-light me-5"
                 onClick={handleToggleClick}
               >
-                Latest Updates
+                Our Team
               </Nav.Link>
             </Nav>
 
