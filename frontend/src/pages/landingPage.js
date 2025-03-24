@@ -38,7 +38,7 @@ const LandingPage = () => {
   }, []);
 
   return (
-    <div className="landing-page">
+    <div className="landing-page" id="landing">
       <NavigationBar />
       <HeroSection />
       <WhyShop />
@@ -353,7 +353,7 @@ const AboutUS = () => {
       image: '/images/raunak.jpeg',
     },
     {
-      name: 'Siddhartha Pudasini',
+      name: 'Siddhartha Pudasaini',
       role: 'Full-Stack Developer',
       image: '/images/siddhartha.jpeg',
     },
