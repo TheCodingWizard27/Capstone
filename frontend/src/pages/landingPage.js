@@ -267,6 +267,7 @@ const Features = () => {
       description:
         'Find exactly what you need with our intelligent search filters and location-based results',
       color: '#6610f2',
+      image: '/images/search.png',
     },
     {
       icon: 'bi-chat-dots',
@@ -274,6 +275,7 @@ const Features = () => {
       description:
         'Communicate directly with buyers and sellers through our encrypted messaging system',
       color: '#0dcaf0',
+      image: '/images/secure-messaging.png',
     },
     {
       icon: 'bi-wallet2',
@@ -281,6 +283,7 @@ const Features = () => {
       description:
         'Multiple payment options with secure transaction processing and escrow protection',
       color: '#fd7e14',
+      image: '/images/easy-payments.png',
     },
     {
       icon: 'bi-star',
@@ -288,6 +291,7 @@ const Features = () => {
       description:
         'Build trust with verified ratings and reviews from real users',
       color: '#ffc107',
+      image: '/images/ratings-and-reviews.png'
     },
   ];
 
@@ -317,19 +321,14 @@ const Features = () => {
             >
               <Card className="h-100 border-0 shadow-sm hover-card text-center">
                 <Card.Body className="p-4">
-                  <div
-                    className="rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center"
-                    style={{
-                      width: '70px',
-                      height: '70px',
-                      backgroundColor: `${feature.color}20`,
-                    }}
-                  >
-                    <i
-                      className={`bi ${feature.icon}`}
-                      style={{ fontSize: '1.75rem', color: feature.color }}
-                    ></i>
-                  </div>
+                  {/* 👇 Add image here */}
+                  <img
+                    src={feature.image}
+                    alt={feature.title}
+                    className="img-fluid mb-3"
+                    style={{ maxHeight: '100px' }}
+                  />
+
                   <h4 className="card-title mb-2">{feature.title}</h4>
                   <p className="text-muted">{feature.description}</p>
                 </Card.Body>
@@ -356,7 +355,7 @@ const AboutUS = () => {
     },
     {
       name: 'Siddhartha Pudasini',
-      role: 'Lead Developer',
+      role: 'Full-Stack Developer',
       image: '/images/siddhartha.jpeg',
     },
     {
