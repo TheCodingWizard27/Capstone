@@ -22,7 +22,7 @@ const LandingNavbar = () => {
       >
         <Container fluid>
           {/* Brand name */}
-          <Navbar.Brand className="text-light me-5" href="#home">
+          <Navbar.Brand className="text-light me-5" href="#landing">
             Shop Simplify
           </Navbar.Brand>
 
