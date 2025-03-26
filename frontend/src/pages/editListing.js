@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/authContext';
 import { Container, Form, Button, Card, Alert } from 'react-bootstrap';
@@ -17,7 +17,19 @@ const EditListing = () => {
   const [existingImages, setExistingImages] = useState(
     location.state?.files || []
   );
+  const [categories, setCategories] = useState([]);
   const [alert, setAlert] = useState({ show: false, message: '', variant: '' });
+
+  useEffect(() => {
+    axios
+      .get(`${process.env.REACT_APP_BACKEND}/api/categories/list`)
+      .then((response) => {
+        setCategories(response.data);
+      })
+      .catch((err) => {
+        console.error('Error fetching categories:', err.message);
+      });
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -119,7 +131,7 @@ const EditListing = () => {
         }
       });
 
-       await axios.put(
+      await axios.put(
         `${process.env.REACT_APP_BACKEND}/api/updateListing/${id}`,
         formDataObj,
         {
@@ -167,21 +179,54 @@ const EditListing = () => {
         >
           {alert.show && <Alert variant={alert.variant}>{alert.message}</Alert>}
           <Form onSubmit={handleSubmit}>
-            {['title', 'brand', 'category', 'price', 'description'].map(
-              (field) => (
-                <Form.Group controlId={field} key={field} className="mb-3">
-                  <Form.Label>
-                    <h5>{field.charAt(0).toUpperCase() + field.slice(1)}</h5>
-                  </Form.Label>
-                  <Form.Control
-                    type="text"
-                    name={field}
-                    value={formData[field]}
-                    onChange={handleInputChange}
-                  />
-                </Form.Group>
-              )
-            )}
+            {['title', 'brand', 'price'].map((field) => (
+              <Form.Group controlId={field} key={field} className="mb-3">
+                <Form.Label>
+                  <h5>{field.charAt(0).toUpperCase() + field.slice(1)}</h5>
+                </Form.Label>
+                <Form.Control
+                  type="text"
+                  name={field}
+                  value={formData[field]}
+                  onChange={handleInputChange}
+                />
+              </Form.Group>
+            ))}
+
+            {/* Category Dropdown - Manually Placed */}
+            <Form.Group controlId="category" className="mb-3">
+              <Form.Label>
+                <h5>Category</h5>
+              </Form.Label>
+              <Form.Select
+                name="category"
+                value={formData.category}
+                onChange={handleInputChange}
+              >
+                <option value="">Select a category</option>
+                {categories.map((category, index) => (
+                  <option key={index} value={category}>
+                    {category}
+                  </option>
+                ))}
+              </Form.Select>
+            </Form.Group>
+
+            {['description'].map((field) => (
+              <Form.Group controlId={field} key={field} className="mb-3">
+                <Form.Label>
+                  <h5>{field.charAt(0).toUpperCase() + field.slice(1)}</h5>
+                </Form.Label>
+                <Form.Control
+                  type="text"
+                  name={field}
+                  value={formData[field]}
+                  onChange={handleInputChange}
+                />
+              </Form.Group>
+            ))}
+
+            {/* Existing Images Section */}
             <Form.Group className="mb-3">
               <h5>Existing Images</h5>
               <div className="d-flex flex-wrap">
@@ -213,10 +258,11 @@ const EditListing = () => {
                 ))}
               </div>
             </Form.Group>
+
+            {/* Upload New Images Section */}
             <Form.Group className="mb-3">
               <h5>Upload New Images</h5>
               <Form.Control type="file" multiple onChange={handleFileChange} />
-              {/* Display previews of newly uploaded images */}
               <div className="d-flex flex-wrap mt-2">
                 {files.map((fileObj, index) => (
                   <Card
@@ -250,6 +296,7 @@ const EditListing = () => {
                 ))}
               </div>
             </Form.Group>
+
             <Button variant="primary" type="submit">
               Save Changes
             </Button>
