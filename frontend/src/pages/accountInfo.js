@@ -13,7 +13,6 @@ import {
 import NavBar from '../components/navBar';
 import MyListings from '../components/mylistings';
 
-
 const AccountSettings = () => {
   const [activeSection, setActiveSection] = useState('profile');
   const [profilePic, setProfilePic] = useState(null);
@@ -143,7 +142,7 @@ const AccountSettings = () => {
                   }
                   className="mb-2"
                 >
-                  <i className="bi bi-camera me-1"></i> Update a photo
+                  <i className="bi bi-camera me-1"></i> Change photo
                 </Button>
                 {profilePic && (
                   <Button
@@ -156,7 +155,6 @@ const AccountSettings = () => {
                   </Button>
                 )}
               </div>
-
               {/* Mobile Profile Picture Section */}
               <div className="d-md-none text-center p-3">
                 <div
@@ -214,14 +212,14 @@ const AccountSettings = () => {
                 <Nav.Link
                   active={activeSection === 'profile'}
                   onClick={() => setActiveSection('profile')}
-                  className="mb-2 d-flex align-items-center"
+                  className="app mb-2 d-flex align-items-center"
                 >
                   <i className="bi bi-person-circle me-2"></i> Profile
                 </Nav.Link>
                 <Nav.Link
                   active={activeSection === 'listings'}
                   onClick={() => setActiveSection('listings')}
-                  className="mb-2 d-flex align-items-center"
+                  className="app mb-2 d-flex align-items-center"
                 >
                   <i className="bi bi-list-ul me-2"></i> My Listings
                 </Nav.Link>

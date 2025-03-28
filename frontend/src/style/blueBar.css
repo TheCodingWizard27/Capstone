@@ -52,6 +52,16 @@
   gap: 0.5rem;
 }
 
+.nav-link.app {
+  color: #005d8d;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 1.2rem; /* Reduced from 1.05rem */
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 .nav-link:hover {
   opacity: 0.9;
 }
