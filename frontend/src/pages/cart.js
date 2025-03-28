@@ -15,21 +15,23 @@ const Cart = () => {
   const handleContactSeller = async (listingId, sellerName, productName) => {
     try {
       // Pass listingId, currentUser (buyer), and productName when creating a thread
-      console.log("Creating thread with product name:", productName)
-      const response = await createThread(listingId, currentUser, productName)
-      console.log("Thread creation response:", response)
+      console.log('Creating thread with product name:', productName);
+      const response = await createThread(listingId, currentUser, productName);
+      console.log('Thread creation response:', response);
 
       // Check if the response contains the threadId
       if (response && response.threadId) {
-        navigate(`/messageList?threadId=${response.threadId}&userName=${sellerName}&itemName=${productName}`)
+        navigate(
+          `/messageList?threadId=${response.threadId}&userName=${sellerName}&itemName=${productName}`
+        );
       } else {
-        throw new Error("Failed to create thread")
+        throw new Error('Failed to create thread');
       }
     } catch (error) {
-      console.error("Error creating thread:", error)
-      alert(`${error.response?.data?.error || "An error occurred"}`)
+      console.error('Error creating thread:', error);
+      alert(`${error.response?.data?.error || 'An error occurred'}`);
     }
-  }
+  };
 
   useEffect(() => {
     if (currentUser) {
@@ -78,7 +80,10 @@ const Cart = () => {
     <>
       <NavBar />
       <h2 className="mt-4 ms-5">Your Shopping Cart</h2>
-      <div className="ms-5">
+      <div
+        className="ms-5"
+        style={{ maxHeight: '500px', overflowY: 'auto', overflowX: 'hidden' }}
+      >
         <Row>
           {cartItems.map((item) => (
             <Col key={item.id} md={10} className="mb-3">
@@ -135,11 +140,12 @@ const Cart = () => {
             </Col>
           ))}
         </Row>
+        <h4 className="mt-3 mb-4">Subtotal: ${calculateSubtotal()}</h4>
       </div>
-      <h4 className="mt-3 ms-5">Subtotal: ${calculateSubtotal()}</h4>
-      <Button variant="success" className="mt-3 ms-5" onClick={handleCheckout}>
+
+      {/* <Button variant="success" className="mt-3 ms-5" onClick={handleCheckout}>
         Proceed to Checkout
-      </Button>
+      </Button> */}
     </>
   );
 };

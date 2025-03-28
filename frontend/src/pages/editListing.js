@@ -208,9 +208,9 @@ const EditListing = () => {
   return (
     <>
       <NavBar />
-      <Container className="d-flex justify-content-center mt-5 mb-5">
+      <Container className="d-flex justify-content-center mt-5 mb-5 ">
         <Card
-          className="p-4 shadow-lg"
+          className="p-4 shadow"
           style={{ width: '100%', maxWidth: '800px' }}
         >
           {alert.show && <Alert variant={alert.variant}>{alert.message}</Alert>}
@@ -258,6 +258,7 @@ const EditListing = () => {
                   name={field}
                   value={formData[field]}
                   onChange={handleInputChange}
+                  maxLength={500}
                 />
               </Form.Group>
             ))}
