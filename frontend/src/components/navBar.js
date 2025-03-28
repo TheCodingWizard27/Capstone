@@ -1,173 +1,349 @@
-import React, { useState, useEffect } from 'react';
-import { Navbar, Button, Col, Row, Container } from 'react-bootstrap';
+import { useState } from 'react';
+import { Navbar, Button, Container } from 'react-bootstrap';
 import { useAuth } from '../contexts/authContext';
 import { useCart } from '../contexts/CartContext';
 import { Link } from 'react-router-dom';
-import {
-  FaEnvelope,
-  FaShoppingCart,
-  FaBars,
-  FaTimes,
-  FaHome,
-} from 'react-icons/fa';
+import { FaEnvelope, FaShoppingCart, FaBars, FaTimes } from 'react-icons/fa';
 import DropUser from './dropUser';
-import SearchBar from './searchBar'; // Import SearchBar from file1
-import './NavBar.css';
+import SearchBar from './searchBar';
 
 const NavBar = () => {
   const [showDrawer, setShowDrawer] = useState(false);
   const { currentUser } = useAuth();
-  const { cartCount } = useCart(); // Access cart count from CartContext
-  const [searchResults, setSearchResults] = useState([]); // State to hold search results
+  const { cartCount } = useCart();
+  const [searchResults, setSearchResults] = useState([]);
 
   const toggleDrawer = () => setShowDrawer(!showDrawer);
 
+  // Styles object for inline styling
+  const styles = {
+    navbar: {
+      backgroundColor: '#1a5b9a',
+      padding: '1.25rem 0',
+      boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
+      zIndex: 1000,
+      position: 'sticky',
+      top: 0,
+    },
+    container: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      maxWidth: '1400px',
+    },
+    logoContainer: {
+      display: 'flex',
+      alignItems: 'center',
+      marginRight: '2rem',
+    },
+    logoImage: {
+      maxWidth: '70px',
+      height: 'auto',
+    },
+    searchContainer: {
+      flex: '1',
+      maxWidth: '750px',
+      margin: '0 3rem',
+    },
+    navLinks: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '2rem',
+      marginLeft: '2rem',
+    },
+    navLink: {
+      color: 'white',
+      textDecoration: 'none',
+      fontWeight: '500',
+      fontSize: '1.05rem',
+      display: 'flex',
+      alignItems: 'center',
+      gap: '0.5rem',
+    },
+    sellLinkContainer: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      textAlign: 'center',
+    },
+    sellLink: {
+      color: 'white',
+      textDecoration: 'none',
+      fontWeight: '500',
+      fontSize: '1.05rem',
+    },
+    sellText: {
+      fontSize: '0.75rem',
+      opacity: 0.85,
+      color: 'white',
+      marginBottom: '0.2rem',
+    },
+    cartBadge: {
+      position: 'absolute',
+      top: '-5px',
+      right: '-5px',
+      backgroundColor: '#ff4d4f',
+      color: 'white',
+      borderRadius: '50%',
+      fontSize: '0.7rem',
+      fontWeight: 'bold',
+      minWidth: '16px',
+      height: '16px',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: '0 4px',
+    },
+    mobileToggle: {
+      display: 'none',
+      color: 'white',
+      backgroundColor: 'transparent',
+      border: 'none',
+      padding: '0.5rem',
+      '@media (max-width: 991.98px)': {
+        display: 'block',
+      },
+    },
+    drawer: {
+      position: 'fixed',
+      top: 0,
+      left: showDrawer ? 0 : '-280px',
+      width: '280px',
+      height: '100vh',
+      backgroundColor: '#1a5b9a',
+      zIndex: 1100,
+      transition: 'left 0.3s ease',
+      boxShadow: '4px 0 15px rgba(0, 0, 0, 0.2)',
+      display: 'flex',
+      flexDirection: 'column',
+    },
+    drawerHeader: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      padding: '1.25rem 1rem',
+      borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+    },
+    drawerContent: {
+      padding: '1.5rem 1rem',
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '1rem',
+    },
+    drawerLink: {
+      color: 'white',
+      textDecoration: 'none',
+      fontSize: '1.1rem',
+      padding: '0.5rem 0',
+    },
+    drawerSellContainer: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '0.25rem',
+    },
+    drawerSellLink: {
+      color: 'white',
+      textDecoration: 'none',
+      fontSize: '1.1rem',
+    },
+    drawerSellText: {
+      fontSize: '0.85rem',
+      opacity: 0.85,
+      color: 'white',
+      marginBottom: '0.2rem',
+    },
+    overlay: {
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      width: '100vw',
+      height: '100vh',
+      backgroundColor: 'rgba(0, 0, 0, 0.5)',
+      zIndex: 1050,
+    },
+    dropUserWrapper: {
+      backgroundColor: 'transparent',
+    },
+  };
+
+  // CSS for hover effects and media queries
+  const customCSS = `
+    .nav-link:hover {
+      opacity: 0.9;
+    }
+    
+    .sell-container:hover .sell-link,
+    .sell-container:hover .sell-text {
+      opacity: 0.9;
+    }
+    
+    /* Fix for dropdown user background */
+    .dropdown-toggle.btn {
+      background-color: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
+      color: white !important;
+    }
+    
+    .dropdown-toggle.btn:hover,
+    .dropdown-toggle.btn:focus,
+    .dropdown-toggle.btn:active {
+      background-color: rgba(255, 255, 255, 0.1) !important;
+    }
+    
+    /* Fix for dropdown menu in drawer */
+    .drawer-content .dropdown-toggle.btn {
+      padding-left: 0 !important;
+    }
+    
+    @media (max-width: 1200px) {
+      .search-container {
+        margin: 0 1.5rem !important;
+      }
+      
+      .nav-links {
+        gap: 1.5rem !important;
+      }
+    }
+    
+    @media (max-width: 991.98px) {
+      .desktop-nav {
+        display: none !important;
+      }
+      
+      .mobile-toggle {
+        display: block !important;
+      }
+      
+      .search-container {
+        margin: 0 1rem !important;
+      }
+      
+      .logo-container {
+        margin-right: 0.5rem !important;
+      }
+      
+      .logo-image {
+        max-width: 60px !important;
+      }
+      
+      .navbar-container {
+        padding: 0 0.5rem !important;
+      }
+    }
+  `;
+
   return (
     <>
-      <Navbar
-        className="text-light bg-primary p-3 position-sticky top-0"
-        style={{ zIndex: 1000 }}
-      >
-        <Container fluid>
-          <Row className="w-100 align-items-center justify-evenly">
-            <Col lg={2} md={2} xs={2} className="d-flex align-items-center">
-              <Link to="/" className="d-lg-none d-flex">
-                <FaHome size={25} className="text-white" />
-              </Link>
-              <Link to="/" className="d-none d-lg-flex">
-                <img
-                  src="/images/Logo.png"
-                  alt="Logo"
-                  className="img-fluid"
-                  style={{ maxWidth: '120px' }}
-                />
-              </Link>
-            </Col>
+      <style>{customCSS}</style>
 
-            {/* Add the SearchBar here */}
-            <Col lg={7} xs={9} md={9} className="d-flex justify-content-center">
-              <SearchBar setSearchResults={setSearchResults} />{' '}
-              {/* Add SearchBar */}
-            </Col>
+      <Navbar style={styles.navbar}>
+        <Container style={styles.container} className="navbar-container">
+          {/* Logo */}
+          <Link to="/" style={styles.logoContainer} className="logo-container">
+            <img
+              src="/images/Logo.png"
+              alt="Logo"
+              style={styles.logoImage}
+              className="img-fluid logo-image"
+            />
+          </Link>
 
-            <Col
-              xs={1}
-              md={1}
-              className="d-lg-none d-flex justify-content-start"
-            >
-              <Button
-                variant="outline-light"
-                className="border-0 d-lg-none"
-                onClick={toggleDrawer}
-                style={{
-                  color: 'white',
-                  borderColor: 'transparent',
-                  backgroundColor: 'transparent',
-                }}
-              >
-                {showDrawer ? <FaTimes size={25} /> : <FaBars size={25} />}
-              </Button>
-            </Col>
+          {/* Search Bar */}
+          <div style={styles.searchContainer} className="search-container">
+            <SearchBar setSearchResults={setSearchResults} />
+          </div>
 
-            <Col
-              lg={3}
-              className="d-none d-lg-flex justify-content-evenly align-items-center"
-            >
+          {/* Mobile Toggle */}
+          <Button
+            className="d-lg-none mobile-toggle"
+            style={styles.mobileToggle}
+            onClick={toggleDrawer}
+          >
+            <FaBars size={24} />
+          </Button>
+
+          {/* Desktop Navigation */}
+          <div style={styles.navLinks} className="desktop-nav nav-links">
+            <div style={styles.sellLinkContainer} className="sell-container">
+              <span style={styles.sellText} className="sell-text">
+                Have an item to sell?
+              </span>
               <Link
                 to="/addListing"
-                className="text-white me-3"
-                style={{ textDecoration: 'none', fontSize: '1.25rem' }}
+                style={styles.sellLink}
+                className="sell-link"
               >
                 Sell
               </Link>
+            </div>
 
-              {/* Messages Icon */}
-              <Link
-                to="/messageList"
-                className="text-white me-3 position-relative"
-                style={{ textDecoration: 'none', fontSize: '1.25rem' }}
-              >
-                <FaEnvelope size={25} />
-              </Link>
+            <Link to="/messageList" style={styles.navLink} className="nav-link">
+              <FaEnvelope size={20} />
+              <span>Messages</span>
+            </Link>
 
-              {/* Shopping Cart Icon */}
-              <Link
-                to="/cart"
-                className="text-white me-3 position-relative"
-                style={{ textDecoration: 'none', fontSize: '1.25rem' }}
-              >
-                <FaShoppingCart size={25} />
+            <Link to="/cart" style={styles.navLink} className="nav-link">
+              <div style={{ position: 'relative' }}>
+                <FaShoppingCart size={20} />
                 {cartCount > 0 && (
-                  <span className="text-red cart-badge">{cartCount}</span>
+                  <span style={styles.cartBadge}>{cartCount}</span>
                 )}
-              </Link>
+              </div>
+              <span>Cart</span>
+            </Link>
 
-              {/* User Dropdown */}
+            <div style={styles.dropUserWrapper}>
               <DropUser />
-            </Col>
-          </Row>
+            </div>
+          </div>
         </Container>
       </Navbar>
 
-      {/* Custom Drawer */}
-      <div className={`custom-drawer ${showDrawer ? 'open' : ''} `}>
-        <div className="drawer-header">
-          <h5 className="text-light mb-0">Menu</h5>
+      {/* Mobile Drawer */}
+      <div style={styles.drawer}>
+        <div style={styles.drawerHeader}>
+          <h5 style={{ color: 'white', margin: 0 }}>Menu</h5>
           <Button
-            variant="outline-light"
-            className="border-0"
+            style={{ backgroundColor: 'transparent', border: 'none' }}
             onClick={toggleDrawer}
-            style={{ backgroundColor: 'transparent' }}
           >
-            <FaTimes size={25} />
+            <FaTimes size={24} color="white" />
           </Button>
         </div>
 
-        <div className="p-3">
-          <Link
-            to="/addListing"
-            className="d-flex align-items-center mb-3 text-light"
-            style={{ textDecoration: 'none', fontSize: '1.25rem' }}
-            onClick={toggleDrawer}
-          >
-            Sell
-          </Link>
+        <div style={styles.drawerContent} className="drawer-content">
+          <div style={styles.drawerSellContainer}>
+            <span style={styles.drawerSellText}>Have an item to sell?</span>
+            <Link
+              to="/addListing"
+              style={styles.drawerSellLink}
+              onClick={toggleDrawer}
+            >
+              Sell
+            </Link>
+          </div>
 
           <Link
             to="/messageList"
-            className="d-flex align-items-center mb-3 text-light"
-            style={{ textDecoration: 'none', fontSize: '1.25rem' }}
+            style={styles.drawerLink}
             onClick={toggleDrawer}
           >
             Messages
           </Link>
 
-          {/* Shopping Cart Icon */}
-          <Link
-            to="/cart"
-            className="text-white me-3 position-relative"
-            style={{ textDecoration: 'none', fontSize: '1.25rem' }}
-          >
-            <span>Cart</span>
-
-            {cartCount > 0 && (
-              <span className="text-red cart-badge">{cartCount}</span>
-            )}
+          <Link to="/cart" style={styles.drawerLink} onClick={toggleDrawer}>
+            Cart {cartCount > 0 && `(${cartCount})`}
           </Link>
-          <hr
-            style={{
-              color: 'white',
-            }}
-          ></hr>
-          <DropUser />
-          {/* Replace "Profile" with DropUser component */}
+
+          <div style={{ marginTop: '1rem' }}>
+            <DropUser />
+          </div>
         </div>
       </div>
 
-      {/* Overlay to close the drawer */}
-      {showDrawer && (
-        <div className="drawer-overlay" onClick={toggleDrawer}></div>
-      )}
+      {/* Overlay */}
+      {showDrawer && <div style={styles.overlay} onClick={toggleDrawer}></div>}
     </>
   );
 };
