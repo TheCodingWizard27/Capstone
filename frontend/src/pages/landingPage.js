@@ -119,7 +119,7 @@ const HeroSection = () => {
         </Container>
       </div>
       <Image
-        src={`${process.env.PUBLIC_URL}/images/landingPage.jpg`}
+        src={`${process.env.PUBLIC_URL}/images/landing-page.png`}
         alt="ShopSimplify"
         fluid
         className="w-100"
