@@ -381,3 +381,67 @@ exports.updateListingStatus = async (req, res) => {
     });
   }
 };
+
+// Endpoint to delete a specific image from a listing
+exports.deleteImage = async (req, res) => {
+  try {
+    const listingId = req.params.id;
+    const { imageUrl } = req.body;
+    const userId = req.user.user_id;
+
+    if (!imageUrl) {
+      return res.status(400).json({ message: "Image URL is required" });
+    }
+
+    const listingRef = db.collection("listings").doc(listingId);
+    const listingDoc = await listingRef.get();
+
+    if (!listingDoc.exists) {
+      return res.status(404).json({ message: "Listing not found" });
+    }
+
+    const listingData = listingDoc.data();
+
+    if (listingData.user !== userId) {
+      return res.status(403).json({
+        message: "Unauthorized: You can only modify your own listings",
+      });
+    }
+
+    if (!listingData.picUrls || !listingData.picUrls.includes(imageUrl)) {
+      return res
+        .status(404)
+        .json({ message: "Image not found in this listing" });
+    }
+
+    try {
+      const urlObj = new URL(imageUrl);
+      const pathWithoutBucket = urlObj.pathname.split("/").slice(2).join("/");
+
+      const file = bucket.file(decodeURIComponent(pathWithoutBucket));
+      await file.delete();
+    } catch (error) {
+      console.error("Error deleting file from storage:", error);
+    }
+
+    const updatedPicUrls = listingData.picUrls.filter(
+      (url) => url !== imageUrl
+    );
+
+    await listingRef.update({
+      picUrls: updatedPicUrls,
+      modifiedAt: admin.firestore.FieldValue.serverTimestamp(),
+    });
+
+    res.status(200).json({
+      message: "Image deleted successfully",
+      remainingImages: updatedPicUrls,
+    });
+  } catch (error) {
+    console.error("Error deleting image:", error);
+    res.status(500).json({
+      message: "Error deleting image",
+      error: error.message,
+    });
+  }
+};

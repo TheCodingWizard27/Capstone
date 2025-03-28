@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/authContext';
 import { Container, Form, Button, Card, Alert } from 'react-bootstrap';
 import NavBar from '../components/navBar';
 import axios from 'axios';
-import { FaTimes } from 'react-icons/fa'; // Importing FaTimes for the remove button
+import { FaTimes } from 'react-icons/fa';
 
 const EditListing = () => {
   const { id } = useParams();
@@ -19,6 +19,7 @@ const EditListing = () => {
   );
   const [categories, setCategories] = useState([]);
   const [alert, setAlert] = useState({ show: false, message: '', variant: '' });
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     axios
@@ -92,7 +93,6 @@ const EditListing = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Ensure total images do not exceed 5
     if (existingImages.length + files.length > 5) {
       setAlert({
         show: true,
@@ -122,7 +122,7 @@ const EditListing = () => {
       formDataObj.set('description', formData.description || '');
 
       existingImages.forEach((url) => {
-        formDataObj.append('picUrls', url);
+        formDataObj.append('picUrls', url.preview || url);
       });
 
       files.forEach((fileObj) => {
@@ -158,9 +158,45 @@ const EditListing = () => {
     }
   };
 
-  const removeFile = (index, isExisting = false) => {
+  const removeFile = async (index, isExisting = false) => {
     if (isExisting) {
-      setExistingImages((prev) => prev.filter((_, i) => i !== index));
+      try {
+        const imageToRemove = existingImages[index];
+        const imageUrl = imageToRemove.preview || imageToRemove;
+
+        if (isExisting && imageUrl) {
+          setIsDeleting(true);
+
+          const authToken = token || localStorage.getItem('token');
+
+          await axios.delete(
+            `${process.env.REACT_APP_BACKEND}/api/deleteImage/${id}`,
+            {
+              headers: {
+                Authorization: `Bearer ${authToken}`,
+              },
+              data: { imageUrl },
+            }
+          );
+
+          setAlert({
+            show: true,
+            message: 'Image deleted successfully!',
+            variant: 'success',
+          });
+        }
+
+        setExistingImages((prev) => prev.filter((_, i) => i !== index));
+      } catch (error) {
+        console.error('Error deleting image:', error);
+        setAlert({
+          show: true,
+          message: 'Error deleting image. Please try again.',
+          variant: 'danger',
+        });
+      } finally {
+        setIsDeleting(false);
+      }
     } else {
       setFiles((prevFiles) => {
         URL.revokeObjectURL(prevFiles[index].preview);
@@ -241,6 +277,7 @@ const EditListing = () => {
                       size="sm"
                       className="position-absolute top-0 start-100 translate-middle"
                       onClick={() => removeFile(index, true)}
+                      disabled={isDeleting}
                       style={{
                         borderRadius: '50%',
                         width: '20px',
@@ -253,7 +290,11 @@ const EditListing = () => {
                     >
                       <FaTimes size={12} />
                     </Button>
-                    <Card.Img variant="top" src={file.preview} alt="Listing" />
+                    <Card.Img
+                      variant="top"
+                      src={file.preview || file}
+                      alt="Listing"
+                    />
                   </Card>
                 ))}
               </div>
@@ -297,7 +338,7 @@ const EditListing = () => {
               </div>
             </Form.Group>
 
-            <Button variant="primary" type="submit">
+            <Button variant="primary" type="submit" disabled={isDeleting}>
               Save Changes
             </Button>
           </Form>
