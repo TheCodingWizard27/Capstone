@@ -135,10 +135,10 @@ export const ProductDetailsSection = ({ details }) => {
       return;
     }
 
-    if (details.user === currentUser.uid) {
-      alert("You can't add your own listing to the cart.");
-      return;
-    }
+    // if (details.user === currentUser.uid) {
+    //   alert("You can't add your own listing to the cart.");
+    //   return;
+    // }
 
     const userId = currentUser.uid;
     const cart = JSON.parse(localStorage.getItem(`cart_${userId}`)) || [];
@@ -211,32 +211,42 @@ export const ProductDetailsSection = ({ details }) => {
         <hr />
         <p>{details.description}</p>
         <div className="button-group mt-3">
-          <Button
-            variant="primary"
-            className="me-2"
-            onClick={() =>
-              handleContactSeller(details.id, details.sellerName, details.title)
-            }
-          >
-            Contact Seller
-          </Button>
-          <Button variant="dark" className="me-2" onClick={handleAddToCart}>
-            Add to Cart
-          </Button>
-          <Button
-            variant="danger"
-            onClick={() =>
-              navigate(`/editListing/${details.id}`, {
-                state: {
-                  id: details.id,
-                  formData: details,
-                  files: details.picUrls.map((url) => ({ preview: url })),
-                },
-              })
-            }
-          >
-            Edit Listing
-          </Button>
+          {details.user !== currentUser.uid && (
+            <Button
+              variant="primary"
+              className="me-2"
+              onClick={() =>
+                handleContactSeller(
+                  details.id,
+                  details.sellerName,
+                  details.title
+                )
+              }
+            >
+              Contact Seller
+            </Button>
+          )}
+          {details.user !== currentUser.uid && (
+            <Button variant="dark" className="me-2" onClick={handleAddToCart}>
+              Add to Cart
+            </Button>
+          )}
+          {details.user === currentUser.uid && (
+            <Button
+              variant="danger"
+              onClick={() =>
+                navigate(`/editListing/${details.id}`, {
+                  state: {
+                    id: details.id,
+                    formData: details,
+                    files: details.picUrls.map((url) => ({ preview: url })),
+                  },
+                })
+              }
+            >
+              Edit Listing
+            </Button>
+          )}
         </div>
       </BootstrapCard>
     </Col>
