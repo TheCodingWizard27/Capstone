@@ -1,0 +1,71 @@
+<div class="content-card">
+    <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+      <h2>Categories</h2>
+      <button class="btn btn-success open-modal" data-modal="add-category-modal">Add New Category</button>
+    </div>
+    
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Listings Count</th>
+          <!-- <th>Actions</th> -->
+        </tr>
+      </thead>
+      <tbody>
+        <% categories.forEach(category => { %>
+          <tr>
+            <td><%= category %></td>
+            <td>
+              <!-- You would need to fetch this count from your database -->
+              <a href="/admin/listings?category=<%= category %>">View Listings</a>
+            </td>
+            <!-- <td>
+              <button class="btn edit-category-btn" data-category="<%= category %>">Edit</button>
+              <button class="btn btn-danger delete-category-btn" data-category="<%= category %>">Delete</button>
+            </td> -->
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  </div>
+  
+  <!-- Add Category Modal -->
+  <div id="add-category-modal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Add New Category</h2>
+      <form id="add-category-form">
+        <div class="form-group">
+          <label for="category-name">Category Name</label>
+          <input type="text" id="category-name" name="name" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-success">Add Category</button>
+      </form>
+    </div>
+  </div>
+  
+  <script>
+    $(document).ready(function() {
+      // This is a placeholder - you would need to implement the actual category management
+      // functionality based on how you store categories in your database
+      
+      $('#add-category-form').on('submit', function(e) {
+        e.preventDefault();
+        alert('Category management functionality needs to be implemented');
+        // You would add AJAX call here to add the category
+      });
+      
+      $('.edit-category-btn').on('click', function() {
+        const category = $(this).data('category');
+        alert(`Edit functionality for ${category} needs to be implemented`);
+      });
+      
+      $('.delete-category-btn').on('click', function() {
+        const category = $(this).data('category');
+        if (confirm(`Are you sure you want to delete the category "${category}"?`)) {
+          alert('Delete functionality needs to be implemented');
+        }
+      });
+    });
+  </script>

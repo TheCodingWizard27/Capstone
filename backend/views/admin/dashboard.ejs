@@ -1,0 +1,31 @@
+<div class="content-card">
+    <h2>Overview</h2>
+    <div class="stats-grid">
+      <div class="stat-card">
+        <h3>Total Users</h3>
+        <p><%= stats.totalUsers %></p>
+      </div>
+      <div class="stat-card">
+        <h3>Total Listings</h3>
+        <p><%= stats.totalListings %></p>
+      </div>
+      <div class="stat-card">
+        <h3>Active Listings</h3>
+        <p><%= stats.activeListings %></p>
+      </div>
+    </div>
+  </div>
+  
+  <div class="content-card">
+    <h2>Quick Actions</h2>
+    <div style="display: flex; gap: 10px;">
+      <a href="/admin/users" class="btn">Manage Users</a>
+      <a href="/admin/listings" class="btn">Manage Listings</a>
+      <a href="/admin/categories" class="btn">Manage Categories</a>
+      <a href="/admin/reports" class="btn">View Reports</a>
+    </div>
+  </div>
+
+
+
+  <!-- here in the views some of the code has been comented out so that it can be used later -->
