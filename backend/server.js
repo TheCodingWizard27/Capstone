@@ -7,7 +7,7 @@ const expressLayouts = require("express-ejs-layouts");
 const userRoutes = require("./routes/user");
 const listingRoutes = require("./routes/listing");
 const messageRoutes = require("./routes/message");
-const adminRoutes = require('./routes/admin');
+const adminRoutes = require("./routes/admin");
 const { setupWebSocket } = require("./messageHandler");
 
 const app = express();
@@ -35,8 +35,8 @@ app.use(expressLayouts);
 app.set("layout", "admin/layout");
 
 // Set layout for admin routes
-app.use('/admin', (req, res, next) => {
-  res.locals.layout = 'admin/layout';
+app.use("/admin", (req, res, next) => {
+  res.locals.layout = "admin/layout";
   next();
 });
 
@@ -44,7 +44,7 @@ app.use('/admin', (req, res, next) => {
 app.use("/api", userRoutes);
 app.use("/api", listingRoutes);
 app.use("/api", messageRoutes);
-app.use('/admin', adminRoutes);
+app.use("/admin", adminRoutes);
 
 app.get("/api/categoriesInfo", (req, res) => {
   const categories = [
