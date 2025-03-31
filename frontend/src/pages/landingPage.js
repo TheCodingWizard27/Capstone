@@ -99,7 +99,7 @@ const HeroSection = () => {
             <Col md={10} lg={8} className="text-center">
               <h1 className="display-3 fw-bold text-center mb-3 text-white">
                 Simplify your Shopping,{' '}
-                <span className="text-primary">Amplify your Life</span>
+                Amplify your Life
               </h1>
               <p className="lead text-center mb-4 fs-4 text-light">
                 Your one-stop platform for local buying and selling with secure
