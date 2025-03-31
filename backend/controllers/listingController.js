@@ -14,9 +14,8 @@ exports.addListing = async (req, res) => {
     // Upload each file to Firebase Storage and get its URL
     if (req.files && req.files.length) {
       const uploadPromises = req.files.map(async (file) => {
-        const uniqueFileName = `uploads/${userId}/${uuidv4()}_${
-          file.originalname
-        }`;
+        const uniqueFileName = `uploads/${userId}/${uuidv4()}_${file.originalname
+          }`;
         const fileUpload = storage.file(uniqueFileName);
 
         await fileUpload.save(file.buffer, {
@@ -235,9 +234,8 @@ exports.updateListing = async (req, res) => {
     let picUrls = listingDoc.data().picUrls || [];
     if (req.files && req.files.length > 0) {
       const uploadPromises = req.files.map(async (file) => {
-        const uniqueFileName = `uploads/${userId}/${uuidv4()}_${
-          file.originalname
-        }`;
+        const uniqueFileName = `uploads/${userId}/${uuidv4()}_${file.originalname
+          }`;
         const fileUpload = bucket.file(uniqueFileName);
         await fileUpload.save(file.buffer, { contentType: file.mimetype });
         const url = await fileUpload.getSignedUrl({
@@ -445,3 +443,63 @@ exports.deleteImage = async (req, res) => {
     });
   }
 };
+
+
+//for reporting a listing
+exports.reportListing = async (req, res) => {
+  try {
+    const listingId = req.params.id;
+    const reportingUserId = req.user.user_id;
+    const { reason } = req.body;
+
+    if (!reason) {
+      return res.status(400).json({ message: "Reason is required" });
+    }
+
+    // Check if the user has already reported this listing
+    const existingReport = await db.collection("reports")
+      .where("listingId", "==", listingId)
+      .where("reportingUserId", "==", reportingUserId)
+      .get();
+
+    if (!existingReport.empty) {
+      return res.status(400).json({ message: "You have already reported this listing" });
+    }
+
+    // Fetch listing details
+    const listingRef = db.collection("listings").doc(listingId);
+    const listingDoc = await listingRef.get();
+
+    if (!listingDoc.exists) {
+      return res.status(404).json({ message: "Listing not found" });
+    }
+
+    const listingData = listingDoc.data();
+    const reportedUserId = listingData.user;
+
+    // Create a report
+    await db.collection("reports").add({
+      listingId,
+      reportedUserId,
+      reportingUserId,
+      reason,
+      createdAt: admin.firestore.FieldValue.serverTimestamp(),
+    });
+
+    // Ensure the report count exists, then increment it
+    const newReportCount = (listingData.reportCount || 0) + 1;
+    await listingRef.update({ reportCount: newReportCount });
+
+    // Update report count for the reported user
+    const userRef = db.collection("users").doc(reportedUserId);
+    const userDoc = await userRef.get();
+    const newUserReportCount = (userDoc.data()?.reportCount || 0) + 1;
+    await userRef.update({ reportCount: newUserReportCount });
+
+    res.status(201).json({ message: "Listing reported successfully" });
+  } catch (error) {
+    console.error("Error reporting listing:", error);
+    res.status(500).json({ message: "Error reporting listing", error: error.message });
+  }
+};
+
