@@ -54,9 +54,8 @@ export const MainProductSection = ({
               key={index}
               src={image || '/placeholder.svg'}
               alt={`Preview ${index + 1}`}
-              className={`preview-image mb-2 ${
-                index === currentImageIndex ? 'active' : ''
-              }`}
+              className={`preview-image mb-2 ${index === currentImageIndex ? 'active' : ''
+                }`}
               onClick={() => handlePreviewClick(index)}
               style={{
                 height: '100px',
@@ -225,6 +224,7 @@ export const ProductDetailsSection = ({ details }) => {
             >
               Contact Seller
             </Button>
+
           )}
           {details.user !== currentUser.uid && (
             <Button variant="dark" className="me-2" onClick={handleAddToCart}>
@@ -246,7 +246,12 @@ export const ProductDetailsSection = ({ details }) => {
             >
               Edit Listing
             </Button>
+
           )}
+          {details.user !== currentUser.uid && (
+            <Button variant="outline-danger" onClick={() => navigate(`/report-listing/${details.id}`)}>
+              Report Listing
+            </Button>)}
         </div>
       </BootstrapCard>
     </Col>
