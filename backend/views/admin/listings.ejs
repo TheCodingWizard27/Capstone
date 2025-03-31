@@ -1,158 +1,173 @@
 <div class="content-card">
-    <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
-      <h2>Listings</h2>
-      <button class="btn btn-success open-modal" data-modal="add-listing-modal">Add New Listing</button>
-    </div>
-    
-    <div style="margin-bottom: 20px;">
-      <label for="category-filter">Filter by Category:</label>
-      <select id="category-filter" class="form-control" style="width: 200px; display: inline-block;">
-        <option value="">All Categories</option>
-        <% categories.forEach(category => { %>
-          <option value="<%= category %>"><%= category %></option>
+  <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+    <h2>Listings</h2>
+    <button class="btn btn-success open-modal" data-modal="add-listing-modal">Add New Listing</button>
+  </div>
+
+  <div style="margin-bottom: 20px;">
+    <label for="category-filter">Filter by Category:</label>
+    <select id="category-filter" class="form-control" style="width: 200px; display: inline-block;">
+      <option value="">All Categories</option>
+      <% categories.forEach(category=> { %>
+        <option value="<%= category %>">
+          <%= category %>
+        </option>
         <% }); %>
-      </select>
-    </div>
-    
-    <table id="listings-table">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Title</th>
-          <th>Category</th>
-          <th>Price</th>
-          <th>Status</th>
-          <th>User ID</th>
-          <th>Created</th>
-          <th>Actions</th>
+    </select>
+  </div>
+
+  <table id="listings-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Title</th>
+        <th>Category</th>
+        <th>Price</th>
+        <th>Status</th>
+        <th>User ID</th>
+        <th>Created</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% listings.forEach(listing=> { %>
+        <tr data-category="<%= listing.category %>">
+          <td>
+            <%= listing.id %>
+          </td>
+          <td>
+            <%= listing.title %>
+          </td>
+          <td>
+            <%= listing.category %>
+          </td>
+          <td>$<%= listing.price %>
+          </td>
+          <td>
+            <select class="status-select" data-id="<%= listing.id %>">
+              <option value="active" <%=listing.status==='active' ? 'selected' : '' %>>Active</option>
+              <option value="inactive" <%=listing.status==='inactive' ? 'selected' : '' %>>Inactive</option>
+            </select>
+          </td>
+          <td>
+            <%= listing.user %>
+          </td>
+          <td>
+            <%= listing.createdAt.toLocaleDateString() %>
+          </td>
+          <td>
+            <!-- <a href="/admin/listings/view/<%= listing.id %>" class="btn">View</a> -->
+            <a href="/admin/listings/delete/<%= listing.id %>" class="btn btn-danger delete-listing-btn">Delete</a>
+          </td>
         </tr>
-      </thead>
-      <tbody>
-        <% listings.forEach(listing => { %>
-          <tr data-category="<%= listing.category %>">
-            <td><%= listing.id %></td>
-            <td><%= listing.title %></td>
-            <td><%= listing.category %></td>
-            <td>$<%= listing.price %></td>
-            <td>
-              <select class="status-select" data-id="<%= listing.id %>">
-                <option value="active" <%= listing.status === 'active' ? 'selected' : '' %>>Active</option>
-                <option value="inactive" <%= listing.status === 'inactive' ? 'selected' : '' %>>Inactive</option>
-              </select>
-            </td>
-            <td><%= listing.user %></td>
-            <td><%= listing.createdAt.toLocaleDateString() %></td>
-            <td>
-              <!-- <a href="/admin/listings/view/<%= listing.id %>" class="btn">View</a> -->
-              <a href="/admin/listings/delete/<%= listing.id %>" class="btn btn-danger delete-listing-btn">Delete</a>
-            </td>
-          </tr>
         <% }); %>
-      </tbody>
-    </table>
-  </div>
-  
-  <!-- Add Listing Modal -->
-  <div id="add-listing-modal" class="modal">
-    <div class="modal-content">
-      <span class="close">&times;</span>
-      <h2>Add New Listing</h2>
-      <form action="/admin/listings" method="POST" enctype="multipart/form-data">
-        <div class="form-group">
-          <label for="title">Title</label>
-          <input type="text" id="title" name="title" class="form-control" required>
-        </div>
-        <div class="form-group">
-          <label for="brand">Brand</label>
-          <input type="text" id="brand" name="brand" class="form-control">
-        </div>
-        <div class="form-group">
-          <label for="category">Category</label>
-          <select id="category" name="category" class="form-control" required>
-            <option value="">Select Category</option>
-            <% categories.forEach(category => { %>
-              <option value="<%= category %>"><%= category %></option>
+    </tbody>
+  </table>
+</div>
+
+<!-- Add Listing Modal -->
+<div id="add-listing-modal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h2>Add New Listing</h2>
+    <form action="/admin/listings" method="POST" enctype="multipart/form-data">
+      <div class="form-group">
+        <label for="title">Title</label>
+        <input type="text" id="title" name="title" class="form-control" required>
+      </div>
+      <div class="form-group">
+        <label for="brand">Brand</label>
+        <input type="text" id="brand" name="brand" class="form-control">
+      </div>
+      <div class="form-group">
+        <label for="category">Category</label>
+        <select id="category" name="category" class="form-control" required>
+          <option value="">Select Category</option>
+          <% categories.forEach(category=> { %>
+            <option value="<%= category %>">
+              <%= category %>
+            </option>
             <% }); %>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="description">Description</label>
-          <textarea id="description" name="description" class="form-control" rows="4" required></textarea>
-        </div>
-        <div class="form-group">
-          <label for="price">Price</label>
-          <input type="number" id="price" name="price" class="form-control" step="0.01" required>
-        </div>
-        <div class="form-group">
-          <label for="userId">User ID</label>
-          <input type="text" id="userId" name="userId" class="form-control" required>
-        </div>
-        <div class="form-group">
-          <label for="listing-images">Images (Max 5)</label>
-          <input type="file" id="listing-images" name="images" multiple accept="image/*" class="form-control">
-          <div class="image-preview"></div>
-        </div>
-        <button type="submit" class="btn btn-success">Add Listing</button>
-      </form>
-    </div>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="description">Description</label>
+        <textarea id="description" name="description" class="form-control" rows="4" required></textarea>
+      </div>
+      <div class="form-group">
+        <label for="price">Price</label>
+        <input type="number" id="price" name="price" class="form-control" step="0.01" required>
+      </div>
+      <div class="form-group">
+        <label for="userId">User ID</label>
+        <input type="text" id="userId" name="userId" class="form-control" required>
+      </div>
+      <div class="form-group">
+        <label for="listing-images">Images (Max 5)</label>
+        <input type="file" id="listing-images" name="images" multiple accept="image/*" class="form-control">
+        <div class="image-preview"></div>
+      </div>
+      <button type="submit" class="btn btn-success">Add Listing</button>
+    </form>
   </div>
-  
-  <script>
-    $(document).ready(function() {
-      // Filter listings by category
-      $('#category-filter').on('change', function() {
-        const category = $(this).val();
-        
-        if (category === '') {
-          // Show all rows
-          $('#listings-table tbody tr').show();
-        } else {
-          // Hide all rows
-          $('#listings-table tbody tr').hide();
-          // Show rows with matching category
-          $(`#listings-table tbody tr[data-category="${category}"]`).show();
-        }
-      });
-      
-      // Update listing status
-      $('.status-select').on('change', function() {
-        const listingId = $(this).data('id');
-        const status = $(this).val();
-        
-        $.ajax({
-          url: `/admin/listings/${listingId}/status`,
-          type: 'PUT',
-          data: { status },
-          success: function(result) {
-            alert(`Status updated to ${status}`);
-          },
-          error: function(err) {
-            alert('Error updating status: ' + err.responseJSON.message);
-            // Reset to previous value
-            $(this).val($(this).find('option:not(:selected)').val());
-          }
-        });
-      });
-      
-      // Delete listing
-      $('.delete-listing-btn').on('click', function(e) {
-        e.preventDefault();
-        
-        if (confirm('Are you sure you want to delete this listing?')) {
-          const listingId = $(this).attr('href').split('/').pop();
-          
-          $.ajax({
-            url: `/admin/listings/${listingId}`,
-            type: 'DELETE',
-            success: function(result) {
-              alert('Listing deleted successfully');
-              location.reload();
-            },
-            error: function(err) {
-              alert('Error deleting listing: ' + err.responseJSON.message);
-            }
-          });
+</div>
+
+<script>
+  $(document).ready(function () {
+    // Filter listings by category
+    $('#category-filter').on('change', function () {
+      const category = $(this).val();
+
+      if (category === '') {
+        // Show all rows
+        $('#listings-table tbody tr').show();
+      } else {
+        // Hide all rows
+        $('#listings-table tbody tr').hide();
+        // Show rows with matching category
+        $(`#listings-table tbody tr[data-category="${category}"]`).show();
+      }
+    });
+
+    // Update listing status
+    $('.status-select').on('change', function () {
+      const listingId = $(this).data('id');
+      const status = $(this).val();
+
+      $.ajax({
+        url: `/admin/listings/${listingId}/status`,
+        type: 'PUT',
+        data: { status },
+        success: function (result) {
+          alert(`Status updated to ${status}`);
+        },
+        error: function (err) {
+          alert('Error updating status: ' + err.responseJSON.message);
+          // Reset to previous value
+          $(this).val($(this).find('option:not(:selected)').val());
         }
       });
     });
-  </script>
+
+    // Delete listing
+    $('.delete-listing-btn').on('click', function (e) {
+      e.preventDefault();
+
+      if (confirm('Are you sure you want to delete this listing?')) {
+        const listingId = $(this).attr('href').split('/').pop();
+
+        $.ajax({
+          url: `/admin/listings/${listingId}`,
+          type: 'DELETE',
+          success: function (result) {
+            alert('Listing deleted successfully');
+            location.reload();
+          },
+          error: function (err) {
+            alert('Error deleting listing: ' + err.responseJSON.message);
+          }
+        });
+      }
+    });
+  });
+</script>

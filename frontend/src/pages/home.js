@@ -50,7 +50,7 @@ const Home = () => {
           ) : (
             <Row className="g-5">
               {categories.map((category) => (
-                <Col xs={12} md={6} lg={4} key={category.name}>
+                <Col xs={12} md={6} lg={3} key={category.name}>
                   <CategoryCard
                     categoryName={category.name}
                     photos={category.photos}
