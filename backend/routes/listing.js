@@ -9,6 +9,7 @@ const { getListingsByCategory } = require("../controllers/listingController");
 // Configure multer to use memory storage
 const upload = multer({ storage: multer.memoryStorage() }).any();
 
+// Add listing route
 router.post(
   "/addListing",
   verifyAuthToken,
@@ -17,38 +18,35 @@ router.post(
   listingController.addListing
 );
 
+router.post('/reportListing/:id', verifyAuthToken, listingController.reportListing);
+
+// Get all listings
 router.get("/getListings", listingController.getListings);
 
 // Fetch listing by ID
 router.get("/listings/:id", listingController.getSingleListing);
 
+// Search listings
 router.get("/search", listingController.searchListings);
+
+// Get listings by category
 router.get("/listings/category/:category", getListingsByCategory);
 
-//fetchiing by my listings
+// Get user's listings
 router.get("/my-listings/:userId", listingController.getMyListings);
 
+// Update listing route
 router.put(
   "/updateListing/:id",
   verifyAuthToken,
   upload,
   listingController.updateListing
 );
-router.delete(
-  "/listings/:id",
-  verifyAuthToken,
-  listingController.deleteListing
-);
 
-router.delete(
-  "/deleteImage/:id",
-  verifyAuthToken,
-  listingController.deleteImage
-);
+// Delete listing route
+router.delete("/listings/:id", verifyAuthToken, listingController.deleteListing);
 
-router.put(
-  "/listings/:id/status",
-  verifyAuthToken,
-  listingController.updateListingStatus
-);
+// Update listing status route
+router.put("/listings/:id/status", verifyAuthToken, listingController.updateListingStatus);
+
 module.exports = router;
