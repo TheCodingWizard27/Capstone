@@ -56,33 +56,33 @@ app.get("/api/categoriesInfo", (req, res) => {
     {
       name: "Books",
       photos: [
-        "https://firebasestorage.googleapis.com/v0/b/shop-simplify.firebasestorage.app/o/categoryImages%2Fbook1.jpg?alt=media&token=8e1db27c-b6cf-42b1-a842-06fb075b5934",
-        "https://firebasestorage.googleapis.com/v0/b/shop-simplify.firebasestorage.app/o/categoryImages%2Fbooks2.webp?alt=media&token=e8386532-1dcf-4bc8-8024-c5c27dab18ab2.jpg",
-        "https://firebasestorage.googleapis.com/v0/b/shop-simplify.firebasestorage.app/o/categoryImages%2Fbooks3.jpg?alt=media&token=f8836a9c-2f24-4843-9f00-0a490fc2a3a2",
+        "https://firebasestorage.googleapis.com/v0/b/shop-simplify.firebasestorage.app/o/categoryImages%2FBooks1.jpg?alt=media&token=26973235-640d-4953-bdc7-cfaf6b5d4ee2",
+        "https://firebasestorage.googleapis.com/v0/b/shop-simplify.firebasestorage.app/o/categoryImages%2FBooks.jpeg?alt=media&token=15aae304-a8f6-4e24-8259-bd8658260f7b",
+        "https://firebasestorage.googleapis.com/v0/b/shop-simplify.firebasestorage.app/o/categoryImages%2Fbooks2.jpeg?alt=media&token=12e21a97-27e0-475f-82c3-d401bb35725d",
       ],
     },
     {
       name: "Electronics",
       photos: [
-        "https://firebasestorage.googleapis.com/v0/b/shop-simplify.firebasestorage.app/o/categoryImages%2Ftv2.jpeg?alt=media&token=f6694bae-c59f-4537-b818-45a558cc6c9b",
-        "https://firebasestorage.googleapis.com/v0/b/shop-simplify.firebasestorage.app/o/categoryImages%2FKitchen2.jpg?alt=media&token=a61b56ea-ade5-4bc3-96e2-371e6a758668",
-        "https://firebasestorage.googleapis.com/v0/b/shop-simplify.firebasestorage.app/o/categoryImages%2Fmisc3.jpg?alt=media&token=dc6c6883-0939-48cf-8049-d742a96f07db",
+        "https://firebasestorage.googleapis.com/v0/b/shop-simplify.firebasestorage.app/o/categoryImages%2Felectronics.jpeg?alt=media&token=8bcfde57-fefc-48e7-a0f5-1e18520d3b7b",
+        "https://firebasestorage.googleapis.com/v0/b/shop-simplify.firebasestorage.app/o/categoryImages%2Felectronics2.webp?alt=media&token=c6e226da-6097-49be-afc5-50ff0cf41628",
+        "https://firebasestorage.googleapis.com/v0/b/shop-simplify.firebasestorage.app/o/categoryImages%2Felectronics3.jpeg?alt=media&token=68d79452-463d-48d7-bc85-6784db5b5a65",
       ],
     },
     {
       name: "Clothing",
       photos: [
-        "https://firebasestorage.googleapis.com/v0/b/shop-simplify.firebasestorage.app/o/categoryImages%2Fcloth2.jpeg?alt=media&token=4b0c2375-375a-4ee9-9f7a-e4e73d8ffe12",
         "https://firebasestorage.googleapis.com/v0/b/shop-simplify.firebasestorage.app/o/categoryImages%2Fcloth1.jpeg?alt=media&token=a74f7f80-5dce-4300-b084-ba9fd2d6f808",
         "https://firebasestorage.googleapis.com/v0/b/shop-simplify.firebasestorage.app/o/categoryImages%2Fcloth%202.jpeg?alt=media&token=f0de7d41-63e1-44e0-a744-034231c3c05a",
+        "https://firebasestorage.googleapis.com/v0/b/shop-simplify.firebasestorage.app/o/categoryImages%2Fclothing3.jpg?alt=media&token=6aa93bae-3fd4-458a-a79e-54710b9cf399",
       ],
     },
     {
       name: "Kitchen",
       photos: [
-        "https://firebasestorage.googleapis.com/v0/b/shop-simplify.firebasestorage.app/o/categoryImages%2FKitchen1.jpg?alt=media&token=b0f87872-2603-4950-a95c-6cddef45185c",
-        "https://firebasestorage.googleapis.com/v0/b/shop-simplify.firebasestorage.app/o/categoryImages%2FKitchen2.jpg?alt=media&token=a61b56ea-ade5-4bc3-96e2-371e6a758668",
-        "https://firebasestorage.googleapis.com/v0/b/shop-simplify.firebasestorage.app/o/categoryImages%2FKitchen3.jpg?alt=media&token=9deb8bba-7b99-451d-bd60-c573025a5b6f",
+        "https://firebasestorage.googleapis.com/v0/b/shop-simplify.firebasestorage.app/o/categoryImages%2Fkitchenware1.jpeg?alt=media&token=cc71263b-f27c-44b8-a3d1-270abf7629f7",
+        "https://firebasestorage.googleapis.com/v0/b/shop-simplify.firebasestorage.app/o/categoryImages%2Fkitchenware2.jpg?alt=media&token=169b378e-2eb1-4f93-94ce-43e3eeaa1a9c",
+        "https://firebasestorage.googleapis.com/v0/b/shop-simplify.firebasestorage.app/o/categoryImages%2Fkitchenware.jpeg?alt=media&token=9a40cacc-2796-4d5f-acd9-d2a3ea6d9e24",
       ],
     },
     {
