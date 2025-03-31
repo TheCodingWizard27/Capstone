@@ -43,18 +43,18 @@ const NavBar = () => {
           <div className="desktop-nav nav-links">
             <div className="sell-container">
               <Link to="/addListing" className="nav-link">
-                Sell
+                <span>Sell</span>
               </Link>
             </div>
 
             <Link to="/messageList" className="nav-link">
-              <FaEnvelope size={20} />
+              <FaEnvelope size={15} />
               <span>Messages</span>
             </Link>
 
             <Link to="/cart" className="nav-link">
               <div style={{ position: 'relative' }}>
-                <FaShoppingCart size={20} />
+                <FaShoppingCart size={15} />
                 {cartCount > 0 && (
                   <span className="cart-badge">{cartCount}</span>
                 )}

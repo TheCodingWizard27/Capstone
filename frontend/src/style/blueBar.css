@@ -8,6 +8,10 @@
   top: 0;
 }
 
+span {
+  font-size: 15px;
+}
+
 .navbar-container {
   display: flex;
   align-items: center;
