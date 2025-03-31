@@ -24,6 +24,7 @@ import SearchResults from './components/searchResults';
 import EditListing from './pages/editListing';
 import TransactionPage from './pages/transaction';
 import Cart from './pages/cart';
+import ReportListing from './pages/reportListing';
 
 
 
@@ -108,6 +109,12 @@ function App() {
                 path="/messageList"
                 element={
                   userLoggedIn ? <MessagingPage /> : <Navigate to="/signIn" />
+                }
+              />
+              <Route
+                path="/report-listing/:listingId"
+                element={
+                  userLoggedIn ? <ReportListing /> : <Navigate to="/signIn" />
                 }
               />
 
