@@ -18,7 +18,11 @@ router.post(
   listingController.addListing
 );
 
-router.post('/reportListing/:id', verifyAuthToken, listingController.reportListing);
+router.post(
+  "/reportListing/:id",
+  verifyAuthToken,
+  listingController.reportListing
+);
 
 // Get all listings
 router.get("/getListings", listingController.getListings);
@@ -44,9 +48,23 @@ router.put(
 );
 
 // Delete listing route
-router.delete("/listings/:id", verifyAuthToken, listingController.deleteListing);
+router.delete(
+  "/listings/:id",
+  verifyAuthToken,
+  listingController.deleteListing
+);
+
+router.delete(
+  "/deleteImage/:id",
+  verifyAuthToken,
+  listingController.deleteImage
+);
 
 // Update listing status route
-router.put("/listings/:id/status", verifyAuthToken, listingController.updateListingStatus);
+router.put(
+  "/listings/:id/status",
+  verifyAuthToken,
+  listingController.updateListingStatus
+);
 
 module.exports = router;
