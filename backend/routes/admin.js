@@ -49,6 +49,7 @@ router.post("/listings/:id/status", adminController.adminUpdateListingStatus);
 
 // Categories management
 router.get("/categories", adminController.renderCategoriesManagement);
+router.post("/addCategory", adminController.addCategory);
 
 //  **Report Management Routes**
 router.get("/reports", reportController.viewReportedListings);

@@ -4,6 +4,34 @@ const { v4: uuidv4 } = require("uuid");
 const multer = require("multer");
 const upload = multer({ storage: multer.memoryStorage() });
 
+exports.addCategory = async (req, res) => {
+  try {
+    const { name, photos } = req.body;
+
+    if (!name || !Array.isArray(photos) || photos.length === 0) {
+      return res.status(400).json({ message: "Name and photos are required." });
+    }
+
+    const newCategory = {
+      name,
+      photos,
+      createdAt: new Date().toISOString(),
+    };
+
+    const categoryRef = await db.collection("categories").add(newCategory);
+
+    res.status(201).json({
+      message: "Category added successfully",
+      id: categoryRef.id,
+      data: newCategory,
+    });
+  } catch (error) {
+    console.error("Error adding category:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+//Admin login
 exports.adminLogin = async (req, res) => {
   try {
     console.log(process.env.ADMIN_PASSWORD);
