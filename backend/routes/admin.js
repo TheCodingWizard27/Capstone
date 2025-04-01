@@ -10,7 +10,8 @@ const verifyAdmin = require("../middlewares/adminMiddleware");
 router.post("/login", adminController.adminLogin);
 
 // Admin dashboard
-router.get("/", verifyAdmin, adminController.renderDashboard);
+router.get("/", adminController.renderLoginPage);
+router.get("/login", adminController.renderLoginPage);
 router.get("/dashboard", verifyAdmin, adminController.renderDashboard);
 
 // Users management
@@ -62,4 +63,10 @@ router.delete(
 );
 router.get("/reports/counts", verifyAdmin, adminController.getReportCounts);
 
+//Logout
+router.get("/logout", (req, res) => {
+  req.session.destroy(() => {
+    res.redirect("/admin/login");
+  });
+});
 module.exports = router;

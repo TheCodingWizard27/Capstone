@@ -10,10 +10,19 @@ const messageRoutes = require("./routes/message");
 const adminRoutes = require("./routes/admin");
 const categoryRoutes = require("./routes/categoryRoutes");
 const { setupWebSocket } = require("./messageHandler");
+const session = require("express-session");
 
 const app = express();
 const PORT = 8000;
 
+//For session management
+const adminSession = session({
+  secret: process.env.SESSION_SECRET, // put this in .env
+  resave: false,
+  saveUninitialized: false,
+  rolling: true, // refresh session on every request
+  cookie: { maxAge: 60 * 60 * 1000 }, // 1 hour session duration
+});
 // For cross origin
 app.use(cors());
 
@@ -43,7 +52,7 @@ app.use("/api", userRoutes);
 app.use("/api", listingRoutes);
 app.use("/api", messageRoutes);
 app.use("/api", categoryRoutes);
-app.use("/admin", adminRoutes);
+app.use("/admin", adminSession, adminRoutes);
 
 // Start the server
 const server = app.listen(PORT, "0.0.0.0", () => {

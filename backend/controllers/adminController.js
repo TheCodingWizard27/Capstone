@@ -3,7 +3,6 @@ const admin = require("firebase-admin");
 const { v4: uuidv4 } = require("uuid");
 const multer = require("multer");
 const upload = multer({ storage: multer.memoryStorage() });
-const jwt = require("jsonwebtoken");
 
 //Admin adding Category
 exports.addCategory = async (req, res) => {
@@ -33,32 +32,36 @@ exports.addCategory = async (req, res) => {
   }
 };
 
-
+//Admin login
 exports.adminLogin = async (req, res) => {
   try {
     const { username, password } = req.body;
 
-    // Check credentials (use environment variables for security)
     if (
       username === process.env.ADMIN_USERNAME &&
       password === process.env.ADMIN_PASSWORD
     ) {
-      // Create token payload
-      const token = jwt.sign(
-        { role: "admin", username },
-        process.env.JWT_SECRET,
-        { expiresIn: "1h" }
-      );
+      req.session.isAdmin = true;
+      req.session.user = { username };
 
-      return res.status(200).json({ token });
+      return res.status(200).json({ message: 'Login successful' });
     } else {
-      return res.status(401).json({ message: "Invalid admin credentials" });
+      return res.status(401).json({ message: 'Invalid admin credentials' });
     }
   } catch (error) {
     console.error("Admin login error:", error);
     return res.status(500).json({ message: "Internal server error" });
   }
 };
+
+// GET /admin/login
+exports.renderLoginPage = (req, res) => {
+  if (req.session.isAdmin) {
+    return res.redirect('/admin/dashboard');
+  }
+  res.render('admin/admin-login', { title: 'Admin Login', message: null });
+};
+
 
 // Render admin dashboard
 exports.renderDashboard = async (req, res) => {
