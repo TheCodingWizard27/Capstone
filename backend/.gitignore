@@ -9,3 +9,4 @@
 serviceAccount.json
 
 node_modules
+.vercel

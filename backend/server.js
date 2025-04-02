@@ -13,25 +13,38 @@ const { setupWebSocket } = require("./messageHandler");
 const session = require("express-session");
 
 const app = express();
-const PORT = 8000;
+app.use(express.static('public'));
 
-//For session management
+// Set the port dynamically from environment variables (for Vercel) or default to 8000
+const PORT = process.env.PORT || 8000;
+
+// For session management
 const adminSession = session({
-  secret: process.env.SESSION_SECRET, // put this in .env
+  secret: process.env.SESSION_SECRET, // set this in your .env file
   resave: false,
   saveUninitialized: false,
   rolling: true, // refresh session on every request
   cookie: { maxAge: 60 * 60 * 1000 }, // 1 hour session duration
 });
-// For cross origin
+
+// Handle CORS (allow requests from your frontend URLs)
+const allowedOrigins = ['*']; // Local development URL
+
+// CORS Middleware to allow cross-origin requests
 app.use(cors({
-  origin: 'http://localhost:3000', // Explicitly allow your frontend URL
-  credentials: true, // Allow credentials (cookies, authorization headers, etc.)
+  origin: allowedOrigins, // Dynamically set based on environment
+  credentials: true, // Allow credentials (cookies, authorization headers)
+  allowedHeaders: 'Origin, X-Requested-With, Content-Type, Accept, Authorization', // Additional headers for preflight request
+  methods: 'GET, POST, PUT, DELETE, OPTIONS' // Allow specific HTTP methods
 }));
+
+// Enable preflight OPTIONS request handling for all routes
+app.options('*', cors()); // This ensures preflight requests are handled
+
 // For logging requests
 app.use(morgan("dev"));
 
-// Middleware
+// Middleware for parsing request bodies
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -55,6 +68,14 @@ app.use("/api", listingRoutes);
 app.use("/api", messageRoutes);
 app.use("/api", categoryRoutes);
 app.use("/admin", adminSession, adminRoutes);
+
+// Middleware to set CORS headers for all responses
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', allowedOrigins);
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  next();
+});
 
 // Start the server
 const server = app.listen(PORT, "0.0.0.0", () => {

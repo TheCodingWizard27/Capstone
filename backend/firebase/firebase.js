@@ -1,7 +1,5 @@
 require("dotenv").config();
 const admin = require("firebase-admin");
-const fs = require("fs");
-const path = require("path");
 
 // Generate the serviceAccount.json content from environment variables
 const serviceAccount = {
@@ -18,14 +16,10 @@ const serviceAccount = {
   universe_domain: process.env.FIREBASE_UNIVERSE_DOMAIN,
 };
 
-// Create the serviceAccount.json file dynamically
-const serviceAccountPath = path.join(__dirname, "serviceAccount.json");
-fs.writeFileSync(serviceAccountPath, JSON.stringify(serviceAccount, null, 2));
-
 // Initialize Firebase Admin SDK with the dynamically created service account
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  storageBucket: process.env.FIREBASE_STORAGE_BUCKET, // Add this line
+  storageBucket: process.env.FIREBASE_STORAGE_BUCKET, // Ensure this is set in your environment variables
 });
 
 const auth = admin.auth();
