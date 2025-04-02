@@ -3,7 +3,8 @@ import { Navbar, Button, Container } from 'react-bootstrap';
 import { useAuth } from '../contexts/authContext';
 import { useCart } from '../contexts/CartContext';
 import { Link } from 'react-router-dom';
-import { FaEnvelope, FaShoppingCart, FaBars, FaTimes } from 'react-icons/fa';
+import { FaEnvelope, FaBars, FaTimes } from 'react-icons/fa';
+import { BsBagCheckFill } from "react-icons/bs";
 import DropUser from './dropUser';
 import SearchBar from './searchBar';
 import '../style/blueBar.css';
@@ -48,13 +49,13 @@ const NavBar = () => {
             </div>
 
             <Link to="/messageList" className="nav-link">
-              <FaEnvelope size={25} />
+              <FaEnvelope fontSize={'1.1rem'} />
               <span>Messages</span>
             </Link>
 
             <Link to="/cart" className="nav-link">
               <div style={{ position: 'relative' }}>
-                <FaShoppingCart size={25} />
+                <BsBagCheckFill fontSize={'1.1rem'} />
                 {cartCount > 0 && (
                   <span className="cart-badge">{cartCount}</span>
                 )}

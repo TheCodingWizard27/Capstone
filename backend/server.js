@@ -26,7 +26,7 @@ const adminSession = session({
 // For cross origin
 app.use(
   cors({
-    origin: "http://localhost:3001", // Explicitly allow your frontend URL
+    origin: "http://localhost:3000", // Explicitly allow your frontend URL
     credentials: true, // Allow credentials (cookies, authorization headers, etc.)
   })
 );

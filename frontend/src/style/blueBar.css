@@ -7,18 +7,19 @@
   z-index: 1000; /* Ensure navbar stays above other content */
   position: sticky; /* Keeps navbar fixed at the top while scrolling */
   top: 0; /* Set the navbar to stick at the top of the page */
+  display: flex;
 }
 
 span {
-  font-size: 1.3rem; /* Adjusted font size of spans in the navbar */
+  font-size: 1.1rem; /* Adjusted font size of spans in the navbar */
 }
 
 /* Navbar Container: Flexbox layout for navbar items */
 .navbar-container {
   display: flex;
-  size: 700px; /* Sets the size of the navbar container */
+  size: 100%; /* Sets the size of the navbar container */
   align-items: center; /* Vertically aligns the items */
-  justify-content: space-between; /* Distributes space evenly between items */
+  justify-content: space-around; /* Distributes space evenly between items */
   max-width: 1400px; /* Limits the width of the navbar */
 }
 
