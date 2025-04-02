@@ -30,7 +30,7 @@ const NavBar = () => {
           </Link>
 
           {/* Search Bar */}
-          <div className="search-container">
+          <div className="search-container ms-1">
             <SearchBar setSearchResults={setSearchResults} />
           </div>
 
@@ -48,13 +48,13 @@ const NavBar = () => {
             </div>
 
             <Link to="/messageList" className="nav-link">
-              <FaEnvelope size={15} />
+              <FaEnvelope size={25} />
               <span>Messages</span>
             </Link>
 
             <Link to="/cart" className="nav-link">
               <div style={{ position: 'relative' }}>
-                <FaShoppingCart size={15} />
+                <FaShoppingCart size={25} />
                 {cartCount > 0 && (
                   <span className="cart-badge">{cartCount}</span>
                 )}

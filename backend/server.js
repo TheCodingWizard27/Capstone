@@ -24,10 +24,12 @@ const adminSession = session({
   cookie: { maxAge: 60 * 60 * 1000 }, // 1 hour session duration
 });
 // For cross origin
-app.use(cors({
-  origin: 'http://localhost:3000', // Explicitly allow your frontend URL
-  credentials: true, // Allow credentials (cookies, authorization headers, etc.)
-}));
+app.use(
+  cors({
+    origin: "http://localhost:3001", // Explicitly allow your frontend URL
+    credentials: true, // Allow credentials (cookies, authorization headers, etc.)
+  })
+);
 // For logging requests
 app.use(morgan("dev"));
 

@@ -270,31 +270,45 @@ const EditListing = () => {
                 {existingImages.map((file, index) => (
                   <Card
                     key={index}
-                    className="m-2"
-                    style={{ width: '120px', position: 'relative' }}
+                    className="m-2 position-relative"
+                    style={{
+                      width: '120px',
+                      height: '120px',
+                      overflow: 'hidden',
+                    }}
                   >
+                    {/* Remove Button (Fixed Position) */}
                     <Button
                       variant="danger"
                       size="sm"
-                      className="position-absolute top-0 start-100 translate-middle"
+                      className="position-absolute top-0 end-0 m-1" // Changed position
                       onClick={() => removeFile(index, true)}
                       disabled={isDeleting}
                       style={{
                         borderRadius: '50%',
-                        width: '20px',
-                        height: '20px',
-                        padding: 0,
+                        width: '24px',
+                        height: '24px',
+                        padding: '4px',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
+                        boxShadow: '0px 0px 4px rgba(0,0,0,0.3)',
+                        zIndex: 2, // Ensures it stays above the image
                       }}
                     >
-                      <FaTimes size={12} />
+                      <FaTimes size={14} />
                     </Button>
+
+                    {/* Image */}
                     <Card.Img
                       variant="top"
                       src={file.preview || file}
                       alt="Listing"
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover', // Prevents stretching
+                      }}
                     />
                   </Card>
                 ))}
@@ -309,30 +323,44 @@ const EditListing = () => {
                 {files.map((fileObj, index) => (
                   <Card
                     key={index}
-                    className="m-2"
-                    style={{ width: '120px', position: 'relative' }}
+                    className="m-2 position-relative"
+                    style={{
+                      width: '120px',
+                      height: '120px',
+                      overflow: 'hidden',
+                    }}
                   >
+                    {/* Remove Button (Fixed Position) */}
                     <Button
                       variant="danger"
                       size="sm"
-                      className="position-absolute top-0 start-100 translate-middle"
+                      className="position-absolute top-0 end-0 m-1" // Adjusted position
                       onClick={() => removeFile(index, false)}
                       style={{
                         borderRadius: '50%',
-                        width: '20px',
-                        height: '20px',
-                        padding: 0,
+                        width: '24px',
+                        height: '24px',
+                        padding: '4px',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
+                        boxShadow: '0px 0px 4px rgba(0,0,0,0.3)',
+                        zIndex: 2, // Ensures button stays above the image
                       }}
                     >
-                      <FaTimes size={12} />
+                      <FaTimes size={14} />
                     </Button>
+
+                    {/* Image */}
                     <Card.Img
                       variant="top"
                       src={fileObj.preview}
                       alt="Newly Uploaded"
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover', // Prevents image distortion
+                      }}
                     />
                   </Card>
                 ))}
