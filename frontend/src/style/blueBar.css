@@ -1,189 +1,194 @@
 /* Main Navbar Styles */
 .blue-navbar {
-  background-color: #1a5b9a;
-  padding: 0.75rem 0; /* Reduced from 1.25rem */
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
-  position: sticky;
-  top: 0;
+  background-color: #1a5b9a; /* Set background color of the navbar */
+  padding: 0.05rem 0; /* Reduced padding to make navbar smaller */
+  height: 4.5rem; /* Adjusted height of the navbar */
+  box-shadow: 0 2px 10px rgba(184, 61, 61, 0.1); /* Soft shadow for a subtle effect */
+  z-index: 1000; /* Ensure navbar stays above other content */
+  position: sticky; /* Keeps navbar fixed at the top while scrolling */
+  top: 0; /* Set the navbar to stick at the top of the page */
 }
 
 span {
-  font-size: 15px;
+  font-size: 20px; /* Adjusted font size of spans in the navbar */
 }
 
+/* Navbar Container: Flexbox layout for navbar items */
 .navbar-container {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  max-width: 1400px;
+  size: 700px; /* Sets the size of the navbar container */
+  align-items: center; /* Vertically aligns the items */
+  justify-content: space-between; /* Distributes space evenly between items */
+  max-width: 1400px; /* Limits the width of the navbar */
 }
 
 /* Logo Styles */
 .logo-container {
   display: flex;
-  align-items: center;
-  margin-right: 2rem;
+  align-items: center; /* Vertically aligns the logo */
+  margin-right: 2rem; /* Adds space between the logo and next item */
 }
 
 .logo-image {
-  max-width: 55px; /* Reduced from 70px */
-  height: auto;
+  max-width: 55px; /* Reduced logo size */
+  height: auto; /* Maintains aspect ratio of the logo */
+  filter: invert(1); /* Inverts the colors */
 }
 
 /* Search Container */
 .search-container {
-  flex: 1;
-  max-width: 750px;
-  margin: 0 3rem;
+  flex: 1; /* Makes search container flexible to take available space */
+  max-width: 750px; /* Limits the width of the search container */
+  margin: 0 3rem; /* Adds horizontal margin for spacing */
 }
 
 /* Navigation Links */
 .nav-links {
   display: flex;
-  align-items: center;
-  gap: 2rem;
-  margin-left: 2rem;
+  align-items: center; /* Vertically aligns the nav links */
+  gap: 2rem; /* Adds space between each link */
+  margin-left: 2rem; /* Adds margin to the left of the nav links */
+  
 }
 
 .nav-link {
-  color: white;
-  text-decoration: none;
-  font-weight: 500;
-  font-size: 1.2rem; /* Reduced from 1.05rem */
+  color: white; /* White text for the nav links */
+  text-decoration: none; /* Removes underline from links */
+  font-weight: 500; /* Sets font weight to medium */
+  font-size: 2.5rem; /* Adjusted font size for readability */
   display: flex;
-  align-items: center;
-  gap: 0.5rem;
+  align-items: center; /* Vertically aligns icon and text in the link */
+  gap: 0.5rem; /* Adds gap between icon and text */
 }
 
 .nav-link.app {
-  color: #005d8d;
-  text-decoration: none;
+  color: #005d8d; /* Special color for app-related links */
+  text-decoration: none; /* No underline */
   font-weight: 500;
-  font-size: 1.2rem; /* Reduced from 1.05rem */
+  font-size: 1.2rem;
   display: flex;
   align-items: center;
   gap: 0.5rem;
 }
 
 .nav-link:hover {
-  opacity: 0.9;
+  opacity: 0.9; /* Slightly fade on hover */
 }
 
 /* Sell Link Styles */
 .sell-container {
   display: flex;
-  flex-direction: column;
+  flex-direction: column; /* Stack elements vertically */
   align-items: center;
-  text-align: center;
+  text-align: center; /* Center align text */
 }
 
 .sell-container:hover .sell-link,
 .sell-container:hover .sell-text {
-  opacity: 0.9;
+  opacity: 0.9; /* Slightly fade on hover */
 }
 
-/* Cart Badge */
+/* Cart Badge: Small badge indicating cart items */
 .cart-badge {
-  position: absolute;
-  top: -5px;
-  right: -5px;
-  background-color: #ff4d4f;
+  position: absolute; /* Absolute positioning for the badge */
+  top: -5px; /* Positioned slightly above the cart icon */
+  right: -5px; /* Positioned slightly to the right */
+  background-color: #ff4d4f; /* Red background color */
   color: white;
-  border-radius: 50%;
-  font-size: 0.7rem;
+  border-radius: 50%; /* Circular shape */
+  font-size: 0.7rem; /* Small font size */
   font-weight: bold;
-  min-width: 16px;
-  height: 16px;
+  min-width: 16px; /* Minimum size for the badge */
+  height: 16px; /* Fixed height */
   display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 4px;
+  align-items: center; /* Vertically centers content */
+  justify-content: center; /* Horizontally centers content */
+  padding: 0 4px; /* Adds some padding inside the badge */
 }
 
-/* Mobile Toggle Button */
+/* Mobile Toggle Button: Hidden by default, appears on smaller screens */
 .mobile-toggle {
-  display: none;
+  display: none; /* Initially hidden */
   color: white;
-  background-color: transparent;
-  border: none;
-  padding: 0.5rem;
+  background-color: transparent; /* Transparent background */
+  border: none; /* No border */
+  padding: 0.5rem; /* Padding for the toggle button */
 }
 
-/* Drawer Styles */
+/* Drawer Styles: Sliding menu for mobile view */
 .drawer {
   position: fixed;
   top: 0;
-  left: -280px;
-  width: 280px;
-  height: 100vh;
+  left: -280px; /* Initially off-screen */
+  width: 280px; /* Width of the drawer */
+  height: 100vh; /* Full screen height */
   background-color: #1a5b9a;
-  z-index: 1100;
-  transition: left 0.3s ease;
-  box-shadow: 4px 0 15px rgba(0, 0, 0, 0.2);
+  z-index: 1100; /* Positioned above other content */
+  transition: left 0.3s ease; /* Smooth transition when sliding */
+  box-shadow: 4px 0 15px rgba(0, 0, 0, 0.2); /* Shadow effect on the drawer */
   display: flex;
-  flex-direction: column;
+  flex-direction: column; /* Stacks items vertically */
 }
 
 .drawer.open {
-  left: 0;
+  left: 0; /* Moves the drawer into view when opened */
 }
 
 .drawer-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-between; /* Spaces items evenly */
   align-items: center;
-  padding: 1rem; /* Reduced from 1.25rem */
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 1rem; /* Padding for header */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Subtle bottom border */
 }
 
 .drawer-content {
   padding: 1.5rem 1rem;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1rem; /* Spacing between items */
 }
 
 .drawer-link {
   color: white;
   text-decoration: none;
-  font-size: 1.1rem;
-  padding: 0.5rem 0;
+  font-size: 1.1rem; /* Font size for drawer links */
+  padding: 0.5rem 0; /* Padding around each link */
 }
 
 .drawer-sell-container {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 0.25rem; /* Spacing between sell links */
 }
 
 .drawer-sell-link {
   color: white;
   text-decoration: none;
-  font-size: 1.1rem;
+  font-size: 1.1rem; /* Font size for sell links */
 }
 
 .drawer-sell-text {
-  font-size: 0.85rem;
-  opacity: 0.85;
+  font-size: 0.85rem; /* Smaller font size for text */
+  opacity: 0.85; /* Slightly faded text */
   color: white;
-  margin-bottom: 0.2rem;
+  margin-bottom: 0.2rem; /* Margin for spacing */
 }
 
-/* Overlay */
+/* Overlay: Semi-transparent overlay when the drawer is open */
 .drawer-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 1050;
+  background-color: rgba(0, 0, 0, 0.5); /* Dark overlay */
+  z-index: 1050; /* Positioned below the drawer */
 }
 
-/* Dropdown User Styles */
+/* Dropdown User Styles: Styles for user dropdown menu */
 .dropdown-user-wrapper {
-  background-color: transparent;
+  background-color: transparent; /* Transparent background */
 }
 
 /* Fix for dropdown user background */
@@ -197,47 +202,51 @@ span {
 .dropdown-toggle.btn:hover,
 .dropdown-toggle.btn:focus,
 .dropdown-toggle.btn:active {
-  background-color: rgba(255, 255, 255, 0.1) !important;
+  background-color: rgba(255, 255, 255, 0.1) !important; /* Hover effect */
 }
 
 /* Fix for dropdown menu in drawer */
 .drawer-content .dropdown-toggle.btn {
-  padding-left: 0 !important;
+  padding-left: 0 !important; /* Remove left padding in dropdown */
 }
 
 /* Media Queries */
+
+/* For screens smaller than 1200px */
 @media (max-width: 1200px) {
   .search-container {
-    margin: 0 1.5rem !important;
+    margin: 0 1.5rem !important; /* Adjust margin for smaller screens */
   }
 
   .nav-links {
-    gap: 1.5rem !important;
+    gap: 1.5rem !important; /* Adjust spacing between nav links */
   }
 }
 
+/* For screens smaller than 992px (tablets and smaller) */
 @media (max-width: 991.98px) {
   .desktop-nav {
-    display: none !important;
+    display: none !important; /* Hide desktop navigation */
   }
 
   .mobile-toggle {
-    display: block !important;
+    display: block !important; /* Show mobile toggle button */
   }
 
   .search-container {
-    margin: 0 1rem !important;
+    margin: 0 1rem !important; 
+    /* Adjust search container margin */
   }
 
   .logo-container {
-    margin-right: 0.5rem !important;
+    margin-right: 0.5rem !important; /* Reduce right margin for logo */
   }
 
   .logo-image {
-    max-width: 50px !important; /* Further reduced for mobile */
+    max-width: 50px !important; /* Reduce logo size further for mobile */
   }
 
   .navbar-container {
-    padding: 0 0.5rem !important;
+    padding: 0 0.5rem !important; /* Reduce navbar container padding */
   }
 }
