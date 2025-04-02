@@ -44,9 +44,10 @@ const LandingNavbar = () => {
       fontSize: '1.5rem',
       letterSpacing: '0.5px',
     },
-    navLink: {
+    navLinka: {
       color: 'rgba(255, 255, 255, 0.9)',
       fontWeight: 500,
+      fontSize: '1.5rem',
       margin: '0 1rem',
       padding: '0.5rem 0.75rem',
       position: 'relative',
@@ -185,7 +186,7 @@ const LandingNavbar = () => {
               <Nav.Link
                 href="#why"
                 className="nav-link-custom"
-                style={styles.navLink}
+                style={styles.navLinka}
                 onClick={() => setIsNavCollapsed(true)}
               >
                 Why Shop Simplify?
@@ -193,7 +194,7 @@ const LandingNavbar = () => {
               <Nav.Link
                 href="#features"
                 className="nav-link-custom"
-                style={styles.navLink}
+                style={styles.navLinka}
                 onClick={() => setIsNavCollapsed(true)}
               >
                 Explore Features
@@ -201,7 +202,7 @@ const LandingNavbar = () => {
               <Nav.Link
                 href="#team"
                 className="nav-link-custom"
-                style={styles.navLink}
+                style={styles.navLinka}
                 onClick={() => setIsNavCollapsed(true)}
               >
                 Our Team

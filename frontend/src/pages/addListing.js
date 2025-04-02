@@ -378,25 +378,34 @@ const AddListing = () => {
                       <Card
                         key={index}
                         className="position-relative m-2"
-                        style={{ width: '140px', height: '140px' }}
+                        style={{
+                          width: '140px',
+                          height: '140px',
+                          overflow: 'hidden', // Ensures no overflow issues
+                        }}
                       >
+                        {/* Remove Button (Fixed Position) */}
                         <Button
                           variant="danger"
                           size="sm"
-                          className="position-absolute top-0 start-100 translate-middle"
+                          className="position-absolute top-0 end-0 m-1" // Adjusted position
                           onClick={() => removeFile(index)}
                           style={{
                             borderRadius: '50%',
-                            width: '20px',
-                            height: '20px',
-                            padding: 0,
+                            width: '24px', // Increased size for better visibility
+                            height: '24px',
+                            padding: '4px',
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
+                            boxShadow: '0px 0px 4px rgba(0,0,0,0.3)', // Adds a shadow for contrast
+                            zIndex: 2, // Ensures it stays on top of the image
                           }}
                         >
-                          <FaTimes size={12} />
+                          <FaTimes size={14} />
                         </Button>
+
+                        {/* Image */}
                         <Card.Img
                           variant="top"
                           src={file.preview}
@@ -404,7 +413,7 @@ const AddListing = () => {
                           style={{
                             width: '100%',
                             height: '100%',
-                            objectFit: 'cover',
+                            objectFit: 'cover', // Prevents stretching
                           }}
                         />
                       </Card>

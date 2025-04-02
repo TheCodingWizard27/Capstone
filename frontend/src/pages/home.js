@@ -9,7 +9,6 @@ const Home = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -34,7 +33,10 @@ const Home = () => {
       {/* Navbar (Assuming SearchBar is inside NavBar) */}
       <NavBar />
 
-      <Container className="mt-5 mb-5">
+      <Container
+        className="mt-5 mb-5"
+        style={{ minHeight: '100vh', minWidth: '100vw' }}
+      >
         {/* Show search results if available */}
         {/* {searchResults.length > 0 ? (
           <SearchResults results={searchResults} />
@@ -48,13 +50,10 @@ const Home = () => {
             <Alert variant="info">No categories to display.</Alert>
           ) : (
             <Container style={{ paddingTop: '1rem', marginBottom: '3rem' }}>
-              <div
-                style={{ backgroundColor: '#f0f4f8' }}
-                className="p-4 rounded shadow-sm"
-              >
+              <div>
                 <Row className="g-4">
                   {categories.map((category) => (
-                    <Col xs={12} md={4} key={category.name}>
+                    <Col xs={12} md={3} key={category.name}>
                       <CategoryCard
                         categoryName={category.name}
                         photos={category.photos}
