@@ -2,14 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { Container, Row, Col, Alert } from 'react-bootstrap';
 import axios from 'axios';
 import NavBar from '../components/navBar';
-import SearchResults from '../components/searchResults';
 import CategoryCard from '../components/categoryCard';
 
 const Home = () => {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [searchResults, setSearchResults] = useState([]);
+
 
   useEffect(() => {
     const fetchCategories = async () => {
