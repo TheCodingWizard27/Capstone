@@ -48,16 +48,23 @@ const Home = () => {
           ) : categories.length === 0 ? (
             <Alert variant="info">No categories to display.</Alert>
           ) : (
-            <Row className="g-5">
-              {categories.map((category) => (
-                <Col xs={12} md={6} lg={3} key={category.name}>
-                  <CategoryCard
-                    categoryName={category.name}
-                    photos={category.photos}
-                  />
-                </Col>
-              ))}
-            </Row>
+            <Container style={{ paddingTop: '1rem', marginBottom: '3rem' }}>
+              <div
+                style={{ backgroundColor: '#f0f4f8' }}
+                className="p-4 rounded shadow-sm"
+              >
+                <Row className="g-4">
+                  {categories.map((category) => (
+                    <Col xs={12} md={4} key={category.name}>
+                      <CategoryCard
+                        categoryName={category.name}
+                        photos={category.photos}
+                      />
+                    </Col>
+                  ))}
+                </Row>
+              </div>
+            </Container>
           )}
         </>
         {/* )} */}
