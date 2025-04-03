@@ -109,6 +109,8 @@ const ItemList = () => {
             <option value="Clothing">Clothing</option>
             <option value="Kitchen">Kitchen</option>
             <option value="Books">Books</option>
+            <option value="Automobile">Automobile</option>
+            <option value="Footwear">Footwear</option>
             <option value="Miscellaneous">Miscellaneous</option>
           </select>
         </div>
