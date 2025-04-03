@@ -80,6 +80,9 @@ const SearchBar = ({ setSearchResults }) => {
                 action
               >
                 <div className="d-flex align-items-center">
+                  <div className="me-2">
+                    <FaSearch className="text-muted" />
+                  </div>
                   {item.images && item.images[0] && (
                     <div className="me-3 image-container">
                       <img
