@@ -13,7 +13,7 @@ const { setupWebSocket } = require("./messageHandler");
 const session = require("express-session");
 
 const app = express();
-app.use(express.static('public'));
+app.use(express.static("public"));
 
 // Set the port dynamically from environment variables (for Vercel) or default to 8000
 const PORT = process.env.PORT || 8000;
@@ -28,18 +28,18 @@ const adminSession = session({
 });
 
 // Handle CORS (allow requests from your frontend URLs)
-const allowedOrigins = ['*']; // Local development URL
+const allowedOrigins = ["*"]; // Local development URL
 
 // CORS Middleware to allow cross-origin requests
-app.use(cors({
-  origin: allowedOrigins, // Dynamically set based on environment
-  credentials: true, // Allow credentials (cookies, authorization headers)
-  allowedHeaders: 'Origin, X-Requested-With, Content-Type, Accept, Authorization', // Additional headers for preflight request
-  methods: 'GET, POST, PUT, DELETE, OPTIONS' // Allow specific HTTP methods
-}));
-
-// Enable preflight OPTIONS request handling for all routes
-app.options('*', cors()); // This ensures preflight requests are handled
+app.use(
+  cors({
+    origin: allowedOrigins[0], // Dynamically set based on environment
+    credentials: true, // Allow credentials (cookies, authorization headers)
+    allowedHeaders:
+      "Origin, X-Requested-With, Content-Type, Accept, Authorization", // Additional headers for preflight request
+    methods: "GET, POST, PUT, DELETE, OPTIONS", // Allow specific HTTP methods
+  })
+);
 
 // For logging requests
 app.use(morgan("dev"));
@@ -71,9 +71,15 @@ app.use("/admin", adminSession, adminRoutes);
 
 // Middleware to set CORS headers for all responses
 app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', allowedOrigins);
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  res.setHeader("Access-Control-Allow-Origin", allowedOrigins);
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, PUT, DELETE, OPTIONS"
+  );
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+  );
   next();
 });
 
