@@ -77,7 +77,7 @@ const MessagingPage = () => {
     if (!currentUser?.accessToken) return;
 
     const ws = new WebSocket(
-      `ws://localhost:8000?token=${currentUser.accessToken}`
+      `${process.env.REACT_APP_WEB_SOCKET_ADDRESS}?token=${currentUser.accessToken}`
     );
 
     ws.onmessage = (event) => {
