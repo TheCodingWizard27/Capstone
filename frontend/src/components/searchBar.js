@@ -61,7 +61,7 @@ const SearchBar = ({ setSearchResults }) => {
         </InputGroup.Text>
         <Form.Control
           type="text"
-          placeholder="Search items..."
+          placeholder="Search Shop Simplify"
           value={query}
           onChange={handleSearch}
           className="search-input"
