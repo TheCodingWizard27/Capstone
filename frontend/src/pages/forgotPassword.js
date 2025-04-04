@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { auth } from '../Firebase/firebaseConfig';
 import { Card, Container, Row, Col, Form, Button } from 'react-bootstrap';
 
+
 function ForgotPassword() {
   const navigate = useNavigate();
 
@@ -16,8 +17,6 @@ function ForgotPassword() {
     e.preventDefault();
     setErrorMessage('');
     setIsSigningIn(true);
-
-    
 
     try {
       await sendPasswordResetEmail(auth, email);
@@ -47,7 +46,7 @@ function ForgotPassword() {
             className="p-3 shadow-lg h-100"
           >
             <Card.Body className="d-flex flex-column justify-content-center">
-              <h2 className="text-center mb-4">Forgot Password</h2>
+              <h2 className="text-center mb-4">Reset Password</h2>
               {errorMessage && (
                 <div className="alert alert-danger text-center">
                   {errorMessage}

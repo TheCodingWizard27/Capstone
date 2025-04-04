@@ -1,4 +1,7 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { getAuth, signOut } from 'firebase/auth';
+
 import {
   Container,
   Form,
@@ -15,6 +18,8 @@ import MyListings from '../components/mylistings';
 
 import NavBar from '../components/navBar';
 function AccountSettings() {
+  const auth = getAuth();
+  const navigate = useNavigate();
   const [activeSection, setActiveSection] = useState('profile');
   const [profilePic, setProfilePic] = useState(null);
   const [editField, setEditField] = useState({
@@ -75,6 +80,19 @@ function AccountSettings() {
         'Could not load your profile information. Please try again later.'
       );
     }
+  };
+
+  // Log out function
+  const handleLogout = () => {
+    signOut(auth)
+      .then(() => {
+        console.log('Sign-out successful.');
+        // Redirect to login page or any other page after logout
+        navigate('/forgotPassword');
+      })
+      .catch((error) => {
+        console.error('An error happened during sign out:', error);
+      });
   };
 
   const handleChange = (e) => {
@@ -512,49 +530,11 @@ function AccountSettings() {
                               editField.password ? 'success' : 'outline-primary'
                             }
                             size="sm"
-                            onClick={() => handleEditToggle('password')}
+                            onClick={() => handleLogout()}
                           >
-                            {editField.password ? (
-                              <>
-                                <i className="bi bi-check2"></i> Save Password
-                              </>
-                            ) : (
-                              <>
-                                <i className="bi bi-lock"></i> Change Password
-                              </>
-                            )}
+                            Change Password
                           </Button>
                         </div>
-
-                        {editField.password && (
-                          <>
-                            <Form.Group
-                              controlId="oldPassword"
-                              className="mb-3"
-                            >
-                              <Form.Label>Current Password</Form.Label>
-                              <Form.Control
-                                type="password"
-                                value={formData.oldPassword}
-                                onChange={handleChange}
-                                placeholder="Enter current password"
-                              />
-                            </Form.Group>
-
-                            <Form.Group
-                              controlId="newPassword"
-                              className="mb-3"
-                            >
-                              <Form.Label>New Password</Form.Label>
-                              <Form.Control
-                                type="password"
-                                value={formData.newPassword}
-                                onChange={handleChange}
-                                placeholder="Enter new password"
-                              />
-                            </Form.Group>
-                          </>
-                        )}
                       </Card.Body>
                     </Card>
 

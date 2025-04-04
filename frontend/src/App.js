@@ -26,8 +26,6 @@ import TransactionPage from './pages/transaction';
 import Cart from './pages/cart';
 import ReportListing from './pages/reportListing';
 
-
-
 function App() {
   const { userLoggedIn } = useAuth(); // Access userLoggedIn from context
 
