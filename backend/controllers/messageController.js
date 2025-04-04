@@ -1,5 +1,8 @@
 const { db } = require("../firebase/firebase");
 const admin = require("firebase-admin");
+const { ClientHandler } = require("../messageHandler");
+
+const clientHandler = new ClientHandler();
 
 exports.createThread = async (req, res) => {
   try {
@@ -94,15 +97,19 @@ exports.addMessage = async (req, res) => {
 
     await addMessageToThread(threadId, createdMessageId);
 
+    const messageInfo = {
+      id: createdMessageId,
+      threadId,
+      sender,
+      receiver,
+      message,
+      productName,
+    };
+
+    clientHandler.sendMessageToUser(receiver, messageInfo);
+
     return res.status(200).json({
-      messageInfo: {
-        id: createdMessageId,
-        threadId,
-        sender,
-        receiver,
-        message,
-        productName,
-      },
+      messageInfo,
     });
   } catch (error) {
     console.error("Error in addMessage:", error);
