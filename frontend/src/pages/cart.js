@@ -73,7 +73,7 @@ const Cart = () => {
   };
 
   if (cartItems.length === 0) {
-    return <h3 className="text-center mt-5">Your cart is empty.</h3>;
+    return <h3 className="text-center mt-5">Your wishlist is empty.</h3>;
   }
 
   return (
