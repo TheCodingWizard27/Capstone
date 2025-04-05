@@ -175,8 +175,6 @@ const WhyShop = () => {
                     'Sell and buy items locally in one easy platform',
                     'Seamless transaction management',
                     'Direct and secure communication between buyers and sellers',
-                    'Integrated secure payments within the app',
-                    'Real-time tracking of sales, orders, and transactions',
                   ].map((item, index) => (
                     <li
                       key={index}
@@ -220,8 +218,6 @@ const WhyShop = () => {
                     'Limited options to sell or buy locally',
                     'No easy way to manage transactions',
                     'Communication with buyers/sellers is cumbersome',
-                    'Lack of a unified platform for secure payments',
-                    'No real-time tracking for transactions or orders',
                   ].map((item, index) => (
                     <li
                       key={index}
@@ -443,11 +439,9 @@ const CallToAction = () => {
 
 const Footer = () => {
   const sections = [
-    { id: 'about', name: 'About', icon: 'bi-info-circle' },
     { id: 'why', name: 'Why Choose Us', icon: 'bi-check-circle' },
     { id: 'features', name: 'Features', icon: 'bi-stars' },
-    { id: 'team', name: 'Our Team', icon: 'bi-people' },
-    { id: 'get-started', name: 'Get Started', icon: 'bi-arrow-right-circle' },
+    { id: 'team', name: 'Our Team', icon: 'bi-people' }
   ];
 
   return (
@@ -457,7 +451,7 @@ const Footer = () => {
           <Col lg={4}>
             <div className="d-flex align-items-center mb-3">
               <i className="bi bi-shop fs-2 me-2 text-primary"></i>
-              <h3 className="mb-0">ShopSimplify</h3>
+              <h3 className="mb-0">Shop Simplify</h3>
             </div>
             <p className="mb-3 text-light">
               Simplify your Shopping, Amplify your Life.
