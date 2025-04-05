@@ -264,14 +264,6 @@ const Features = () => {
       image: '/images/secure-messaging.png',
     },
     {
-      icon: 'bi-wallet2',
-      title: 'Easy Payments',
-      description:
-        'Multiple payment options with secure transaction processing and escrow protection',
-      color: '#fd7e14',
-      image: '/images/easy-payments.png',
-    },
-    {
       icon: 'bi-star',
       title: 'Ratings & Reviews',
       description:
@@ -300,7 +292,7 @@ const Features = () => {
           {features.map((feature, index) => (
             <Col
               md={6}
-              lg={3}
+              lg={4}
               key={index}
               className="animate-on-scroll"
               style={{ transitionDelay: `${index * 100}ms` }}
