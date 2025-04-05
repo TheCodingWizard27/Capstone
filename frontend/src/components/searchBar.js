@@ -102,7 +102,6 @@ const SearchBar = ({ setSearchResults }) => {
                     <p className="mb-0 text-muted small text-truncate">
                       {item.title}
                     </p>
-                    <p className="mb-0 fw-bold mt-1">${item.price}</p>
                   </div>
                 </div>
               </ListGroup.Item>
