@@ -4,7 +4,7 @@ import { useAuth } from '../contexts/authContext';
 import { useCart } from '../contexts/CartContext';
 import { Link } from 'react-router-dom';
 import { FaEnvelope, FaBars, FaTimes } from 'react-icons/fa';
-import { BsBagCheckFill } from "react-icons/bs";
+import { FaHeart } from 'react-icons/fa';
 import DropUser from './dropUser';
 import SearchBar from './searchBar';
 import '../style/blueBar.css';
@@ -55,12 +55,12 @@ const NavBar = () => {
 
             <Link to="/cart" className="nav-link">
               <div style={{ position: 'relative' }}>
-                <BsBagCheckFill fontSize={'1.1rem'} />
+                <FaHeart fontSize={'1.1rem'} />
                 {cartCount > 0 && (
                   <span className="cart-badge">{cartCount}</span>
                 )}
               </div>
-              <span>Cart</span>
+              <span>Wishlist</span>
             </Link>
 
             <div className="dropdown-user-wrapper">

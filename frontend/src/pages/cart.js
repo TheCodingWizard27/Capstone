@@ -79,7 +79,7 @@ const Cart = () => {
   return (
     <>
       <NavBar />
-      <h2 className="mt-4 ms-5">Your Shopping Cart</h2>
+      <h2 className="mt-4 ms-5">Your Wishlist</h2>
       <div
         className="ms-5"
         style={{ maxHeight: '500px', overflowY: 'auto', overflowX: 'hidden' }}
