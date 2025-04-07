@@ -35,7 +35,10 @@ const Home = () => {
 
       <Container
         className="mt-5 mb-5"
-        style={{ minHeight: '100vh', minWidth: '100vw' }}
+        style={{
+          minHeight: '100vh',
+          minWidth: '100vw',
+        }}
       >
         {/* Show search results if available */}
         {/* {searchResults.length > 0 ? (
