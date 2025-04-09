@@ -270,7 +270,7 @@ export const ItemSection = ({ title, items, open, toggleOpen }) => (
               <Card
                 id={item.id}
                 imageUrl={item.picUrls[0]}
-                title={item.title}
+                title={item.title.split(" ").slice(0, 3).join(" ")}
                 brand={item.brand}
                 price={item.price}
                 onClick={() => window.location.reload()}
