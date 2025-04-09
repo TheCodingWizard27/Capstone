@@ -192,7 +192,13 @@ const MessagingPage = () => {
         const scrollTop = container.scrollTop;
 
         // Update messages
-        setCurrentChat((prev) => [...formattedMessages, ...prev]);
+        // setCurrentChat((prev) => [...formattedMessages, ...prev]);
+        // Update messages and remove duplicate by ID
+        setCurrentChat((prev) => {
+          const ids = new Set(prev.map((m) => m.id));
+          const newMessages = formattedMessages.filter((m) => !ids.has(m.id));
+          return [...newMessages, ...prev];
+        });
 
         // Maintain scroll position after new messages are loaded
         setTimeout(() => {
@@ -231,7 +237,7 @@ const MessagingPage = () => {
 
     // Scroll to bottom immediately after sending
     setTimeout(scrollToBottom, 50);
-    setIsScrolledToBottom(true);
+    setIsScrolledToBottom(false);
 
     try {
       const response = await sendMessage(threadId, messageToSend, currentUser);
@@ -265,9 +271,8 @@ const MessagingPage = () => {
       onClick={() =>
         handleSelectUser(item.threadId, item.otherParty, item.productName)
       }
-      className={`list-thread ${
-        selectedThreadId === item.threadId ? 'selected' : ''
-      }`}
+      className={`list-thread ${selectedThreadId === item.threadId ? 'selected' : ''
+        }`}
     >
       <div className="thread-user">{item.otherParty}</div>
       <div className="thread-item">{item.productName}</div>
