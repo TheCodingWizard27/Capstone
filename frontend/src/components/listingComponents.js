@@ -279,7 +279,7 @@ export const ItemSection = ({ title, items, open, toggleOpen }) => (
                     : item.title
                 }
                 brand={
-                  item.brand && item.brand.length > 10
+                  item.brand.length > 10
                     ? item.brand.substring(0, 10) + '...'
                     : item.brand
                 }
