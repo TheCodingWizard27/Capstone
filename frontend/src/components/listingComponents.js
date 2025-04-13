@@ -54,8 +54,9 @@ export const MainProductSection = ({
               key={index}
               src={image || '/placeholder.svg'}
               alt={`Preview ${index + 1}`}
-              className={`preview-image mb-2 ${index === currentImageIndex ? 'active' : ''
-                }`}
+              className={`preview-image mb-2 ${
+                index === currentImageIndex ? 'active' : ''
+              }`}
               onClick={() => handlePreviewClick(index)}
               style={{
                 height: '100px',
@@ -224,7 +225,6 @@ export const ProductDetailsSection = ({ details }) => {
             >
               Contact Seller
             </Button>
-
           )}
           {details.user !== currentUser.uid && (
             <Button variant="dark" className="me-2" onClick={handleAddToCart}>
@@ -246,12 +246,15 @@ export const ProductDetailsSection = ({ details }) => {
             >
               Edit Listing
             </Button>
-
           )}
           {details.user !== currentUser.uid && (
-            <Button variant="outline-danger" onClick={() => navigate(`/report-listing/${details.id}`)}>
+            <Button
+              variant="outline-danger"
+              onClick={() => navigate(`/report-listing/${details.id}`)}
+            >
               Report Listing
-            </Button>)}
+            </Button>
+          )}
         </div>
       </BootstrapCard>
     </Col>
@@ -270,8 +273,16 @@ export const ItemSection = ({ title, items, open, toggleOpen }) => (
               <Card
                 id={item.id}
                 imageUrl={item.picUrls[0]}
-                title={item.title.split(" ").slice(0, 3).join(" ")}
-                brand={item.brand}
+                title={
+                  item.title.length > 15
+                    ? item.title.substring(0, 15) + '...'
+                    : item.title
+                }
+                brand={
+                  item.brand && item.brand.length > 10
+                    ? item.brand.substring(0, 10) + '...'
+                    : item.brand
+                }
                 price={item.price}
                 onClick={() => window.location.reload()}
               />
