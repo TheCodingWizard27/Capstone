@@ -14,6 +14,15 @@ const ItemList = () => {
   const queryParams = new URLSearchParams(location.search);
   const categoryFromUrl = queryParams.get('category') || 'All';
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 6;
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filteredResults.slice(indexOfFirstItem, indexOfLastItem);
+
+  const totalPages = Math.ceil(filteredResults.length / itemsPerPage);
+
   // Track window resize for responsive styles
   useEffect(() => {
     const handleResize = () => setWindowWidth(window.innerWidth);
@@ -53,6 +62,7 @@ const ItemList = () => {
 
   const handleCategoryChange = (category) => {
     setSelectedCategory(category);
+    setCurrentPage(1);
     fetchItems(category);
   };
 
@@ -90,6 +100,45 @@ const ItemList = () => {
           </div>
         </div>
       </Link>
+    );
+  };
+
+  const renderPagination = () => {
+    if (totalPages <= 1) return null;
+
+    const pages = [];
+    for (let i = 1; i <= totalPages; i++) {
+      pages.push(
+        <button
+          key={i}
+          className={`pagination-button ${i === currentPage ? 'active' : ''}`}
+          onClick={() => setCurrentPage(i)}
+        >
+          {i}
+        </button>
+      );
+    }
+
+    return (
+      <div className="pagination-container">
+        {currentPage > 1 && (
+          <button
+            className="pagination-button"
+            onClick={() => setCurrentPage(currentPage - 1)}
+          >
+            Previous
+          </button>
+        )}
+        {pages}
+        {currentPage < totalPages && (
+          <button
+            className="pagination-button"
+            onClick={() => setCurrentPage(currentPage + 1)}
+          >
+            Next
+          </button>
+        )}
+      </div>
     );
   };
 
@@ -134,7 +183,7 @@ const ItemList = () => {
                   isMobile ? 'mobile' : windowWidth < 992 ? 'tablet' : 'desktop'
                 }`}
               >
-                {filteredResults.map((item) => (
+                {currentItems.map((item) => (
                   <EnhancedCard
                     key={item.id}
                     id={item.id}
@@ -162,6 +211,10 @@ const ItemList = () => {
           </>
         )}
       </div>
+      {/* Always fixed at the bottom */}
+      {!loading && !error && filteredResults.length > 0 && (
+        <div className="pagination-footer">{renderPagination()}</div>
+      )}
     </div>
   );
 };
