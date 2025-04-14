@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Row, Col, Alert } from 'react-bootstrap';
+import { Spinner, Container, Row, Col, Alert } from 'react-bootstrap';
 import axios from 'axios';
 import NavBar from '../components/navBar';
 import CategoryCard from '../components/categoryCard';
