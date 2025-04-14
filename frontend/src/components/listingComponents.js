@@ -228,7 +228,7 @@ export const ProductDetailsSection = ({ details }) => {
           )}
           {details.user !== currentUser.uid && (
             <Button variant="dark" className="me-2" onClick={handleAddToCart}>
-              Add to Cart
+              Add to Wishlist
             </Button>
           )}
           {details.user === currentUser.uid && (
