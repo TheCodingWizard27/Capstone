@@ -105,7 +105,7 @@ const MessagingPage = () => {
         setIsScrolledToBottom(true);
       })
       .catch((err) => console.error('Error fetching thread messages:', err));
-  }, [selectedUser, currentUser,messages]);
+  }, [selectedUser, currentUser, messages]);
 
   //Realtime update checks on threads
   useEffect(() => {
@@ -116,7 +116,7 @@ const MessagingPage = () => {
       return onSnapshot(threadRef, (docSnap) => {
         if (docSnap.exists()) {
           const updatedData = docSnap.data();
-          console.log(updatedData)
+          console.log(updatedData);
           setMessages((prev) => {
             const updated = [...prev];
             const idx = updated.findIndex((m) => m.threadId === docSnap.id);
