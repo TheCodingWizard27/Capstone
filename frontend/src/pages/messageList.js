@@ -74,45 +74,6 @@ const MessagingPage = () => {
     }
   };
 
-  // // WebSocket for real-time messaging
-  // useEffect(() => {
-  //   if (!currentUser?.accessToken) return;
-
-  //   const ws = new WebSocket(
-  //     `${process.env.REACT_APP_WEB_SOCKET_ADDRESS}?token=${currentUser.accessToken}`
-  //   );
-
-  //   ws.onmessage = (event) => {
-  //     const msg = JSON.parse(event.data);
-  //     console.log(msg);
-  //     if (selectedUser && msg.threadId === selectedUser.threadId) {
-  //       setCurrentChat((prev) => [
-  //         ...prev,
-  //         {
-  //           ...msg,
-  //           type: msg.senderId === currentUser.uid ? 'sent' : 'received',
-  //         },
-  //       ]);
-
-  //       // If we're already at the bottom, scroll to show new message
-  //       if (isScrolledToBottom) {
-  //         setTimeout(scrollToBottom, 100);
-  //       }
-  //     }
-
-  //     // Update thread list
-  //     setMessages((prev) => {
-  //       const updated = [...prev];
-  //       const idx = updated.findIndex((m) => m.threadId === msg.threadId);
-  //       if (idx !== -1)
-  //         updated[idx] = { ...updated[idx], lastMessage: msg.message };
-  //       return updated;
-  //     });
-  //   };
-
-  //   return () => ws.readyState <= 1 && ws.close(); // Close WebSocket connection
-  // }, [currentUser?.accessToken, selectedUser, isScrolledToBottom]);
-
   // Fetch message threads
   useEffect(() => {
     if (!currentUser) return;
