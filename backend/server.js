@@ -12,6 +12,8 @@ const categoryRoutes = require("./routes/categoryRoutes");
 const { setupWebSocket } = require("./messageHandler");
 const session = require("express-session");
 
+const cacheResponse = require("./utils/cache");
+
 const app = express();
 app.use(express.static("public"));
 
@@ -26,6 +28,9 @@ const adminSession = session({
   rolling: true, // refresh session on every request
   cookie: { maxAge: 60 * 60 * 1000 }, // 1 hour session duration
 });
+
+//Handle caching
+app.use(cacheResponse(60));
 
 // Handle CORS (allow requests from your frontend URLs)
 const allowedOrigins = ["*"]; // Local development URL

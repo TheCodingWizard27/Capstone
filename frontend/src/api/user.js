@@ -12,8 +12,7 @@ export const storeUser = async (accessToken) => {
         },
       }
     );
-    console.log(response);
   } catch (error) {
-    console.error('Error creating user:', error);
+    return error;
   }
 };

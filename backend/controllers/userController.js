@@ -14,20 +14,22 @@ exports.addUser = async (req, res) => {
     }
 
     // Add user to Firestore
-    await db.collection("users").doc(user_id).set({
-      uid: user_id,
-      email: email,
-      userName: email.split("@")[0], // Username derived from email
-      createdAt: admin.firestore.FieldValue.serverTimestamp(),
-      modifiedAt: admin.firestore.FieldValue.serverTimestamp(),
-    });
+    await db
+      .collection("users")
+      .doc(user_id)
+      .set({
+        uid: user_id,
+        email: email,
+        userName: email.split("@")[0], // Username derived from email
+        createdAt: admin.firestore.FieldValue.serverTimestamp(),
+        modifiedAt: admin.firestore.FieldValue.serverTimestamp(),
+      });
 
     res.status(201).send("User added successfully");
   } catch (error) {
     res.status(500).send(`Error: ${error.message}`);
   }
 };
-
 
 // Update user information with photo upload
 exports.updateUserInfo = async (req, res) => {
@@ -43,10 +45,15 @@ exports.updateUserInfo = async (req, res) => {
       const fileName = `profile_pictures/${user_id}_${Date.now()}`;
       const fileUpload = admin.storage().bucket().file(fileName);
 
-      await fileUpload.save(file.buffer, { metadata: { contentType: file.mimetype } });
+      await fileUpload.save(file.buffer, {
+        metadata: { contentType: file.mimetype },
+      });
 
       // Generate a signed URL for access
-      const [url] = await fileUpload.getSignedUrl({ action: "read", expires: "01-01-2030" });
+      const [url] = await fileUpload.getSignedUrl({
+        action: "read",
+        expires: "01-01-2030",
+      });
       updateData.photoURL = url; // Save the new photo URL
     }
 
@@ -75,8 +82,12 @@ exports.changePassword = async (req, res) => {
     const user = await auth.getUser(user_id);
 
     // Ensure the user is using email/password authentication
-    if (user.providerData.some(provider => provider.providerId !== "password")) {
-      return res.status(400).send("Password change is only allowed for email/password users.");
+    if (
+      user.providerData.some((provider) => provider.providerId !== "password")
+    ) {
+      return res
+        .status(400)
+        .send("Password change is only allowed for email/password users.");
     }
 
     await auth.updateUser(user_id, { password: newPassword });
