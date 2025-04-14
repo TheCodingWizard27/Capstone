@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect } from 'react';
 import NavBar from '../components/navBar';
 import { useNavigate } from 'react-router-dom';
+import { db } from '../Firebase/firebaseConfig';
+import { doc, onSnapshot } from 'firebase/firestore';
 import {
   Container,
   Row,
@@ -72,44 +74,44 @@ const MessagingPage = () => {
     }
   };
 
-  // WebSocket for real-time messaging
-  useEffect(() => {
-    if (!currentUser?.accessToken) return;
+  // // WebSocket for real-time messaging
+  // useEffect(() => {
+  //   if (!currentUser?.accessToken) return;
 
-    const ws = new WebSocket(
-      `${process.env.REACT_APP_WEB_SOCKET_ADDRESS}?token=${currentUser.accessToken}`
-    );
+  //   const ws = new WebSocket(
+  //     `${process.env.REACT_APP_WEB_SOCKET_ADDRESS}?token=${currentUser.accessToken}`
+  //   );
 
-    ws.onmessage = (event) => {
-      const msg = JSON.parse(event.data);
-      console.log(msg);
-      if (selectedUser && msg.threadId === selectedUser.threadId) {
-        setCurrentChat((prev) => [
-          ...prev,
-          {
-            ...msg,
-            type: msg.senderId === currentUser.uid ? 'sent' : 'received',
-          },
-        ]);
+  //   ws.onmessage = (event) => {
+  //     const msg = JSON.parse(event.data);
+  //     console.log(msg);
+  //     if (selectedUser && msg.threadId === selectedUser.threadId) {
+  //       setCurrentChat((prev) => [
+  //         ...prev,
+  //         {
+  //           ...msg,
+  //           type: msg.senderId === currentUser.uid ? 'sent' : 'received',
+  //         },
+  //       ]);
 
-        // If we're already at the bottom, scroll to show new message
-        if (isScrolledToBottom) {
-          setTimeout(scrollToBottom, 100);
-        }
-      }
+  //       // If we're already at the bottom, scroll to show new message
+  //       if (isScrolledToBottom) {
+  //         setTimeout(scrollToBottom, 100);
+  //       }
+  //     }
 
-      // Update thread list
-      setMessages((prev) => {
-        const updated = [...prev];
-        const idx = updated.findIndex((m) => m.threadId === msg.threadId);
-        if (idx !== -1)
-          updated[idx] = { ...updated[idx], lastMessage: msg.message };
-        return updated;
-      });
-    };
+  //     // Update thread list
+  //     setMessages((prev) => {
+  //       const updated = [...prev];
+  //       const idx = updated.findIndex((m) => m.threadId === msg.threadId);
+  //       if (idx !== -1)
+  //         updated[idx] = { ...updated[idx], lastMessage: msg.message };
+  //       return updated;
+  //     });
+  //   };
 
-    return () => ws.readyState <= 1 && ws.close(); // Close WebSocket connection
-  }, [currentUser?.accessToken, selectedUser, isScrolledToBottom]);
+  //   return () => ws.readyState <= 1 && ws.close(); // Close WebSocket connection
+  // }, [currentUser?.accessToken, selectedUser, isScrolledToBottom]);
 
   // Fetch message threads
   useEffect(() => {
@@ -120,7 +122,7 @@ const MessagingPage = () => {
         setMessages(messageList);
       })
       .catch((err) => console.error('Error fetching messages:', err));
-  }, [currentUser]);
+  }, []);
 
   // Fetch messages for selected thread
   useEffect(() => {
@@ -131,9 +133,6 @@ const MessagingPage = () => {
       offset: 0,
     })
       .then((chat) => {
-        console.log(chat);
-        console.log(currentUser);
-
         const formattedChat = chat.map((msg) => ({
           ...msg,
           type: msg.sender === currentUser.uid ? 'sent' : 'received',
@@ -145,7 +144,35 @@ const MessagingPage = () => {
         setIsScrolledToBottom(true);
       })
       .catch((err) => console.error('Error fetching thread messages:', err));
-  }, [selectedUser, currentUser]);
+  }, [selectedUser, currentUser,messages]);
+
+  //Realtime update checks on threads
+  useEffect(() => {
+    if (!currentUser || messages.length === 0) return;
+
+    const unsubscribes = messages.map((thread) => {
+      const threadRef = doc(db, 'threads', thread.threadId);
+      return onSnapshot(threadRef, (docSnap) => {
+        if (docSnap.exists()) {
+          const updatedData = docSnap.data();
+          console.log(updatedData)
+          setMessages((prev) => {
+            const updated = [...prev];
+            const idx = updated.findIndex((m) => m.threadId === docSnap.id);
+            if (idx !== -1) {
+              updated[idx] = {
+                ...updated[idx],
+                ...updatedData, // or selectively: lastMessage, modifiedAt, etc.
+              };
+            }
+            return updated;
+          });
+        }
+      });
+    });
+
+    return () => unsubscribes.forEach((unsub) => unsub());
+  }, [currentUser, messages.map((m) => m.threadId).join(',')]);
 
   // Check if scrolled to bottom
   const handleScroll = () => {
@@ -271,8 +298,9 @@ const MessagingPage = () => {
       onClick={() =>
         handleSelectUser(item.threadId, item.otherParty, item.productName)
       }
-      className={`list-thread ${selectedThreadId === item.threadId ? 'selected' : ''
-        }`}
+      className={`list-thread ${
+        selectedThreadId === item.threadId ? 'selected' : ''
+      }`}
     >
       <div className="thread-user">{item.otherParty}</div>
       <div className="thread-item">{item.productName}</div>

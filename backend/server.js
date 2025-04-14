@@ -9,7 +9,6 @@ const listingRoutes = require("./routes/listing");
 const messageRoutes = require("./routes/message");
 const adminRoutes = require("./routes/admin");
 const categoryRoutes = require("./routes/categoryRoutes");
-const { setupWebSocket } = require("./messageHandler");
 const session = require("express-session");
 
 const cacheResponse = require("./utils/cache");
@@ -29,8 +28,7 @@ const adminSession = session({
   cookie: { maxAge: 60 * 60 * 1000 }, // 1 hour session duration
 });
 
-//Handle caching
-app.use(cacheResponse(60));
+
 
 // Handle CORS (allow requests from your frontend URLs)
 const allowedOrigins = ["*"]; // Local development URL
@@ -92,6 +90,3 @@ app.use((req, res, next) => {
 const server = app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
-
-// Setup web socket
-setupWebSocket(server);
