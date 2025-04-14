@@ -22,7 +22,6 @@ import ListPage from './pages/itemList';
 import MessagingPage from './pages/messageList';
 import SearchResults from './components/searchResults';
 import EditListing from './pages/editListing';
-import TransactionPage from './pages/transaction';
 import Cart from './pages/cart';
 import ReportListing from './pages/reportListing';
 
@@ -93,12 +92,7 @@ function App() {
                   userLoggedIn ? <AccountSettings /> : <Navigate to="/signIn" />
                 }
               />
-              <Route
-                path="/transaction"
-                element={
-                  userLoggedIn ? <TransactionPage /> : <Navigate to="/signIn" />
-                }
-              />
+              
               <Route
                 path="/cart"
                 element={userLoggedIn ? <Cart /> : <Navigate to="/signIn" />}
