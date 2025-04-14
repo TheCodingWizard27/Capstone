@@ -50,7 +50,6 @@ const Home = () => {
               <Spinner animation="border" role="status" style={{ width: '4rem', height: '4rem' }}>
                 {/* <span className="mt-4 fs-5">Loading...</span> */}
               </Spinner>
-               <span className="ms-2 mt-3 fs-4">Loading...</span>
             </div>
           ) : error ? (
             <Alert variant="warning">{error}</Alert>
