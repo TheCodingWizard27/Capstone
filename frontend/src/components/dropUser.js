@@ -48,7 +48,6 @@ const DropUser = () => {
           </Dropdown.Toggle>
           <Dropdown.Menu>
             <Dropdown.Item href="/accountInfo">My Profile</Dropdown.Item>
-            {/* <Dropdown.Item href="/transaction">Transactions</Dropdown.Item> */}
             <Dropdown.Divider />
             <Dropdown.Item onClick={handleLogout}>Log Out</Dropdown.Item>
           </Dropdown.Menu>
@@ -63,13 +62,6 @@ const DropUser = () => {
           >
             My Profile
           </Link>
-          {/* <Link
-            to="/transaction"
-            className="d-flex align-items-center mb-3 text-light"
-            style={{ textDecoration: 'none', fontSize: '1.25rem' }}
-          >
-            Transactions
-          </Link> */}
 
           <Link
             to="/transaction"
