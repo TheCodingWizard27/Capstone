@@ -46,10 +46,11 @@ const Home = () => {
         ) : ( */}
         <>
           {loading ? (
-            <div className="d-flex justify-content-center align-items-center" style={{ height: '50vh' }}>
-              <Spinner animation="border" role="status">
-                <span className="visually-hidden">Loading</span>
+            <div className="d-flex justify-content-center align-items-center" style={{ color: '#005d8d', height: '50vh' }}>
+              <Spinner animation="border" role="status" style={{ width: '4rem', height: '4rem' }}>
+                {/* <span className="mt-4 fs-5">Loading...</span> */}
               </Spinner>
+               <span className="ms-2 mt-3 fs-4">Loading...</span>
             </div>
           ) : error ? (
             <Alert variant="warning">{error}</Alert>
