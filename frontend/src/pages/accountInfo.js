@@ -244,11 +244,7 @@ function AccountSettings() {
   return (
     <>
       <NavBar />
-      <Container
-        fluid
-        className="py-4 px-3"
-        style={{ backgroundColor: '#f8f9fa', minHeight: '100vh' }}
-      >
+      <Container fluid className="py-4 px-3" style={{ minHeight: '100vh' }}>
         {showSuccess && (
           <Alert
             variant="success"
