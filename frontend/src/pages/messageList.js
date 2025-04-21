@@ -56,9 +56,10 @@ const MessagingPage = () => {
     const threadId = searchParams.get('threadId');
     const userName = searchParams.get('userName');
     const itemName = searchParams.get('itemName');
+    const myRole = searchParams.get('myRole');
 
     if (threadId && userName) {
-      setSelectedUser({ threadId, userName, itemName });
+      setSelectedUser({ threadId, userName, itemName, myRole });
       setSelectedThreadId(threadId);
     } else {
       setSelectedUser(null);
@@ -116,7 +117,6 @@ const MessagingPage = () => {
       return onSnapshot(threadRef, (docSnap) => {
         if (docSnap.exists()) {
           const updatedData = docSnap.data();
-          console.log(updatedData);
           setMessages((prev) => {
             const updated = [...prev];
             const idx = updated.findIndex((m) => m.threadId === docSnap.id);
@@ -241,14 +241,15 @@ const MessagingPage = () => {
     }
   };
 
-  const handleSelectUser = (threadId, userName, itemName) => {
-    setSelectedUser({ threadId, userName, itemName });
+  const handleSelectUser = (threadId, userName, itemName, myRole) => {
+    setSelectedUser({ threadId, userName, itemName, myRole });
     setSelectedThreadId(threadId);
     navigate(
-      `/messageList/?threadId=${threadId}&userName=${userName}&itemName=${encodeURIComponent(
+      `/messageList/?threadId=${threadId}&userName=${userName}&myRole=${myRole}&itemName=${encodeURIComponent(
         itemName || ''
       )}`
     );
+    console.log(selectedUser);
   };
 
   const backToSidebar = () => navigate('/messageList');
@@ -257,7 +258,12 @@ const MessagingPage = () => {
     <li
       key={index}
       onClick={() =>
-        handleSelectUser(item.threadId, item.otherParty, item.productName)
+        handleSelectUser(
+          item.threadId,
+          item.otherParty,
+          item.productName,
+          item.myRole
+        )
       }
       className={`list-thread ${
         selectedThreadId === item.threadId ? 'selected' : ''
@@ -294,7 +300,7 @@ const MessagingPage = () => {
                 <Card.Header className="chat-header">
                   <h6 className="mb-0">
                     {' '}
-                    Seller Name:{' '}
+                    {selectedUser.myRole === 'seller' ? 'Buyer Name:' : 'Seller Name:'}{' '}
                     <span style={{ fontWeight: 'bold' }}>
                       {selectedUser.userName}{' '}
                     </span>

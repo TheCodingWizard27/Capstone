@@ -29,7 +29,7 @@ function App() {
   const { userLoggedIn } = useAuth(); // Access userLoggedIn from context
 
   return (
-    <div className="App">
+    <div className="App" style={{ backgroundColor: 'aliceblue' }}>
       <AuthProvider>
         <CartProvider>
           <Router>
@@ -92,7 +92,7 @@ function App() {
                   userLoggedIn ? <AccountSettings /> : <Navigate to="/signIn" />
                 }
               />
-              
+
               <Route
                 path="/cart"
                 element={userLoggedIn ? <Cart /> : <Navigate to="/signIn" />}
